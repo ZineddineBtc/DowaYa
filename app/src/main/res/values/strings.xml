@@ -1,3 +1,22 @@
 <resources>
     <string name="app_name">DowaYa</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="login">login</string>
+    <string name="sign_out">sign out</string>
+    <string name="email_and_password">Email and Password</string>
+    <string name="new_here">New here?</string>
+    <string name="sign_up">Sign up</string>
+    <string name="by_creating_an_account_you_agree_on">By creating an account, you agree on</string>
+    <string name="terms_and_conditions">Terms and Conditions</string>
+    <string name="already_signed_up">Already signed up?</string>
+    <string name="finish_sign_up">Finish Sign-up</string>
+    <string name="name_and_phone_number">Name and Phone Number</string>
+    <string name="name">Name</string>
+    <string name="phone">Phone Number</string>
+    <string name="invalid_email">Invalid email address</string>
+    <string name="insufficient_password">Password must have more than 7 letters</string>
+    <string name="authentication_failed">Authentication failed</string>
+    <string name="name_not_number">Name must not contain numbers</string>
+    <string name="insufficient_phone_number">Phone number must have 10 digits</string>
 </resources>
