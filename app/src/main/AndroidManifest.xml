@@ -12,10 +12,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activities.TermsActivity"></activity>
+        <activity
+            android:name=".activities.core.CoreActivity"
+            android:label="@string/title_activity_core"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity android:name=".activities.TermsActivity" />
         <activity android:name=".activities.entry.FinishSignUpActivity" />
         <activity android:name=".activities.entry.SignUpActivity" />
-        <activity android:name=".activities.core.CoreActivity" />
         <activity android:name=".activities.entry.LoginActivity" />
         <activity android:name=".activities.entry.LogoActivity">
             <intent-filter>

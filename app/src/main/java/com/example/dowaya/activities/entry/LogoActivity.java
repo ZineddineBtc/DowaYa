@@ -8,7 +8,6 @@ import android.os.Handler;
 
 import com.example.dowaya.R;
 import com.example.dowaya.activities.core.CoreActivity;
-import com.example.dowaya.activities.entry.LoginActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
