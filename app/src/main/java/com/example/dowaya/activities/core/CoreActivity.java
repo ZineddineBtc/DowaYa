@@ -1,41 +1,42 @@
 package com.example.dowaya.activities.core;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 
 import com.example.dowaya.R;
 import com.example.dowaya.StaticClass;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 
 import android.provider.MediaStore;
 import android.view.View;
 
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.material.navigation.NavigationView;
-import com.google.firebase.auth.FirebaseAuth;
 
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import android.view.Menu;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.IOException;
-import java.util.Objects;
 
 public class CoreActivity extends AppCompatActivity {
 
@@ -45,7 +46,6 @@ public class CoreActivity extends AppCompatActivity {
     NavigationView navigationView;
     ImageView userPhotoIV;
     TextView userNameTV, userEmailTV, userPhoneTV;
-    FloatingActionButton floatingButton;
     SharedPreferences sharedPreferences;
     String photoUri;
 
@@ -55,26 +55,50 @@ public class CoreActivity extends AppCompatActivity {
         setContentView(R.layout.activity_core);
         findViewsByIds();
         setSupportActionBar(toolbar);
-        floatingButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action",
-                        Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
         setUpNavigation();
         setUserData();
+        checkBuildVersion();
     }
 
-
-
+    public void checkBuildVersion(){
+        int MyVersion = Build.VERSION.SDK_INT;
+        if (MyVersion > Build.VERSION_CODES.LOLLIPOP_MR1) {
+            if (!checkIfAlreadyHavePermission()) {
+                requestForSpecificPermission();
+            }
+        }
+    }
+    private boolean checkIfAlreadyHavePermission() {
+        int result = ContextCompat.checkSelfPermission(this,
+                Manifest.permission.GET_ACCOUNTS);
+        return result == PackageManager.PERMISSION_GRANTED;
+    }
+    private void requestForSpecificPermission() {
+        ActivityCompat.requestPermissions(this,
+                new String[]{
+                        Manifest.permission.READ_EXTERNAL_STORAGE,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                        Manifest.permission.CALL_PHONE,
+                        Manifest.permission.INTERNET},
+                101);
+    }
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        if (requestCode == 101) {
+            if (grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+                // not granted
+                moveTaskToBack(true);
+            }
+        } else {
+            super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
+    }
     public void findViewsByIds(){
         toolbar = findViewById(R.id.toolbar);
-        floatingButton = findViewById(R.id.floatingButton);
         drawer = findViewById(R.id.drawer_layout);
     }
-
     public void setUserData(){
         userPhotoIV = navigationView.getHeaderView(0).findViewById(R.id.userPhotoIV);
         userNameTV = navigationView.getHeaderView(0).findViewById(R.id.userNameTV);
@@ -97,12 +121,11 @@ public class CoreActivity extends AppCompatActivity {
         userEmailTV.setText(sharedPreferences.getString(StaticClass.EMAIL, "no email"));
         userPhoneTV.setText(sharedPreferences.getString(StaticClass.PHONE, "no phone number"));
     }
-
     public void setUpNavigation(){
         navigationView = findViewById(R.id.nav_view);
         appBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow,
-                R.id.nav_tools, R.id.nav_share, R.id.nav_send)
+                R.id.nav_medicine_list, R.id.nav_bookmark, R.id.nav_history,
+                R.id.nav_tools, R.id.nav_share, R.id.nav_settings)
                 .setDrawerLayout(drawer)
                 .build();
         NavController navController = Navigation.findNavController(this,
@@ -111,13 +134,6 @@ public class CoreActivity extends AppCompatActivity {
                 appBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
     }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.core, menu);
-        return true;
-    }
-
     @Override
     public boolean onSupportNavigateUp() {
         NavController navController = Navigation.findNavController(this,
@@ -125,7 +141,6 @@ public class CoreActivity extends AppCompatActivity {
         return NavigationUI.navigateUp(navController, appBarConfiguration)
                 || super.onSupportNavigateUp();
     }
-
     public void importImage(View view){
         Intent intent;
         intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
@@ -137,7 +152,6 @@ public class CoreActivity extends AppCompatActivity {
                 Intent.createChooser(intent, "Select Images"),
                 StaticClass.PICK_SINGLE_IMAGE);
     }
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

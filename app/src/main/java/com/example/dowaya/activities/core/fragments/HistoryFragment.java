@@ -7,16 +7,15 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-
 import com.example.dowaya.R;
 
-public class SendFragment extends Fragment {
+public class HistoryFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_send, container, false);
-        TextView textView = root.findViewById(R.id.text_send);
-        textView.setText("Send");
+        View root = inflater.inflate(R.layout.fragment_history, container, false);
+        final TextView textView = root.findViewById(R.id.text_slideshow);
+        textView.setText("Slideshow");
         return root;
     }
 }

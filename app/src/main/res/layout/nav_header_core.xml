@@ -16,7 +16,7 @@
         android:id="@+id/userPhotoIV"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:background="#ffffff"
+        android:background="@color/green"
         android:onClick="importImage"
         android:src="@drawable/ic_account_circle_grey"
         app:civ_border_color="#ffffff"
@@ -29,6 +29,7 @@
         android:layout_height="wrap_content"
         android:paddingTop="@dimen/nav_header_vertical_spacing"
         android:text="@string/nav_header_username"
+        android:textStyle="bold"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
     <TextView

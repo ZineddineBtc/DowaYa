@@ -7,15 +7,18 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+
 import com.example.dowaya.R;
 
-public class SlideshowFragment extends Fragment {
+public class BookmarkFragment extends Fragment {
+
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_slideshow, container, false);
-        final TextView textView = root.findViewById(R.id.text_slideshow);
-        textView.setText("Slideshow");
+        View root = inflater.inflate(R.layout.fragment_bookmark, container, false);
+        TextView textView = root.findViewById(R.id.text_gallery);
+        textView.setText("Gallery");
+
         return root;
     }
 }
