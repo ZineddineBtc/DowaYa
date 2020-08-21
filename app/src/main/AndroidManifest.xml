@@ -20,7 +20,7 @@
         <activity android:name=".activities.FullScreenActivity"></activity>
         <activity android:name=".activities.core.StoreDescriptionActivity" />
         <activity android:name=".activities.core.StoreListActivity" />
-        <activity android:name=".activities.core.MedicineDescriptionActivity" />
+        <activity android:name=".activities.core.MedicineDescriptionActivity"/>
         <activity
             android:name=".activities.core.CoreActivity"
             android:label="@string/title_activity_core"

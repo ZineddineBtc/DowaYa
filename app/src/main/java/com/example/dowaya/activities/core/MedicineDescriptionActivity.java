@@ -1,17 +1,23 @@
 package com.example.dowaya.activities.core;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.text.Html;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import androidx.appcompat.widget.Toolbar;
 
 import com.example.dowaya.R;
 import com.example.dowaya.StaticClass;
@@ -26,7 +32,6 @@ import java.util.Objects;
 public class MedicineDescriptionActivity extends AppCompatActivity {
 
     TextView nameTV, priceRange, descriptionTV, linksTV;
-    ImageView bookmarkIV;
     ClickableViewPager imagesVP;
     CustomPagerAdapter adapter;
     ArrayList<Bitmap> imagesList;
@@ -42,6 +47,7 @@ public class MedicineDescriptionActivity extends AppCompatActivity {
         setContentView(R.layout.activity_medicine_description);
         setActionBarTitle("Medicine Description");
         findViewsByIds();
+        //setSupportActionBar(toolbar);
         medicineId = getIntent().getIntExtra(StaticClass.MEDICINE_ID, -1);
         if(medicineId != -1){
             medicine = StaticClass.medicineList.get(medicineId);
@@ -54,7 +60,6 @@ public class MedicineDescriptionActivity extends AppCompatActivity {
     }
     public void findViewsByIds(){
         nameTV = findViewById(R.id.nameTV);
-        bookmarkIV = findViewById(R.id.bookmarkIV);
         priceRange = findViewById(R.id.priceRangeTV);
         descriptionTV = findViewById(R.id.descriptionTV);
         linksTV = findViewById(R.id.linksTV);
@@ -111,9 +116,32 @@ public class MedicineDescriptionActivity extends AppCompatActivity {
         startActivity(new Intent(getApplicationContext(), StoreListActivity.class)
                         .putExtra(StaticClass.MEDICINE_ID, medicineId));
     }
-    public void bookmark(View view){
-        bookmarkIV.setImageResource(isBookmarked ?
-                R.drawable.ic_bookmark_grey : R.drawable.ic_bookmark_green);
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_bookmark, menu);
+        return true;
+    }
+    @SuppressLint("ResourceType")
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if(item.getItemId() == R.id.bookmark){
+            item.setIcon(isBookmarked ?
+                    R.drawable.ic_bookmark_grey : R.drawable.ic_bookmark_black);
+            isBookmarked = !isBookmarked;
+        }
+        return true;
+    }
+
+
+    @Override
+    public void onBackPressed() {
+        onSupportNavigateUp();
+    }
+    @Override
+    public boolean onSupportNavigateUp() {
+        startActivity(new Intent(getApplicationContext(), CoreActivity.class));
+        return true;
     }
     public void setActionBarTitle(String title){
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
@@ -122,13 +150,5 @@ public class MedicineDescriptionActivity extends AppCompatActivity {
                 Html.fromHtml("<font color=\"#ffffff\"> "+title+" </font>")
         );
     }
-    @Override
-    public void onBackPressed() {
-        startActivity(new Intent(getApplicationContext(), CoreActivity.class));
-    }
-    @Override
-    public boolean onSupportNavigateUp() {
-        onBackPressed();
-        return true;
-    }
+
 }

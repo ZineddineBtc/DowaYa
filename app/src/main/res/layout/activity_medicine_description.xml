@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".activities.core.MedicineDescriptionActivity"
-    android:layout_margin="10dp">
+    android:background="#ffffff">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -15,7 +15,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0">
+        app:layout_constraintVertical_bias="0"
+        android:padding="10dp">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -31,27 +32,14 @@
                     android:layout_height="wrap_content"
                     android:text="@string/name"
                     android:textColor="#000000"/>
-
-                <LinearLayout
+                <TextView
                     android:id="@+id/nameTV"
                     android:layout_width="0dp"
                     android:layout_weight="0.7"
-                    android:layout_height="wrap_content">
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_weight="0.8"
-                        android:layout_height="wrap_content"
-                        android:text="Paracetamol"
-                        android:textStyle="bold"
-                        android:textColor="#000000"/>
-                    <ImageView
-                        android:id="@+id/bookmarkIV"
-                        android:onClick="bookmark"
-                        android:layout_width="0dp"
-                        android:layout_weight="0.2"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/ic_bookmark_grey"/>
-                </LinearLayout>
+                    android:layout_height="wrap_content"
+                    android:text="Paracetamol"
+                    android:textStyle="bold"
+                    android:textColor="#000000"/>
             </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
