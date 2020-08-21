@@ -181,5 +181,8 @@ public class CoreActivity extends AppCompatActivity {
             }
         }
     }
-
+    @Override
+    public void onBackPressed() {
+        moveTaskToBack(true);
+    }
 }

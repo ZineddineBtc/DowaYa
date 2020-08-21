@@ -14,17 +14,18 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import androidx.appcompat.widget.Toolbar;
+import android.widget.Toast;
 
 import com.example.dowaya.R;
 import com.example.dowaya.StaticClass;
 import com.example.dowaya.activities.FullScreenActivity;
 import com.example.dowaya.adapters.ClickableViewPager;
 import com.example.dowaya.adapters.CustomPagerAdapter;
+import com.example.dowaya.daos.BookmarkDAO;
 import com.example.dowaya.models.Medicine;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -38,6 +39,7 @@ public class MedicineDescriptionActivity extends AppCompatActivity {
     LinearLayout dotLayout;
     TextView[] dot;
     Medicine medicine;
+    BookmarkDAO bookmarkDAO;
     int medicineId;
     boolean isBookmarked;
 
@@ -47,10 +49,10 @@ public class MedicineDescriptionActivity extends AppCompatActivity {
         setContentView(R.layout.activity_medicine_description);
         setActionBarTitle("Medicine Description");
         findViewsByIds();
-        //setSupportActionBar(toolbar);
+        bookmarkDAO = new BookmarkDAO(this);
         medicineId = getIntent().getIntExtra(StaticClass.MEDICINE_ID, -1);
         if(medicineId != -1){
-            medicine = StaticClass.medicineList.get(medicineId);
+            medicine = StaticClass.medicineList.get(medicineId-1);
             setMedicineData();
         }
         setImagesLocally();
@@ -116,24 +118,38 @@ public class MedicineDescriptionActivity extends AppCompatActivity {
         startActivity(new Intent(getApplicationContext(), StoreListActivity.class)
                         .putExtra(StaticClass.MEDICINE_ID, medicineId));
     }
+    public void bookmark(boolean isBookmarked){
+        if(isBookmarked){
+            bookmarkDAO.deleteMedicine(medicineId);
+            Snackbar.make(findViewById(R.id.medicine_description_parent_view),
+                    "Medicine removed from bookmark", 1000)
+                    .setAction("Action", null).show();
+        }else{
+            bookmarkDAO.insertMedicine(medicine);
+            Snackbar.make(findViewById(R.id.medicine_description_parent_view),
+                    "Medicine added to bookmark", 1000)
+                    .setAction("Action", null).show();
+        }
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        isBookmarked = bookmarkDAO.contains(medicine.getName());
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_bookmark, menu);
+        menu.getItem(0).setIcon(isBookmarked ?
+                R.drawable.ic_bookmark_black : R.drawable.ic_bookmark_grey);
         return true;
     }
-    @SuppressLint("ResourceType")
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if(item.getItemId() == R.id.bookmark){
             item.setIcon(isBookmarked ?
                     R.drawable.ic_bookmark_grey : R.drawable.ic_bookmark_black);
+            bookmark(isBookmarked);
             isBookmarked = !isBookmarked;
         }
         return true;
     }
-
-
     @Override
     public void onBackPressed() {
         onSupportNavigateUp();

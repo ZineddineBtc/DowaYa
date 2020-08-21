@@ -6,7 +6,8 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".activities.core.MedicineDescriptionActivity"
-    android:background="#ffffff">
+    android:background="#ffffff"
+    android:id="@+id/medicine_description_parent_view">
 
     <ScrollView
         android:layout_width="match_parent"

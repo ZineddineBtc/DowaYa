@@ -1,6 +1,7 @@
 package com.example.dowaya.models;
 
 public class Medicine {
+    private int id;
     private String name, priceRange, description;
 
     public Medicine(){}
@@ -10,6 +11,13 @@ public class Medicine {
     }
 
     public Medicine(String name, String description, String priceRange) {
+        this.name = name;
+        this.description = description;
+        this.priceRange = priceRange;
+    }
+
+    public Medicine(int id, String name, String description, String priceRange) {
+        this.id = id;
         this.name = name;
         this.description = description;
         this.priceRange = priceRange;

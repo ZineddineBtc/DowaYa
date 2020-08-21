@@ -71,7 +71,7 @@ public class MedicineAdapter extends RecyclerView.Adapter<MedicineAdapter.ViewHo
                 mClickListener.onItemClick(view, getAdapterPosition());
             itemView.getContext().startActivity(
                     new Intent(itemView.getContext(), MedicineDescriptionActivity.class)
-                    .putExtra(StaticClass.MEDICINE_ID, getAdapterPosition())
+                    .putExtra(StaticClass.MEDICINE_ID, getAdapterPosition()+1)
             );
         }
     }
