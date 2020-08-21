@@ -7,7 +7,7 @@
     tools:context=".activities.entry.LogoActivity">
 
     <ImageView
-        android:src="@drawable/ic_map_blue"
+        android:src="@drawable/ic_map_green"
         android:layout_width="50dp"
         android:layout_height="50dp"
         app:layout_constraintBottom_toBottomOf="parent"

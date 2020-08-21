@@ -1,20 +1,16 @@
 package com.example.dowaya.adapters;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.dowaya.R;
-import com.example.dowaya.StaticClass;
-import com.example.dowaya.activities.core.MedicineDescriptionActivity;
-import com.example.dowaya.activities.core.StoreDescriptionActivity;
-import com.example.dowaya.models.Medicine;
+import com.example.dowaya.activities.core.StoreListActivity;
+import com.example.dowaya.daos.StoreHistoryDAO;
 import com.example.dowaya.models.Store;
 
 import java.util.ArrayList;
@@ -26,12 +22,14 @@ public class StoreAdapter extends RecyclerView.Adapter<StoreAdapter.ViewHolder> 
     private LayoutInflater mInflater;
     private ItemClickListener mClickListener;
     Context context;
+    int medicineId;
 
-    public StoreAdapter(Context context, List<Store> storeList) {
+    public StoreAdapter(Context context, List<Store> storeList, int medicineId) {
         this.mInflater = LayoutInflater.from(context);
         this.storeList = storeList;
         copyList = new ArrayList<>(storeList);
         this.context = context;
+        this.medicineId = medicineId;
     }
 
     @Override
@@ -54,11 +52,13 @@ public class StoreAdapter extends RecyclerView.Adapter<StoreAdapter.ViewHolder> 
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView nameTV, cityTV;
+        StoreHistoryDAO storeHistoryDAO;
 
         public ViewHolder(View itemView) {
             super(itemView);
             nameTV = itemView.findViewById(R.id.nameTV);
             cityTV = itemView.findViewById(R.id.cityTV);
+            storeHistoryDAO = new StoreHistoryDAO(itemView.getContext());
             itemView.setOnClickListener(this);
         }
 
@@ -66,10 +66,19 @@ public class StoreAdapter extends RecyclerView.Adapter<StoreAdapter.ViewHolder> 
         public void onClick(View view) {
             if (mClickListener != null)
                 mClickListener.onItemClick(view, getAdapterPosition());
+
+            /*storeHistoryDAO.insertStoreHistory(
+                    nameTV.getText().toString(),
+                    new SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault()).
+                            format(Calendar.getInstance().getTime()));
+
             itemView.getContext().startActivity(
                     new Intent(itemView.getContext(), StoreDescriptionActivity.class)
-                    .putExtra(StaticClass.STORE_ID, getAdapterPosition())
-            );
+                    .putExtra(StaticClass.STORE_ID, getAdapterPosition()+1)
+                    .putExtra(StaticClass.MEDICINE_ID, medicineId)
+            );*/
+            StoreListActivity storeListActivity = new StoreListActivity();
+//            storeListActivity.shadow();
         }
     }
 

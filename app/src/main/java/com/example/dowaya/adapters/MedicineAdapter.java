@@ -16,11 +16,17 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.dowaya.R;
 import com.example.dowaya.StaticClass;
 import com.example.dowaya.activities.core.MedicineDescriptionActivity;
+import com.example.dowaya.daos.MedicineHistoryDAO;
+import com.example.dowaya.daos.StoreHistoryDAO;
 import com.example.dowaya.models.Medicine;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class MedicineAdapter extends RecyclerView.Adapter<MedicineAdapter.ViewHolder> {
 
@@ -56,12 +62,13 @@ public class MedicineAdapter extends RecyclerView.Adapter<MedicineAdapter.ViewHo
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView nameTV, priceRangeTV;
-        ImageView photoIV;
+        MedicineHistoryDAO medicineHistoryDAO;
 
         public ViewHolder(View itemView) {
             super(itemView);
             nameTV = itemView.findViewById(R.id.nameTV);
             priceRangeTV = itemView.findViewById(R.id.priceRangeTV);
+            medicineHistoryDAO = new MedicineHistoryDAO(itemView.getContext());
             itemView.setOnClickListener(this);
         }
 
@@ -69,6 +76,12 @@ public class MedicineAdapter extends RecyclerView.Adapter<MedicineAdapter.ViewHo
         public void onClick(View view) {
             if (mClickListener != null)
                 mClickListener.onItemClick(view, getAdapterPosition());
+
+            medicineHistoryDAO.insertMedicineHistory(
+                    nameTV.getText().toString(),
+                    new SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault()).
+                            format(Calendar.getInstance().getTime()));
+
             itemView.getContext().startActivity(
                     new Intent(itemView.getContext(), MedicineDescriptionActivity.class)
                     .putExtra(StaticClass.MEDICINE_ID, getAdapterPosition()+1)

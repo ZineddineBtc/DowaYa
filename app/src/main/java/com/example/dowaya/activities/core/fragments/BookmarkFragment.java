@@ -73,7 +73,7 @@ public class BookmarkFragment extends Fragment {
             }
         });
     }
-    public void showAlert(final int id){
+    private void showAlert(final int id){
         new AlertDialog.Builder(context)
                 .setTitle("Remove Medicine")
                 .setMessage("Are you sure you want to remove this medicine from bookmark?")

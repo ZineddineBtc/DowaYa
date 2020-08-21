@@ -148,16 +148,16 @@ public class MedicineDescriptionActivity extends AppCompatActivity {
             bookmark(isBookmarked);
             isBookmarked = !isBookmarked;
         }
-        return true;
+        return false;
     }
     @Override
     public void onBackPressed() {
-        onSupportNavigateUp();
+        startActivity(new Intent(getApplicationContext(), CoreActivity.class));
     }
     @Override
     public boolean onSupportNavigateUp() {
-        startActivity(new Intent(getApplicationContext(), CoreActivity.class));
-        return true;
+        onBackPressed();
+        return false;
     }
     public void setActionBarTitle(String title){
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);

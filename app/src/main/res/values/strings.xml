@@ -51,4 +51,7 @@
     <string name="menu_bookmark">Bookmark</string>
     <string name="menu_history">History</string>
     <string name="empty_bookmark_list">No medicine is bookmarked</string>
+    <string name="medicines">Medicines</string>
+    <string name="stores">Stores</string>
+    <string name="no_history">No history</string>
 </resources>

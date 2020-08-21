@@ -32,7 +32,6 @@ public class MedicineListFragment extends Fragment {
         medicineSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {return false;}
-
             @Override
             public boolean onQueryTextChange(String newText) {
                 adapter.filter(newText);

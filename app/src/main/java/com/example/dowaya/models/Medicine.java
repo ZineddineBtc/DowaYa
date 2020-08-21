@@ -2,7 +2,7 @@ package com.example.dowaya.models;
 
 public class Medicine {
     private int id;
-    private String name, priceRange, description;
+    private String name, priceRange, description, time;
 
     public Medicine(){}
 
@@ -45,5 +45,21 @@ public class Medicine {
 
     public void setPriceRange(String priceRange) {
         this.priceRange = priceRange;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
     }
 }
