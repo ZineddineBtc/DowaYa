@@ -54,4 +54,5 @@
     <string name="medicines">Medicines</string>
     <string name="stores">Stores</string>
     <string name="no_history">No history</string>
+    <string name="edit_account">Edit my account</string>
 </resources>

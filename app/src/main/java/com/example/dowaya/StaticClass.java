@@ -54,21 +54,28 @@ public class StaticClass {
     }};
 
     public static boolean isValidEmail(String email) {
-        String expression = "^[\\w\\.-]+@([\\w\\-]+\\.)+[A-Z]{2,4}$";
-        Pattern pattern = Pattern.compile(expression, Pattern.CASE_INSENSITIVE);
-        Matcher matcher = pattern.matcher(email);
-        return matcher.matches();
+        if(email.length()>4){
+            String expression = "^[\\w\\.-]+@([\\w\\-]+\\.)+[A-Z]{2,4}$";
+            Pattern pattern = Pattern.compile(expression, Pattern.CASE_INSENSITIVE);
+            Matcher matcher = pattern.matcher(email);
+            return matcher.matches();
+        }else{
+            return false;
+        }
+
     }
     public static boolean containsDigit(String s) {
-        boolean containsDigit = false;
-        if (s != null && !s.isEmpty()) {
+        if(s.length()>2){
+            boolean containsDigit = false;
             for (char c : s.toCharArray()) {
                 if (containsDigit = Character.isDigit(c)) {
                     break;
                 }
             }
+            return containsDigit;
+        }else{
+            return false;
         }
-        return containsDigit;
     }
     /*
         FirebaseDatabase database = FirebaseDatabase.getInstance();

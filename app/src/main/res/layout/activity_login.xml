@@ -29,7 +29,7 @@
     <ImageView
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:src="@drawable/ic_map_blue"
+        android:src="@drawable/ic_map_green"
         app:layout_constraintBottom_toTopOf="@+id/textView2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -115,7 +115,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:background="@drawable/blue_background_rounded_border"
+            android:background="@drawable/green_background_rounded_border"
             android:onClick="login"/>
     </LinearLayout>
 
@@ -142,7 +142,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/sign_up"
-            android:textColor="@color/blue"
+            android:textColor="@color/green"
             android:onClick="toSignUp"/>
 
     </LinearLayout>

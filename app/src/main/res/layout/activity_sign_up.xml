@@ -30,7 +30,7 @@
         android:id="@+id/button"
         android:layout_width="30dp"
         android:layout_height="30dp"
-        android:src="@drawable/ic_arrow_back_blue"
+        android:src="@drawable/ic_arrow_back_green"
         android:adjustViewBounds="true"
         android:padding="10dp"
         android:scaleType="fitCenter"
@@ -47,7 +47,7 @@
     <ImageView
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:src="@drawable/ic_map_blue"
+        android:src="@drawable/ic_map_green"
         app:layout_constraintBottom_toTopOf="@+id/textView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -133,7 +133,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:background="@drawable/blue_background_rounded_border"
+            android:background="@drawable/green_background_rounded_border"
             android:onClick="signUp"/>
     </LinearLayout>
 
@@ -160,7 +160,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/login"
-            android:textColor="@color/blue"
+            android:textColor="@color/green"
             android:onClick="toLogin"/>
 
     </LinearLayout>
