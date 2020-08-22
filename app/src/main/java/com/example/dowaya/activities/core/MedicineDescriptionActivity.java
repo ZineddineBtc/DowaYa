@@ -14,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -33,15 +34,12 @@ import java.util.Objects;
 public class MedicineDescriptionActivity extends AppCompatActivity {
 
     TextView nameTV, priceRange, descriptionTV, linksTV;
-    ClickableViewPager imagesVP;
-    CustomPagerAdapter adapter;
-    ArrayList<Bitmap> imagesList;
-    LinearLayout dotLayout;
-    TextView[] dot;
+    ImageView medicineIV;
     Medicine medicine;
     BookmarkDAO bookmarkDAO;
     int medicineId;
     boolean isBookmarked;
+    String photoUri=null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,64 +53,26 @@ public class MedicineDescriptionActivity extends AppCompatActivity {
             medicine = StaticClass.medicineList.get(medicineId-1);
             setMedicineData();
         }
-        setImagesLocally();
-        if(!imagesList.isEmpty()){
-            setViewPager();
-        }
+
     }
     public void findViewsByIds(){
         nameTV = findViewById(R.id.nameTV);
         priceRange = findViewById(R.id.priceRangeTV);
         descriptionTV = findViewById(R.id.descriptionTV);
         linksTV = findViewById(R.id.linksTV);
-        imagesVP = findViewById(R.id.imagesVP);
-        dotLayout = findViewById(R.id.dotLayout);
+        medicineIV = findViewById(R.id.medicineIV);
     }
     public void setMedicineData(){
         nameTV.setText(medicine.getName());
         priceRange.setText(medicine.getPriceRange());
         descriptionTV.setText(medicine.getDescription());
+        medicineIV.setImageDrawable(getDrawable(R.drawable.img0));
     }
-    public void setImagesLocally(){
-        imagesList = new ArrayList<Bitmap>(){{
-                    add(BitmapFactory.decodeResource(getResources(), R.drawable.img0));
-                    add(BitmapFactory.decodeResource(getResources(), R.drawable.img1));
-                    add(BitmapFactory.decodeResource(getResources(), R.drawable.img2));
-                    add(BitmapFactory.decodeResource(getResources(), R.drawable.img3));
-                    }};
-    }
-    public void setViewPager(){
-        adapter = new CustomPagerAdapter(this, imagesList);
-        imagesVP.setAdapter(adapter);
-        imagesVP.setPageMargin(20);
-        addDot(0);
-        imagesVP.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageSelected(int i) {addDot(i);}
-            @Override
-            public void onPageScrolled(int i, float v, int i1) {}
-            @Override
-            public void onPageScrollStateChanged(int i) {}
-        });
-        imagesVP.setOnViewPagerClickListener(new ClickableViewPager.OnClickListener() {
-            @Override
-            public void onViewPagerClick(ViewPager viewPager) {
-                startActivity(new Intent(getApplicationContext(), FullScreenActivity.class)
-                .putExtra(StaticClass.MEDICINE_ID, medicineId));
-            }
-        });
-    }
-    public void addDot(int pagePosition) {
-        dot = new TextView[imagesList.size()];
-        dotLayout.removeAllViews();
-        for (int i = 0; i < dot.length; i++) {
-            dot[i] = new TextView(this);
-            dot[i].setText(Html.fromHtml("&#9673;"));
-            dot[i].setTextSize(14);
-            dot[i].setTextColor(getColor(R.color.dark_grey));
-            dotLayout.addView(dot[i]);
-        }
-        dot[pagePosition].setTextColor(getColor(R.color.blue));
+    public void viewFullScreen(View view){
+        startActivity(new Intent(getApplicationContext(), FullScreenActivity.class)
+        .putExtra(StaticClass.FULL_SCREEN, photoUri)
+        .putExtra(StaticClass.MEDICINE_ID, medicineId)
+        .putExtra(StaticClass.FROM, StaticClass.MEDICINE_DESCRIPTION));
     }
     public void searchStore(View view){
         startActivity(new Intent(getApplicationContext(), StoreListActivity.class)

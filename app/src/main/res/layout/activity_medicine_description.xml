@@ -102,17 +102,15 @@
                     android:text="@string/random_link"
                     android:textColor="#000000"/>
             </LinearLayout>
-            <com.example.dowaya.adapters.ClickableViewPager
-                android:id="@+id/imagesVP"
+            <ImageView
+                android:id="@+id/medicineIV"
                 android:layout_width="match_parent"
-                android:layout_height="200dp" />
-
-            <LinearLayout
-                android:id="@+id/dotLayout"
-                android:layout_width="match_parent"
-                android:layout_height="30dp"
-                android:gravity="center"
-                android:orientation="horizontal" />
+                android:layout_height="wrap_content"
+                android:minHeight="200dp"
+                android:scaleType="fitCenter"
+                android:adjustViewBounds="true"
+                android:onClick="viewFullScreen"
+                android:src="@drawable/ic_image_grey"/>
         </LinearLayout>
     </ScrollView>
     <Button
@@ -125,7 +123,7 @@
         app:layout_constraintVertical_bias="1"
         android:onClick="searchStore"
         android:text="@string/search_store"
-        android:background="@drawable/green_background_rounded_border"
+        android:background="@color/green"
         android:textColor="#ffffff"
         android:textSize="14sp"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

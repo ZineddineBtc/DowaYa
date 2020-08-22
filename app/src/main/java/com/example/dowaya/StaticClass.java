@@ -20,6 +20,11 @@ public class StaticClass {
     public static String PHOTO = "photo";
     public static String MEDICINE_ID = "medicine_id";
     public static String STORE_ID = "store_id";
+    public static String FULL_SCREEN = "full_screen";
+    public static String FROM = "from";
+    public static String MEDICINE_DESCRIPTION = "medicine_description";
+    public static String POST_HISTORY = "post_history";
+    public static String REQUEST_HISTORY = "request_history";
 
     public static ArrayList<Medicine> medicineList = new ArrayList<Medicine>(){{
         add(new Medicine("AAA",

@@ -4,11 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/dark_grey"
     tools:context=".activities.FullScreenActivity">
 
-    <androidx.viewpager.widget.ViewPager
-        android:id="@+id/fullScreenVP"
+    <ImageView
+        android:id="@+id/fullScreenIV"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:scaleType="fitCenter"
+        android:adjustViewBounds="true"/>
 
 </LinearLayout>
