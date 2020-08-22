@@ -64,4 +64,6 @@
     <string name="requests">Requests</string>
     <string name="random_date">20-02-2020</string>
     <string name="menu_post">Post</string>
+    <string name="price_example">For ex: 500 DA</string>
+    <string name="posts">Posts</string>
 </resources>

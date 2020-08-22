@@ -70,7 +70,7 @@ public class StoreAdapter extends RecyclerView.Adapter<StoreAdapter.ViewHolder> 
             /*storeHistoryDAO.insertStoreHistory(
                     nameTV.getText().toString(),
                     new SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault()).
-                            format(Calendar.getInstance().getHistoryTime()));
+                            format(Calendar.getInstance().getSearchHistoryTime()));
 
             itemView.getContext().startActivity(
                     new Intent(itemView.getContext(), StoreDescriptionActivity.class)

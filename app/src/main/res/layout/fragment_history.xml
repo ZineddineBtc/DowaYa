@@ -17,7 +17,7 @@
             android:layout_width="0dp"
             android:layout_weight="0.2"
             android:layout_height="wrap_content"
-            android:textSize="20sp"
+            android:textSize="14sp"
             android:textColor="@color/green"
             android:gravity="end"/>
         <TextView
@@ -34,7 +34,7 @@
             android:layout_width="0dp"
             android:layout_weight="0.1"
             android:layout_height="wrap_content"
-            android:textSize="20sp"
+            android:textSize="14sp"
             android:textColor="@color/grey"
             android:gravity="center"/>
         <TextView
@@ -49,9 +49,26 @@
             android:id="@+id/requestTV"
             android:text="@string/requests"
             android:layout_width="0dp"
+            android:layout_weight="0.15"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:textColor="@color/grey"
+            android:gravity="center"/>
+        <TextView
+            android:gravity="center"
+            android:text="|"
+            android:textColor="#000000"
+            android:textSize="25sp"
+            android:layout_width="0dp"
+            android:layout_weight="0.1"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:id="@+id/postTV"
+            android:text="@string/posts"
+            android:layout_width="0dp"
             android:layout_weight="0.2"
             android:layout_height="wrap_content"
-            android:textSize="20sp"
+            android:textSize="14sp"
             android:textColor="@color/grey"
             android:gravity="start"/>
     </LinearLayout>
@@ -69,7 +86,12 @@
         android:layout_height="wrap_content"/>
     <androidx.recyclerview.widget.RecyclerView
         android:visibility="gone"
-        android:id="@+id/requests_historyRV"
+        android:id="@+id/requestHistoryRV"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+    <androidx.recyclerview.widget.RecyclerView
+        android:visibility="gone"
+        android:id="@+id/postHistoryRV"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 

@@ -14,20 +14,19 @@ import android.widget.Toast;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.dowaya.R;
-import com.example.dowaya.daos.RequestHistoryDAO;
 import com.example.dowaya.models.Medicine;
 
 import java.io.IOException;
 import java.util.List;
 
-public class RequestsHistoryAdapter extends RecyclerView.Adapter<RequestsHistoryAdapter.ViewHolder> {
+public class PostHistoryAdapter extends RecyclerView.Adapter<PostHistoryAdapter.ViewHolder> {
 
     private List<Medicine> list;
     private LayoutInflater mInflater;
     private ItemClickListener mClickListener;
     Context context;
 
-    public RequestsHistoryAdapter(Context context, List<Medicine> list) {
+    public PostHistoryAdapter(Context context, List<Medicine> list) {
         this.mInflater = LayoutInflater.from(context);
         this.list = list;
         this.context = context;
@@ -35,7 +34,7 @@ public class RequestsHistoryAdapter extends RecyclerView.Adapter<RequestsHistory
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = mInflater.inflate(R.layout.requests_history_row, parent, false);
+        View view = mInflater.inflate(R.layout.post_history_row, parent, false);
         return new ViewHolder(view);
     }
 
@@ -43,6 +42,8 @@ public class RequestsHistoryAdapter extends RecyclerView.Adapter<RequestsHistory
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.nameTV.setText(list.get(position).getName());
         holder.descriptionTV.setText(list.get(position).getDescription());
+        holder.addressTV.setText(list.get(position).getPostAddress());
+        holder.priceTV.setText(list.get(position).getPriceRange());
         String photoUri = list.get(position).getPhoto();
         if(photoUri != null){
             Bitmap imageBitmap = null;
@@ -57,7 +58,7 @@ public class RequestsHistoryAdapter extends RecyclerView.Adapter<RequestsHistory
         }else{
             holder.medicineIV.setVisibility(View.GONE);
         }
-        holder.timeTV.setText(list.get(position).getRequestTime());
+        holder.timeTV.setText(list.get(position).getPostTime());
     }
 
     @Override
@@ -67,13 +68,15 @@ public class RequestsHistoryAdapter extends RecyclerView.Adapter<RequestsHistory
 
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        TextView nameTV, descriptionTV, timeTV;
+        TextView nameTV, descriptionTV, timeTV, addressTV, priceTV;
         ImageView medicineIV;
 
         public ViewHolder(View itemView) {
             super(itemView);
             nameTV = itemView.findViewById(R.id.nameTV);
             descriptionTV = itemView.findViewById(R.id.descriptionTV);
+            addressTV = itemView.findViewById(R.id.addressTV);
+            priceTV = itemView.findViewById(R.id.priceTV);
             timeTV = itemView.findViewById(R.id.timeTV);
             medicineIV = itemView.findViewById(R.id.medicineIV);
 

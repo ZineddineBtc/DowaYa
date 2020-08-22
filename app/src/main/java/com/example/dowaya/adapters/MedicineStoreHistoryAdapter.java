@@ -12,14 +12,14 @@ import com.example.dowaya.R;
 
 import java.util.List;
 
-public class MedicinesStoresHistoryAdapter extends RecyclerView.Adapter<MedicinesStoresHistoryAdapter.ViewHolder> {
+public class MedicineStoreHistoryAdapter extends RecyclerView.Adapter<MedicineStoreHistoryAdapter.ViewHolder> {
 
     private List<String[]> list;
     private LayoutInflater mInflater;
     private ItemClickListener mClickListener;
     Context context;
 
-    public MedicinesStoresHistoryAdapter(Context context, List<String[]> list) {
+    public MedicineStoreHistoryAdapter(Context context, List<String[]> list) {
         this.mInflater = LayoutInflater.from(context);
         this.list = list;
         this.context = context;

@@ -17,7 +17,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -108,7 +107,7 @@ public class RequestFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if(item.getItemId() == R.id.postRequest){
-            postRequest();
+            request();
         }
         return false;
     }
@@ -169,10 +168,10 @@ public class RequestFragment extends Fragment {
                 .format(Calendar.getInstance().getTime()));
         requestHistoryDAO.insertRequestHistory(medicine);
     }
-    private void postRequest(){
+    private void request(){
         if(!medicineNameET.getText().toString().isEmpty()
         && !medicineDescriptionET.getText().toString().isEmpty()){
-            Toast.makeText(context, "posted", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "requested", Toast.LENGTH_SHORT).show();
             insertRequestHistory();
             startActivity(new Intent(context, CoreActivity.class));
         }else{
