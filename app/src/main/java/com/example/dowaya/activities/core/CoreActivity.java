@@ -125,7 +125,7 @@ public class CoreActivity extends AppCompatActivity {
         navigationView = findViewById(R.id.nav_view);
         appBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.nav_medicine_list, R.id.nav_bookmark, R.id.nav_history,
-                R.id.nav_tools, R.id.nav_share, R.id.nav_settings)
+                R.id.nav_request, R.id.nav_share, R.id.nav_settings)
                 .setDrawerLayout(drawer)
                 .build();
         NavController navController = Navigation.findNavController(this,

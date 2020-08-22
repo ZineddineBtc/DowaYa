@@ -15,7 +15,7 @@
             android:id="@+id/medicineTV"
             android:text="@string/medicines"
             android:layout_width="0dp"
-            android:layout_weight="0.3"
+            android:layout_weight="0.2"
             android:layout_height="wrap_content"
             android:textSize="20sp"
             android:textColor="@color/green"
@@ -24,7 +24,7 @@
             android:gravity="center"
             android:text="|"
             android:textColor="#000000"
-            android:textSize="20sp"
+            android:textSize="25sp"
             android:layout_width="0dp"
             android:layout_weight="0.1"
             android:layout_height="wrap_content"/>
@@ -32,7 +32,24 @@
             android:id="@+id/storeTV"
             android:text="@string/stores"
             android:layout_width="0dp"
-            android:layout_weight="0.3"
+            android:layout_weight="0.1"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:textColor="@color/grey"
+            android:gravity="center"/>
+        <TextView
+            android:gravity="center"
+            android:text="|"
+            android:textColor="#000000"
+            android:textSize="25sp"
+            android:layout_width="0dp"
+            android:layout_weight="0.1"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:id="@+id/requestTV"
+            android:text="@string/requests"
+            android:layout_width="0dp"
+            android:layout_weight="0.2"
             android:layout_height="wrap_content"
             android:textSize="20sp"
             android:textColor="@color/grey"
@@ -47,7 +64,13 @@
         android:textColor="#000000"
         android:gravity="center"/>
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/historyRV"
+        android:id="@+id/medicines_stores_historyRV"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
+    <androidx.recyclerview.widget.RecyclerView
+        android:visibility="gone"
+        android:id="@+id/requests_historyRV"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
 </LinearLayout>

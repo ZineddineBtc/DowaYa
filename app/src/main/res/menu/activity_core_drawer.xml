@@ -9,6 +9,14 @@
             android:icon="@drawable/ic_lens_black_24dp"
             android:title="@string/menu_medicines" />
         <item
+            android:id="@+id/nav_request"
+            android:icon="@drawable/ic_request_black"
+            android:title="@string/menu_request" />
+        <item
+            android:id="@+id/nav_post"
+            android:icon="@drawable/ic_add_circle_black_24dp"
+            android:title="@string/menu_post" />
+        <item
             android:id="@+id/nav_bookmark"
             android:icon="@drawable/ic_bookmark_black"
             android:title="@string/menu_bookmark" />
@@ -16,10 +24,6 @@
             android:id="@+id/nav_history"
             android:icon="@drawable/ic_history_black_24dp"
             android:title="@string/menu_history" />
-        <item
-            android:id="@+id/nav_tools"
-            android:icon="@drawable/ic_menu_manage"
-            android:title="@string/menu_tools" />
     </group>
 
     <item android:title="More">

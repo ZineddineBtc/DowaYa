@@ -1,7 +1,6 @@
 package com.example.dowaya.adapters;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,24 +9,17 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.dowaya.R;
-import com.example.dowaya.StaticClass;
-import com.example.dowaya.activities.core.MedicineDescriptionActivity;
-import com.example.dowaya.daos.MedicineHistoryDAO;
-import com.example.dowaya.models.Medicine;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.List;
-import java.util.Locale;
 
-public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHolder> {
+public class MedicinesStoresHistoryAdapter extends RecyclerView.Adapter<MedicinesStoresHistoryAdapter.ViewHolder> {
 
     private List<String[]> list;
     private LayoutInflater mInflater;
     private ItemClickListener mClickListener;
     Context context;
 
-    public HistoryAdapter(Context context, List<String[]> list) {
+    public MedicinesStoresHistoryAdapter(Context context, List<String[]> list) {
         this.mInflater = LayoutInflater.from(context);
         this.list = list;
         this.context = context;
@@ -35,7 +27,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = mInflater.inflate(R.layout.history_row, parent, false);
+        View view = mInflater.inflate(R.layout.medicines_stores_history_row, parent, false);
         return new ViewHolder(view);
     }
 

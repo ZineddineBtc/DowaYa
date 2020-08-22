@@ -2,7 +2,7 @@ package com.example.dowaya.models;
 
 public class Medicine {
     private int id;
-    private String name, priceRange, description, time;
+    private String name, photo, priceRange, description, historyTime, requestTime;
 
     public Medicine(){}
 
@@ -31,6 +31,14 @@ public class Medicine {
         this.name = name;
     }
 
+    public String getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(String photo) {
+        this.photo = photo;
+    }
+
     public String getDescription() {
         return description;
     }
@@ -55,11 +63,19 @@ public class Medicine {
         this.id = id;
     }
 
-    public String getTime() {
-        return time;
+    public String getHistoryTime() {
+        return historyTime;
     }
 
-    public void setTime(String time) {
-        this.time = time;
+    public void setHistoryTime(String historyTime) {
+        this.historyTime = historyTime;
+    }
+
+    public String getRequestTime() {
+        return requestTime;
+    }
+
+    public void setRequestTime(String requestTime) {
+        this.requestTime = requestTime;
     }
 }

@@ -12,6 +12,18 @@
         tools:layout="@layout/fragment_medicine_list" />
 
     <fragment
+        android:id="@+id/nav_request"
+        android:name="com.example.dowaya.activities.core.fragments.RequestFragment"
+        android:label="@string/menu_request"
+        tools:layout="@layout/fragment_request" />
+
+    <fragment
+        android:id="@+id/nav_post"
+        android:name="com.example.dowaya.activities.core.fragments.PostFragment"
+        android:label="@string/menu_post"
+        tools:layout="@layout/fragment_post" />
+
+    <fragment
         android:id="@+id/nav_bookmark"
         android:name="com.example.dowaya.activities.core.fragments.BookmarkFragment"
         android:label="@string/menu_bookmark"
@@ -22,12 +34,6 @@
         android:name="com.example.dowaya.activities.core.fragments.HistoryFragment"
         android:label="@string/menu_history"
         tools:layout="@layout/fragment_history" />
-
-    <fragment
-        android:id="@+id/nav_tools"
-        android:name="com.example.dowaya.activities.core.fragments.ToolsFragment"
-        android:label="@string/menu_tools"
-        tools:layout="@layout/fragment_tools" />
 
     <fragment
         android:id="@+id/nav_share"

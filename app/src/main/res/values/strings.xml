@@ -30,7 +30,7 @@
     <string name="menu_home">Home</string>
     <string name="menu_gallery">Gallery</string>
     <string name="menu_slideshow">Slideshow</string>
-    <string name="menu_tools">Tools</string>
+    <string name="menu_request">Request</string>
     <string name="menu_share">Share</string>
     <string name="menu_send">Send</string>
     <string name="nav_header_phone">0123456789</string>
@@ -55,4 +55,13 @@
     <string name="stores">Stores</string>
     <string name="no_history">No history</string>
     <string name="edit_account">Edit my account</string>
+    <string name="medicine_names">Medicine Name (s)</string>
+    <string name="medicine_name">Medicine Name</string>
+    <string name="medicine_name_example">For ex: Paracetamol</string>
+    <string name="optional">Optional:</string>
+    <string name="random_email">zineddinebettouche@gmail.com</string>
+    <string name="error_empty_fields">Error: empty fields</string>
+    <string name="requests">Requests</string>
+    <string name="random_date">20-02-2020</string>
+    <string name="menu_post">Post</string>
 </resources>
