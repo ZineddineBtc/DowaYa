@@ -1,9 +1,11 @@
 package com.example.dowaya.adapters;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,9 +13,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.dowaya.R;
+import com.example.dowaya.daos.RequestHistoryDAO;
 import com.example.dowaya.models.Medicine;
 
 import java.io.IOException;
@@ -67,14 +71,52 @@ public class RequestHistoryAdapter extends RecyclerView.Adapter<RequestHistoryAd
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView nameTV, descriptionTV, timeTV;
-        ImageView medicineIV;
+        ImageView medicineIV, deleteIV, toggleDeleteIV;
+        boolean isShown;
+        RequestHistoryDAO requestHistoryDAO;
 
-        public ViewHolder(View itemView) {
+        public ViewHolder(final View itemView) {
             super(itemView);
+            requestHistoryDAO = new RequestHistoryDAO(itemView.getContext());
             nameTV = itemView.findViewById(R.id.nameTV);
             descriptionTV = itemView.findViewById(R.id.descriptionTV);
             timeTV = itemView.findViewById(R.id.timeTV);
             medicineIV = itemView.findViewById(R.id.medicineIV);
+            deleteIV = itemView.findViewById(R.id.deleteIV);
+            toggleDeleteIV = itemView.findViewById(R.id.toggleDeleteIV);
+            toggleDeleteIV.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    toggleDeleteIV.setImageResource(isShown ?
+                            R.drawable.ic_show : R.drawable.ic_hide);
+                    deleteIV.setVisibility(isShown ?
+                            View.GONE : View.VISIBLE);
+                    isShown = !isShown;
+                }
+            });
+
+            deleteIV.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    new AlertDialog.Builder(itemView.getContext())
+                            .setTitle("Delete Request")
+                            .setMessage("Are you sure you want to delete this request?")
+                            .setPositiveButton(
+                                    Html.fromHtml("<font color=\"#FF0000\"> Delete </font>"), new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            requestHistoryDAO.deleteRequestHistory(
+                                                    list.get(getAdapterPosition()).getId());
+                                            list.remove(getAdapterPosition());
+                                            notifyDataSetChanged();
+                                        }
+                                    })
+                            .setNegativeButton(
+                                    Html.fromHtml("<font color=\"#1976D2\"> Cancel </font>"),
+                                    null)
+                            .show();
+                }
+            });
+
 
             itemView.setOnClickListener(this);
         }

@@ -82,6 +82,7 @@ public class RequestHistoryDAO extends SQLiteOpenHelper {
         cursor.moveToLast();
         while(!cursor.isBeforeFirst()){
             Medicine medicine = new Medicine();
+            medicine.setId(cursor.getInt(cursor.getColumnIndex(REQUEST_HISTORY_ID)));
             medicine.setName(cursor.getString(cursor.getColumnIndex(REQUEST_HISTORY_NAME)));
             medicine.setDescription(cursor.getString(cursor.getColumnIndex(REQUEST_HISTORY_DESCRIPTION)));
             medicine.setPhoto(cursor.getString(cursor.getColumnIndex(REQUEST_HISTORY_PHOTO)));
