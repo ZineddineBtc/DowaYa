@@ -94,7 +94,7 @@ public class RequestHistoryAdapter extends RecyclerView.Adapter<RequestHistoryAd
                     isShown = !isShown;
                 }
             });
-
+            /*
             deleteIV.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -116,7 +116,7 @@ public class RequestHistoryAdapter extends RecyclerView.Adapter<RequestHistoryAd
                             .show();
                 }
             });
-
+            */
 
             itemView.setOnClickListener(this);
         }

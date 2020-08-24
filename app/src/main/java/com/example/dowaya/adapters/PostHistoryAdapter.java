@@ -100,7 +100,7 @@ public class PostHistoryAdapter extends RecyclerView.Adapter<PostHistoryAdapter.
                 }
             });
 
-            deleteIV.setOnClickListener(new View.OnClickListener() {
+            /*deleteIV.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     new AlertDialog.Builder(itemView.getContext())
@@ -119,7 +119,7 @@ public class PostHistoryAdapter extends RecyclerView.Adapter<PostHistoryAdapter.
                                     null)
                             .show();
                 }
-            });
+            });*/
 
             itemView.setOnClickListener(this);
         }

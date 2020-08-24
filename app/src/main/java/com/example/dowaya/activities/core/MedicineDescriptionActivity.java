@@ -2,12 +2,8 @@ package com.example.dowaya.activities.core;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.viewpager.widget.ViewPager;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.text.Html;
 import android.view.Menu;
@@ -15,58 +11,87 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.dowaya.R;
 import com.example.dowaya.StaticClass;
 import com.example.dowaya.activities.FullScreenActivity;
-import com.example.dowaya.adapters.ClickableViewPager;
-import com.example.dowaya.adapters.CustomPagerAdapter;
 import com.example.dowaya.daos.BookmarkDAO;
 import com.example.dowaya.models.Medicine;
-import com.google.android.material.snackbar.Snackbar;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.util.ArrayList;
 import java.util.Objects;
 
 public class MedicineDescriptionActivity extends AppCompatActivity {
 
-    TextView nameTV, priceRange, descriptionTV, linksTV;
+    TextView nameTV, priceRange, descriptionTV, doseTV;
     ImageView medicineIV;
     Medicine medicine;
-    BookmarkDAO bookmarkDAO;
-    int medicineId;
+    //BookmarkDAO bookmarkDAO;
+    String medicineId;
     boolean isBookmarked;
     String photoUri=null;
+    private FirebaseFirestore database;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_medicine_description);
         setActionBarTitle("Medicine Description");
+        database = FirebaseFirestore.getInstance();
         findViewsByIds();
-        bookmarkDAO = new BookmarkDAO(this);
-        medicineId = getIntent().getIntExtra(StaticClass.MEDICINE_ID, -1);
-        if(medicineId != -1){
-            medicine = StaticClass.medicineList.get(medicineId-1);
-            setMedicineData();
-        }
-
+        //bookmarkDAO = new BookmarkDAO(this);
+        medicineId = getIntent().getStringExtra(StaticClass.MEDICINE_ID);
+        getMedicineData();
     }
     public void findViewsByIds(){
         nameTV = findViewById(R.id.nameTV);
         priceRange = findViewById(R.id.priceRangeTV);
         descriptionTV = findViewById(R.id.descriptionTV);
-        linksTV = findViewById(R.id.linksTV);
+        doseTV = findViewById(R.id.doseTV);
         medicineIV = findViewById(R.id.medicineIV);
+    }
+    public void getMedicineData(){
+        DocumentReference documentReference =
+                database.collection("medicines-descriptions").document(medicineId);
+        documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        medicine = new Medicine();
+                        medicine.setName(document.get("name").toString());
+                        medicine.setDescription(document.get("description").toString());
+                        medicine.setPriceRange(document.get("price").toString());
+                        medicine.setDose(document.get("dose").toString());
+                        setMedicineData();
+                    } else {
+                        Toast.makeText(getApplicationContext(),
+                                "No such document",
+                                Toast.LENGTH_SHORT).show();
+                        //Log.d(TAG, "No such document");
+                    }
+                } else {
+                    Toast.makeText(getApplicationContext(),
+                            "get failed with " + task.getException(),
+                            Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
     }
     public void setMedicineData(){
         nameTV.setText(medicine.getName());
         priceRange.setText(medicine.getPriceRange());
         descriptionTV.setText(medicine.getDescription());
-        medicineIV.setImageDrawable(getDrawable(R.drawable.img0));
+        doseTV.setText(medicine.getDose());
+        //medicineIV.setImageDrawable(getDrawable(R.drawable.img0));
     }
     public void viewFullScreen(View view){
         startActivity(new Intent(getApplicationContext(), FullScreenActivity.class)
@@ -79,7 +104,7 @@ public class MedicineDescriptionActivity extends AppCompatActivity {
                         .putExtra(StaticClass.MEDICINE_ID, medicineId));
     }
     public void bookmark(boolean isBookmarked){
-        if(isBookmarked){
+        /*if(isBookmarked){
             bookmarkDAO.deleteMedicine(medicineId);
             Snackbar.make(findViewById(R.id.medicine_description_parent_view),
                     "Medicine removed from bookmark", 1000)
@@ -89,15 +114,16 @@ public class MedicineDescriptionActivity extends AppCompatActivity {
             Snackbar.make(findViewById(R.id.medicine_description_parent_view),
                     "Medicine added to bookmark", 1000)
                     .setAction("Action", null).show();
-        }
+        }*/
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        isBookmarked = bookmarkDAO.contains(medicine.getName());
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_bookmark, menu);
+        /*isBookmarked = bookmarkDAO.contains(medicine.getName());
         menu.getItem(0).setIcon(isBookmarked ?
-                R.drawable.ic_bookmark_black : R.drawable.ic_bookmark_grey);
+                R.drawable.ic_bookmark_black : R.drawable.ic_bookmark_grey);$
+                */
         return true;
     }
     @Override

@@ -35,12 +35,13 @@ public class MedicineAdapter extends RecyclerView.Adapter<MedicineAdapter.ViewHo
     private ItemClickListener mClickListener;
     Context context;
 
-    public MedicineAdapter(Context context, List<Medicine> medicineList) {
+    public MedicineAdapter(Context context, List<Medicine> medicineList, List<Medicine> copyList) {
         this.mInflater = LayoutInflater.from(context);
         this.medicineList = medicineList;
-        copyList = new ArrayList<>(medicineList);
+        this.copyList = copyList;
         this.context = context;
     }
+
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -51,7 +52,6 @@ public class MedicineAdapter extends RecyclerView.Adapter<MedicineAdapter.ViewHo
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.nameTV.setText(medicineList.get(position).getName());
-        holder.priceRangeTV.setText(medicineList.get(position).getPriceRange());
     }
 
     @Override
@@ -61,13 +61,12 @@ public class MedicineAdapter extends RecyclerView.Adapter<MedicineAdapter.ViewHo
 
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        TextView nameTV, priceRangeTV;
+        TextView nameTV;
         MedicineHistoryDAO medicineHistoryDAO;
 
         public ViewHolder(View itemView) {
             super(itemView);
             nameTV = itemView.findViewById(R.id.nameTV);
-            priceRangeTV = itemView.findViewById(R.id.priceRangeTV);
             medicineHistoryDAO = new MedicineHistoryDAO(itemView.getContext());
             itemView.setOnClickListener(this);
         }
@@ -84,7 +83,8 @@ public class MedicineAdapter extends RecyclerView.Adapter<MedicineAdapter.ViewHo
 
             itemView.getContext().startActivity(
                     new Intent(itemView.getContext(), MedicineDescriptionActivity.class)
-                    .putExtra(StaticClass.MEDICINE_ID, getAdapterPosition()+1)
+                    .putExtra(StaticClass.MEDICINE_ID,
+                            medicineList.get(getAdapterPosition()).getId())
             );
         }
     }

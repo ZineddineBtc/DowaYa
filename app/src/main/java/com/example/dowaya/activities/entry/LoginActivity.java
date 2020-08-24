@@ -3,6 +3,7 @@ package com.example.dowaya.activities.entry;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -26,6 +27,7 @@ public class LoginActivity extends AppCompatActivity {
     private FirebaseAuth firebaseAuth;
     EditText emailET, passwordET;
     TextView errorTV;
+    ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,11 +41,14 @@ public class LoginActivity extends AppCompatActivity {
         emailET.requestFocus();
         passwordET = findViewById(R.id.passwordET);
         errorTV = findViewById(R.id.errorTV);
+        progressDialog = new ProgressDialog(this);
     }
 
     public void login(View view){
         String email = emailET.getText().toString().isEmpty() ? " ":emailET.getText().toString();
         String password = passwordET.getText().toString().isEmpty() ? " ":passwordET.getText().toString();
+        progressDialog.setMessage("Login...");
+        progressDialog.show();
         firebaseAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -52,6 +57,7 @@ public class LoginActivity extends AppCompatActivity {
                             Toast.makeText(getApplicationContext(),
                                     "Sign in with success",
                                     Toast.LENGTH_SHORT).show();
+                            progressDialog.dismiss();
                             startActivity(new Intent(
                                     getApplicationContext(), CoreActivity.class
                             ));

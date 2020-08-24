@@ -1,8 +1,8 @@
 package com.example.dowaya.models;
 
 public class Medicine {
-    private int id;
-    private String name, photo, priceRange, description,
+
+    private String id, name, dose, photo, priceRange, description,
             searchHistoryTime, requestTime, postTime, postAddress;
 
     public Medicine(){}
@@ -17,7 +17,7 @@ public class Medicine {
         this.priceRange = priceRange;
     }
 
-    public Medicine(int id, String name, String description, String priceRange) {
+    public Medicine(String id, String name, String description, String priceRange) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -56,11 +56,11 @@ public class Medicine {
         this.priceRange = priceRange;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -94,5 +94,13 @@ public class Medicine {
 
     public void setPostAddress(String postAddress) {
         this.postAddress = postAddress;
+    }
+
+    public String getDose() {
+        return dose;
+    }
+
+    public void setDose(String dose) {
+        this.dose = dose;
     }
 }

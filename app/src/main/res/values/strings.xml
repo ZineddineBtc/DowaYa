@@ -66,4 +66,8 @@
     <string name="menu_post">Post</string>
     <string name="price_example">For ex: 500 DA</string>
     <string name="posts">Posts</string>
+    <string name="price_unspecified">Price unspecified</string>
+    <string name="no_description">No description</string>
+    <string name="dose">Dose</string>
+    <string name="random_dose">1 g</string>
 </resources>

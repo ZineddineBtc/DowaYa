@@ -13,7 +13,7 @@ import java.util.ArrayList;
 
 public class BookmarkDAO extends SQLiteOpenHelper {
 
-    private static final String DATABASE_NAME = "0.db";
+    private static final String DATABASE_NAME = "1.db";
     private static final String MEDICINE_TABLE_NAME = "medicine";
     private static final String MEDICINE_ID = "id";
     private static final String MEDICINE_NAME = "name";
@@ -29,7 +29,7 @@ public class BookmarkDAO extends SQLiteOpenHelper {
         // TODO Auto-generated method stub
         db.execSQL(
                 "create table "+ MEDICINE_TABLE_NAME +
-                        " ("+ MEDICINE_ID +" integer primary key, " +
+                        " ("+ MEDICINE_ID +" text primary key, " +
                         MEDICINE_NAME +" text, "+
                         MEDICINE_DESCRIPTION +" text, "+
                         MEDICINE_PRICE +" text)"
@@ -101,7 +101,7 @@ public class BookmarkDAO extends SQLiteOpenHelper {
         cursor.moveToFirst();
         while(!cursor.isAfterLast()){
             Medicine medicine = new Medicine(
-                    cursor.getInt(cursor.getColumnIndex(MEDICINE_ID)),
+                    cursor.getString(cursor.getColumnIndex(MEDICINE_ID)),
                     cursor.getString(cursor.getColumnIndex(MEDICINE_NAME)),
                     cursor.getString(cursor.getColumnIndex(MEDICINE_DESCRIPTION)),
                     cursor.getString(cursor.getColumnIndex(MEDICINE_PRICE)));
@@ -120,7 +120,7 @@ public class BookmarkDAO extends SQLiteOpenHelper {
         cursor.moveToLast();
         while(!cursor.isBeforeFirst()){
             Medicine medicine = new Medicine(
-                    cursor.getInt(cursor.getColumnIndex(MEDICINE_ID)),
+                    cursor.getString(cursor.getColumnIndex(MEDICINE_ID)),
                     cursor.getString(cursor.getColumnIndex(MEDICINE_NAME)),
                     cursor.getString(cursor.getColumnIndex(MEDICINE_DESCRIPTION)),
                     cursor.getString(cursor.getColumnIndex(MEDICINE_PRICE)));

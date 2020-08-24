@@ -14,8 +14,8 @@ import java.util.ArrayList;
 
 public class RequestHistoryDAO extends SQLiteOpenHelper {
 
-    private static final String DATABASE_NAME = "request_history.db";
-    private static final String REQUEST_HISTORY_TABLE_NAME = "request_history";
+    private static final String DATABASE_NAME = "request_history_0.db";
+    private static final String REQUEST_HISTORY_TABLE_NAME = "request_history_0";
     private static final String REQUEST_HISTORY_ID = "id";
     private static final String REQUEST_HISTORY_NAME = "name";
     private static final String REQUEST_HISTORY_DESCRIPTION = "description";
@@ -31,7 +31,7 @@ public class RequestHistoryDAO extends SQLiteOpenHelper {
         // TODO Auto-generated method stub
         db.execSQL(
                 "create table "+ REQUEST_HISTORY_TABLE_NAME +
-                        " ("+ REQUEST_HISTORY_ID +" integer primary key, " +
+                        " ("+ REQUEST_HISTORY_ID +" text primary key, " +
                         REQUEST_HISTORY_NAME +" text, "+
                         REQUEST_HISTORY_DESCRIPTION +" text, "+
                         REQUEST_HISTORY_PHOTO +" text, "+
@@ -82,7 +82,7 @@ public class RequestHistoryDAO extends SQLiteOpenHelper {
         cursor.moveToLast();
         while(!cursor.isBeforeFirst()){
             Medicine medicine = new Medicine();
-            medicine.setId(cursor.getInt(cursor.getColumnIndex(REQUEST_HISTORY_ID)));
+            medicine.setId(cursor.getString(cursor.getColumnIndex(REQUEST_HISTORY_ID)));
             medicine.setName(cursor.getString(cursor.getColumnIndex(REQUEST_HISTORY_NAME)));
             medicine.setDescription(cursor.getString(cursor.getColumnIndex(REQUEST_HISTORY_DESCRIPTION)));
             medicine.setPhoto(cursor.getString(cursor.getColumnIndex(REQUEST_HISTORY_PHOTO)));

@@ -1,8 +1,10 @@
 package com.example.dowaya.activities.core;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.Manifest;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -15,10 +17,16 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.dowaya.R;
 import com.example.dowaya.StaticClass;
 import com.example.dowaya.models.Store;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -27,24 +35,28 @@ public class StoreListActivity extends AppCompatActivity {
 
     SearchView storeSearchView;
     TextView nameTV, phoneTV, addressTV;
-    int storeId, medicineId;
-    Store store;
-    //RecyclerView storesRV;
-    //StoreAdapter adapter;
+    String medicineId;
+    //Store store;
     ListView storeLV;
-    ArrayAdapter arrayAdapter;
-    ArrayList<String> storeList, copyList=new ArrayList<>();
+    ArrayAdapter adapter;
+    ArrayList<String> nameCityList = new ArrayList<>(), copyList = new ArrayList<>();
+    ArrayList<Store> storeList = new ArrayList<>();
     LinearLayout shadeLL, descriptionLL;
+    FirebaseFirestore database;
+    ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_store_list);
         setActionBarTitle("Stores");
-        medicineId = getIntent().getIntExtra(StaticClass.MEDICINE_ID, -1);
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Loading...");
+        progressDialog.show();
+        database = FirebaseFirestore.getInstance();
+        medicineId = getIntent().getStringExtra(StaticClass.MEDICINE_ID);
         findViewsByIds();
-        storeList = setStoreList();
-        copyList.addAll(storeList);
+        getMedicineStores();
         setListView();
         storeSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -56,34 +68,75 @@ public class StoreListActivity extends AppCompatActivity {
                 return true;
             }
         });
-        //setRecyclerView();
     }
     private void findViewsByIds(){
         storeSearchView = findViewById(R.id.storeSearchView);
         storeLV = findViewById(R.id.storeLV);
-        //storesRV = findViewById(R.id.storeRV);
         nameTV = findViewById(R.id.nameTV);
         phoneTV = findViewById(R.id.phoneTV);
         addressTV = findViewById(R.id.addressTV);
         shadeLL = findViewById(R.id.shadeLL);
         descriptionLL = findViewById(R.id.descriptionLL);
     }
-    /*private void setRecyclerView(){
-        adapter = new StoreAdapter(this, StaticClass.storeList, medicineId);
-        storesRV.setLayoutManager(new LinearLayoutManager(this,
-                LinearLayoutManager.VERTICAL, false));
-        storesRV.setAdapter(adapter);
-    }*/
-    public ArrayList<String> setStoreList(){
-        ArrayList<String> list = new ArrayList<>();
-        for(Store store: StaticClass.storeList){
-            list.add(store.getName() + " ("+store.getCity()+")");
-        }
-        return list;
+    public void getMedicineStores(){
+        DocumentReference documentReference =
+                database.collection("medicines-stores").document(medicineId);
+        documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        ArrayList<DocumentReference> referenceList =
+                                (ArrayList<DocumentReference>) document.get("stores");
+                        for(DocumentReference ref: referenceList){
+                            ref.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                    if (task.isSuccessful()) {
+                                        DocumentSnapshot document = task.getResult();
+                                        if (document.exists()) {
+                                            Store store = new Store();
+                                            store.setName((String)document.get("name"));
+                                            store.setCity((String)document.get("city"));
+                                            store.setPhone((String)document.get("phone"));
+                                            store.setAddress((String)document.get("address"));
+                                            storeList.add(store);
+                                            String nameCity = store.getName()+" "+store.getCity();
+                                            nameCityList.add(nameCity);
+                                            copyList.add(nameCity);
+                                            adapter.notifyDataSetChanged();
+                                        } else {
+                                            Toast.makeText(getApplicationContext(),
+                                                    "No such document",
+                                                    Toast.LENGTH_SHORT).show();
+                                        }
+                                    } else {
+                                        Toast.makeText(getApplicationContext(),
+                                                "get failed with " + task.getException(),
+                                                Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                            });
+                        }
+
+                    } else {
+                        Toast.makeText(getApplicationContext(),
+                                "No such document",
+                                Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(getApplicationContext(),
+                            "get failed with " + task.getException(),
+                            Toast.LENGTH_SHORT).show();
+                }
+                progressDialog.dismiss();
+            }
+        });
     }
     public void setListView(){
-        arrayAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, storeList);
-        storeLV.setAdapter(arrayAdapter);
+        adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, nameCityList);
+        storeLV.setAdapter(adapter);
         storeLV.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -93,17 +146,17 @@ public class StoreListActivity extends AppCompatActivity {
         });
     }
     public void filter(String queryText){
-        storeList.clear();
+        nameCityList.clear();
         if(queryText.isEmpty()) {
-            storeList.addAll(copyList);
+            nameCityList.addAll(copyList);
         }else{
             for(String s: copyList) {
                 if(s.toLowerCase().contains(queryText.toLowerCase())) {
-                    storeList.add(s);
+                    nameCityList.add(s);
                 }
             }
         }
-        arrayAdapter.notifyDataSetChanged();
+        adapter.notifyDataSetChanged();
     }
     public void showDescription(){
         shadeLL.setVisibility(View.VISIBLE);
@@ -114,7 +167,7 @@ public class StoreListActivity extends AppCompatActivity {
         descriptionLL.setVisibility(View.GONE);
     }
     public void setStoreData(int position){
-        store = StaticClass.storeList.get(position);
+        Store store = storeList.get(position);
         nameTV.setText(store.getName());
         phoneTV.setText(store.getPhone());
         addressTV.setText(store.getAddress());
@@ -160,3 +213,4 @@ public class StoreListActivity extends AppCompatActivity {
     }
 
 }
+

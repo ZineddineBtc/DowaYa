@@ -14,8 +14,8 @@ import java.util.ArrayList;
 
 public class PostHistoryDAO extends SQLiteOpenHelper {
 
-    private static final String DATABASE_NAME = "post_history.db";
-    private static final String POST_HISTORY_TABLE_NAME = "post_history";
+    private static final String DATABASE_NAME = "post_history_0.db";
+    private static final String POST_HISTORY_TABLE_NAME = "post_history_0";
     private static final String POST_HISTORY_ID = "id";
     private static final String POST_HISTORY_NAME = "name";
     private static final String POST_HISTORY_DESCRIPTION = "description";
@@ -33,7 +33,7 @@ public class PostHistoryDAO extends SQLiteOpenHelper {
         // TODO Auto-generated method stub
         db.execSQL(
                 "create table "+ POST_HISTORY_TABLE_NAME +
-                        " ("+ POST_HISTORY_ID +" integer primary key, " +
+                        " ("+ POST_HISTORY_ID +" text primary key, " +
                         POST_HISTORY_NAME +" text, "+
                         POST_HISTORY_DESCRIPTION +" text, "+
                         POST_HISTORY_PRICE +" text, "+
@@ -88,7 +88,7 @@ public class PostHistoryDAO extends SQLiteOpenHelper {
         cursor.moveToLast();
         while(!cursor.isBeforeFirst()){
             Medicine medicine = new Medicine();
-            medicine.setId(cursor.getInt(cursor.getColumnIndex(POST_HISTORY_ID)));
+            medicine.setId(cursor.getString(cursor.getColumnIndex(POST_HISTORY_ID)));
             medicine.setName(cursor.getString(cursor.getColumnIndex(POST_HISTORY_NAME)));
             medicine.setDescription(cursor.getString(cursor.getColumnIndex(POST_HISTORY_DESCRIPTION)));
             medicine.setPriceRange(cursor.getString(cursor.getColumnIndex(POST_HISTORY_PRICE)));

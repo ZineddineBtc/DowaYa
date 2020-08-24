@@ -1,8 +1,7 @@
 package com.example.dowaya.models;
 
 public class Store {
-    private int id;
-    private String name, city, phone, address, time;
+    private String id, name, city, phone, address, time;
 
     public Store(){}
 
@@ -18,7 +17,7 @@ public class Store {
         this.address = address;
     }
 
-    public Store(int id, String name, String city, String phone, String address) {
+    public Store(String id, String name, String city, String phone, String address) {
         this.id = id;
         this.name = name;
         this.city = city;
@@ -58,11 +57,11 @@ public class Store {
         this.address = address;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 

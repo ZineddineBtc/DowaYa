@@ -23,11 +23,10 @@ import java.util.Objects;
 
 public class FinishSignUpActivity extends AppCompatActivity {
 
-    private FirebaseAuth firebaseAuth;
     EditText nameET, phoneET;
     TextView errorTV;
     SharedPreferences sharedPreferences;
-    String name, phone, id;
+    String name, phone;
 
 
     @Override
@@ -37,8 +36,6 @@ public class FinishSignUpActivity extends AppCompatActivity {
 
         Objects.requireNonNull(getSupportActionBar()).hide();
         sharedPreferences = getSharedPreferences(StaticClass.SHARED_PREFERENCES, MODE_PRIVATE);
-        firebaseAuth = FirebaseAuth.getInstance();
-        id = Objects.requireNonNull(firebaseAuth.getCurrentUser()).getUid();
 
         nameET = findViewById(R.id.nameET);
         nameET.requestFocus();
@@ -58,16 +55,6 @@ public class FinishSignUpActivity extends AppCompatActivity {
             displayErrorTV(R.string.insufficient_phone_number);
             return;
         }
-
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference databaseReference = database.getReference("Users").child(id);
-        databaseReference.setValue(
-                new User(
-                    name,
-                    Objects.requireNonNull(firebaseAuth.getCurrentUser()).getEmail(),
-                    phone
-                )
-        );
 
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(StaticClass.USERNAME, name);

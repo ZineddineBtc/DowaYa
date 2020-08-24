@@ -1,24 +1,15 @@
 package com.example.dowaya.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.viewpager.widget.ViewPager;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.example.dowaya.R;
 import com.example.dowaya.StaticClass;
 import com.example.dowaya.activities.core.MedicineDescriptionActivity;
-import com.example.dowaya.adapters.CustomPagerAdapter;
 
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Objects;
 
 public class FullScreenActivity extends AppCompatActivity {

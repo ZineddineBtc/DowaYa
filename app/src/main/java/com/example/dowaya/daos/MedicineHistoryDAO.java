@@ -14,8 +14,8 @@ import java.util.ArrayList;
 
 public class MedicineHistoryDAO extends SQLiteOpenHelper {
 
-    private static final String DATABASE_NAME = "medicine_history.db";
-    private static final String MEDICINE_HISTORY_TABLE_NAME = "medicine_history";
+    private static final String DATABASE_NAME = "medicine_history_0.db";
+    private static final String MEDICINE_HISTORY_TABLE_NAME = "medicine_history_0";
     private static final String MEDICINE_HISTORY_ID = "id";
     private static final String MEDICINE_HISTORY_NAME = "name";
     private static final String MEDICINE_HISTORY_TIME = "time";
@@ -29,7 +29,7 @@ public class MedicineHistoryDAO extends SQLiteOpenHelper {
         // TODO Auto-generated method stub
         db.execSQL(
                 "create table "+ MEDICINE_HISTORY_TABLE_NAME +
-                        " ("+ MEDICINE_HISTORY_ID +" integer primary key, " +
+                        " ("+ MEDICINE_HISTORY_ID +" text primary key, " +
                         MEDICINE_HISTORY_NAME +" text, "+
                         MEDICINE_HISTORY_TIME +" text)"
         );

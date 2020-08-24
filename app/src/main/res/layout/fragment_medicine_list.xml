@@ -20,8 +20,8 @@
         android:gravity="center"
         android:iconifiedByDefault="false"/>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/medicineRV"
+    <ListView
+        android:id="@+id/medicineLV"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
