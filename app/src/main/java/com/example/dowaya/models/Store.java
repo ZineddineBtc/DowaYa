@@ -1,7 +1,8 @@
 package com.example.dowaya.models;
 
 public class Store {
-    private String id, name, city, phone, address, time;
+    private int daoID;
+    private String id, name, city, phone, address, historyTime;
 
     public Store(){}
 
@@ -65,12 +66,20 @@ public class Store {
         this.id = id;
     }
 
-    public String getTime() {
-        return time;
+    public String getHistoryTime() {
+        return historyTime;
     }
 
-    public void setTime(String time) {
-        this.time = time;
+    public void setHistoryTime(String historyTime) {
+        this.historyTime = historyTime;
+    }
+
+    public int getDaoID() {
+        return daoID;
+    }
+
+    public void setDaoID(int daoID) {
+        this.daoID = daoID;
     }
 }
 

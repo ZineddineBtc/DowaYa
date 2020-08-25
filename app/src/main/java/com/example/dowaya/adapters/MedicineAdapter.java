@@ -76,10 +76,13 @@ public class MedicineAdapter extends RecyclerView.Adapter<MedicineAdapter.ViewHo
             if (mClickListener != null)
                 mClickListener.onItemClick(view, getAdapterPosition());
 
-            medicineHistoryDAO.insertMedicineHistory(
-                    nameTV.getText().toString(),
+            Medicine medicine = new Medicine();
+            medicine.setId(medicineList.get(getAdapterPosition()).getId());
+            medicine.setName(nameTV.getText().toString());
+            medicine.setSearchHistoryTime(
                     new SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault()).
                             format(Calendar.getInstance().getTime()));
+            medicineHistoryDAO.insertMedicineHistory(medicine);
 
             itemView.getContext().startActivity(
                     new Intent(itemView.getContext(), MedicineDescriptionActivity.class)

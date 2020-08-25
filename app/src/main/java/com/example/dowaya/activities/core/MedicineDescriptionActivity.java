@@ -3,6 +3,7 @@ package com.example.dowaya.activities.core;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Html;
@@ -21,6 +22,7 @@ import com.example.dowaya.daos.BookmarkDAO;
 import com.example.dowaya.models.Medicine;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -32,11 +34,13 @@ public class MedicineDescriptionActivity extends AppCompatActivity {
     TextView nameTV, priceRange, descriptionTV, doseTV;
     ImageView medicineIV;
     Medicine medicine;
-    //BookmarkDAO bookmarkDAO;
+    BookmarkDAO bookmarkDAO;
     String medicineId;
     boolean isBookmarked;
     String photoUri=null;
     private FirebaseFirestore database;
+    ProgressDialog progressDialog;
+    Menu aMenu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,8 +48,9 @@ public class MedicineDescriptionActivity extends AppCompatActivity {
         setContentView(R.layout.activity_medicine_description);
         setActionBarTitle("Medicine Description");
         database = FirebaseFirestore.getInstance();
+        progressDialog = new ProgressDialog(this);
         findViewsByIds();
-        //bookmarkDAO = new BookmarkDAO(this);
+        bookmarkDAO = new BookmarkDAO(this);
         medicineId = getIntent().getStringExtra(StaticClass.MEDICINE_ID);
         getMedicineData();
     }
@@ -57,8 +62,11 @@ public class MedicineDescriptionActivity extends AppCompatActivity {
         medicineIV = findViewById(R.id.medicineIV);
     }
     public void getMedicineData(){
+        progressDialog.setMessage("Loading...");
+        progressDialog.show();
         DocumentReference documentReference =
-                database.collection("medicines-descriptions").document(medicineId);
+                database.collection("medicines-descriptions")
+                        .document(medicineId);
         documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -66,11 +74,16 @@ public class MedicineDescriptionActivity extends AppCompatActivity {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
                         medicine = new Medicine();
+                        medicine.setId(document.getId());
                         medicine.setName(document.get("name").toString());
                         medicine.setDescription(document.get("description").toString());
-                        medicine.setPriceRange(document.get("price").toString());
+                        medicine.setPrice(document.get("price").toString());
                         medicine.setDose(document.get("dose").toString());
                         setMedicineData();
+
+                        isBookmarked = bookmarkDAO.contains(medicine.getName());
+                        aMenu.getItem(0).setIcon(isBookmarked ?
+                                R.drawable.ic_bookmark_black : R.drawable.ic_bookmark_grey);
                     } else {
                         Toast.makeText(getApplicationContext(),
                                 "No such document",
@@ -84,7 +97,7 @@ public class MedicineDescriptionActivity extends AppCompatActivity {
                 }
             }
         });
-
+        progressDialog.dismiss();
     }
     public void setMedicineData(){
         nameTV.setText(medicine.getName());
@@ -104,7 +117,7 @@ public class MedicineDescriptionActivity extends AppCompatActivity {
                         .putExtra(StaticClass.MEDICINE_ID, medicineId));
     }
     public void bookmark(boolean isBookmarked){
-        /*if(isBookmarked){
+        if(isBookmarked){
             bookmarkDAO.deleteMedicine(medicineId);
             Snackbar.make(findViewById(R.id.medicine_description_parent_view),
                     "Medicine removed from bookmark", 1000)
@@ -114,16 +127,13 @@ public class MedicineDescriptionActivity extends AppCompatActivity {
             Snackbar.make(findViewById(R.id.medicine_description_parent_view),
                     "Medicine added to bookmark", 1000)
                     .setAction("Action", null).show();
-        }*/
+        }
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_bookmark, menu);
-        /*isBookmarked = bookmarkDAO.contains(medicine.getName());
-        menu.getItem(0).setIcon(isBookmarked ?
-                R.drawable.ic_bookmark_black : R.drawable.ic_bookmark_grey);$
-                */
+        aMenu = menu;
         return true;
     }
     @Override

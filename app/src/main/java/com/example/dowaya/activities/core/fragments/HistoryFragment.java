@@ -13,14 +13,16 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.dowaya.R;
-import com.example.dowaya.adapters.MedicineStoreHistoryAdapter;
+import com.example.dowaya.adapters.MedicineHistoryAdapter;
 import com.example.dowaya.adapters.PostHistoryAdapter;
 import com.example.dowaya.adapters.RequestHistoryAdapter;
+import com.example.dowaya.adapters.StoreHistoryAdapter;
 import com.example.dowaya.daos.MedicineHistoryDAO;
 import com.example.dowaya.daos.PostHistoryDAO;
 import com.example.dowaya.daos.RequestHistoryDAO;
 import com.example.dowaya.daos.StoreHistoryDAO;
 import com.example.dowaya.models.Medicine;
+import com.example.dowaya.models.Store;
 
 import java.util.ArrayList;
 
@@ -29,16 +31,9 @@ public class HistoryFragment extends Fragment {
     private View fragmentView;
     private Context context;
     private TextView storeTV, medicineTV, requestTV, postTV, emptyListTV;
-    private RecyclerView medicinesStoresHistoryRV, requestHistoryRV, postHistoryRV;
-    private MedicineStoreHistoryAdapter medicinesStoresAdapter;
-    private RequestHistoryAdapter requestHistoryAdapter;
-    private PostHistoryAdapter postHistoryAdapter;
-    private ArrayList<String[]> medicineList, storeList, medicineStoreList=new ArrayList<>();
-    private ArrayList<Medicine> requestList, postList;
-    private StoreHistoryDAO storeHistoryDAO;
-    private MedicineHistoryDAO medicineHistoryDAO;
-    private RequestHistoryDAO requestHistoryDAO;
-    private PostHistoryDAO postHistoryDAO;
+    private RecyclerView medicineRV, storeRV, requestRV, postRV;
+    private ArrayList<Store> storeList;
+    private ArrayList<Medicine> medicineList, requestList, postList;
     private short currentTab; // 0->Medicines  1->Stores  2->Requests  3->Posts
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -47,12 +42,6 @@ public class HistoryFragment extends Fragment {
         context = fragmentView.getContext();
         initializeLists();
         findViewsByIds();
-        // as a start
-        medicinesStoresAdapter = new MedicineStoreHistoryAdapter(context, medicineStoreList);
-        medicineTab();
-        medicinesStoresHistoryRV.setLayoutManager(new LinearLayoutManager(context,
-                LinearLayoutManager.VERTICAL, false));
-        medicinesStoresHistoryRV.setAdapter(medicinesStoresAdapter);
         tabListeners();
         return fragmentView;
     }
@@ -61,34 +50,56 @@ public class HistoryFragment extends Fragment {
         storeTV = fragmentView.findViewById(R.id.storeTV);
         requestTV = fragmentView.findViewById(R.id.requestTV);
         postTV = fragmentView.findViewById(R.id.postTV);
-        medicinesStoresHistoryRV = fragmentView.findViewById(R.id.medicines_stores_historyRV);
+        initializeMedicineRV();
+        initializeStoreRV();
         initializeRequestRV();
         initializePostRV();
         emptyListTV = fragmentView.findViewById(R.id.emptyListTV);
     }
-    private void initializeRequestRV(){
-        requestHistoryAdapter = new RequestHistoryAdapter(context, requestList);
-        requestHistoryRV = fragmentView.findViewById(R.id.requestHistoryRV);
-        requestHistoryRV.setLayoutManager(new LinearLayoutManager(context,
+    private void initializeMedicineRV(){
+        MedicineHistoryAdapter medicineAdapter = new MedicineHistoryAdapter(context, medicineList);
+        medicineRV = fragmentView.findViewById(R.id.medicineHistoryRV);
+        medicineRV.setLayoutManager(new LinearLayoutManager(context,
                 LinearLayoutManager.VERTICAL, false));
-        requestHistoryRV.setAdapter(requestHistoryAdapter);
+        medicineRV.setAdapter(medicineAdapter);
+    }
+    private void initializeStoreRV(){
+        StoreHistoryAdapter storeAdapter = new StoreHistoryAdapter(context, storeList);
+        storeRV = fragmentView.findViewById(R.id.storeHistoryRV);
+        storeRV.setLayoutManager(new LinearLayoutManager(context,
+                LinearLayoutManager.VERTICAL, false));
+        storeRV.setAdapter(storeAdapter);
+    }
+    private void initializeRequestRV(){
+        RequestHistoryAdapter requestAdapter = new RequestHistoryAdapter(context, requestList);
+        requestRV = fragmentView.findViewById(R.id.requestHistoryRV);
+        requestRV.setLayoutManager(new LinearLayoutManager(context,
+                LinearLayoutManager.VERTICAL, false));
+        requestRV.setAdapter(requestAdapter);
     }
     private void initializePostRV(){
-        postHistoryAdapter = new PostHistoryAdapter(context, postList);
-        postHistoryRV = fragmentView.findViewById(R.id.postHistoryRV);
-        postHistoryRV.setLayoutManager(new LinearLayoutManager(context,
+        PostHistoryAdapter postAdapter = new PostHistoryAdapter(context, postList);
+        postRV = fragmentView.findViewById(R.id.postHistoryRV);
+        postRV.setLayoutManager(new LinearLayoutManager(context,
                 LinearLayoutManager.VERTICAL, false));
-        postHistoryRV.setAdapter(postHistoryAdapter);
+        postRV.setAdapter(postAdapter);
     }
     private void medicineTab(){
-        if(currentTab != 0){
+        if(currentTab != 0) {
             medicineTV.setTextColor(context.getColor(R.color.green));
             storeTV.setTextColor(context.getColor(R.color.grey));
             requestTV.setTextColor(context.getColor(R.color.grey));
             postTV.setTextColor(context.getColor(R.color.grey));
-            medicineStoreList.clear();
-            medicineStoreList.addAll(medicineList);
-            adaptMedicineStore();
+            if(medicineList.isEmpty()){
+                emptyListTV.setVisibility(View.VISIBLE);
+                medicineRV.setVisibility(View.GONE);
+            }else{
+                emptyListTV.setVisibility(View.GONE);
+                medicineRV.setVisibility(View.VISIBLE);
+            }
+            storeRV.setVisibility(View.GONE);
+            requestRV.setVisibility(View.GONE);
+            postRV.setVisibility(View.GONE);
             currentTab = 0;
         }
     }
@@ -98,23 +109,18 @@ public class HistoryFragment extends Fragment {
             storeTV.setTextColor(context.getColor(R.color.green));
             requestTV.setTextColor(context.getColor(R.color.grey));
             postTV.setTextColor(context.getColor(R.color.grey));
-            medicineStoreList.clear();
-            medicineStoreList.addAll(storeList);
-            adaptMedicineStore();
+            if(storeList.isEmpty()){
+                emptyListTV.setVisibility(View.VISIBLE);
+                storeRV.setVisibility(View.GONE);
+            }else{
+                emptyListTV.setVisibility(View.GONE);
+                storeRV.setVisibility(View.VISIBLE);
+            }
+            medicineRV.setVisibility(View.GONE);
+            requestRV.setVisibility(View.GONE);
+            postRV.setVisibility(View.GONE);
             currentTab = 1;
         }
-    }
-    private void adaptMedicineStore(){
-        if(medicineStoreList.isEmpty()){
-            emptyListTV.setVisibility(View.VISIBLE);
-            medicinesStoresHistoryRV.setVisibility(View.GONE);
-        }else{
-            emptyListTV.setVisibility(View.GONE);
-            medicinesStoresHistoryRV.setVisibility(View.VISIBLE);
-            medicinesStoresAdapter.notifyDataSetChanged();
-        }
-        requestHistoryRV.setVisibility(View.GONE);
-        postHistoryRV.setVisibility(View.GONE);
     }
     private void requestTab(){
         if(currentTab != 2) {
@@ -124,13 +130,14 @@ public class HistoryFragment extends Fragment {
             postTV.setTextColor(context.getColor(R.color.grey));
             if(requestList.isEmpty()){
                 emptyListTV.setVisibility(View.VISIBLE);
-                requestHistoryRV.setVisibility(View.GONE);
+                requestRV.setVisibility(View.GONE);
             }else{
                 emptyListTV.setVisibility(View.GONE);
-                requestHistoryRV.setVisibility(View.VISIBLE);
+                requestRV.setVisibility(View.VISIBLE);
             }
-            medicinesStoresHistoryRV.setVisibility(View.GONE);
-            postHistoryRV.setVisibility(View.GONE);
+            medicineRV.setVisibility(View.GONE);
+            storeRV.setVisibility(View.GONE);
+            postRV.setVisibility(View.GONE);
             currentTab = 2;
         }
     }
@@ -142,13 +149,14 @@ public class HistoryFragment extends Fragment {
             postTV.setTextColor(context.getColor(R.color.green));
             if(postList.isEmpty()){
                 emptyListTV.setVisibility(View.VISIBLE);
-                postHistoryRV.setVisibility(View.GONE);
+                postRV.setVisibility(View.GONE);
             }else{
                 emptyListTV.setVisibility(View.GONE);
-                postHistoryRV.setVisibility(View.VISIBLE);
+                postRV.setVisibility(View.VISIBLE);
             }
-            medicinesStoresHistoryRV.setVisibility(View.GONE);
-            requestHistoryRV.setVisibility(View.GONE);
+            medicineRV.setVisibility(View.GONE);
+            storeRV.setVisibility(View.GONE);
+            requestRV.setVisibility(View.GONE);
             currentTab = 3;
         }
     }
@@ -179,14 +187,17 @@ public class HistoryFragment extends Fragment {
         });
     }
     private void initializeLists(){
-        medicineHistoryDAO = new MedicineHistoryDAO(context);
-        medicineList = medicineHistoryDAO.getAllMedicineHistory();
-        medicineStoreList.addAll(medicineList);
-        storeHistoryDAO = new StoreHistoryDAO(context);
-        storeList = storeHistoryDAO.getAllStoreHistory();
-        requestHistoryDAO = new RequestHistoryDAO(context);
-        requestList = requestHistoryDAO.getAllRequestHistory();
-        postHistoryDAO = new PostHistoryDAO(context);
-        postList = postHistoryDAO.getAllPostHistory();
+        MedicineHistoryDAO medicineDAO = new MedicineHistoryDAO(context);
+        medicineList = medicineDAO.getAllMedicineHistory();
+
+        StoreHistoryDAO storeDAO = new StoreHistoryDAO(context);
+        storeList = storeDAO.getAllStoreHistory();
+
+        RequestHistoryDAO requestDAO = new RequestHistoryDAO(context);
+        requestList = requestDAO.getAllRequestHistory();
+
+        PostHistoryDAO postDAO = new PostHistoryDAO(context);
+        postList = postDAO.getAllPostHistory();
     }
+
 }

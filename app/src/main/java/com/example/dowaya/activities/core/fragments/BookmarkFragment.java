@@ -34,6 +34,7 @@ public class BookmarkFragment extends Fragment {
     private ListView bookmarkLV;
     private ArrayAdapter adapter;
     private ArrayList<String> bookmarkList;
+    private ArrayList<Medicine> medicineList;
     private TextView emptyListTV;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -43,6 +44,7 @@ public class BookmarkFragment extends Fragment {
         emptyListTV = fragmentView.findViewById(R.id.emptyListTV);
         bookmarkLV = fragmentView.findViewById(R.id.bookmarkLV);
         bookmarkDAO = new BookmarkDAO(context);
+        medicineList = bookmarkDAO.getAllMedicines();
         bookmarkList = bookmarkDAO.getAllNames();
         if (!bookmarkList.isEmpty()){
             setListView();
@@ -62,18 +64,18 @@ public class BookmarkFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 startActivity(new Intent(context, MedicineDescriptionActivity.class)
-                .putExtra(StaticClass.MEDICINE_ID, position+1));
+                .putExtra(StaticClass.MEDICINE_ID, medicineList.get(position).getId()));
             }
         });
         bookmarkLV.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                showAlert(position+1);
+                showAlert(position+1, medicineList.get(position).getId());
                 return true;
             }
         });
     }
-    private void showAlert(final int id){
+    private void showAlert(final int position, final String id){
         new AlertDialog.Builder(context)
                 .setTitle("Remove Medicine")
                 .setMessage("Are you sure you want to remove this medicine from bookmark?")
@@ -82,7 +84,7 @@ public class BookmarkFragment extends Fragment {
                         , new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 bookmarkDAO.deleteMedicine(id);
-                                bookmarkList.remove(id-1);
+                                bookmarkList.remove(position-1);
                                 adapter.notifyDataSetChanged();
                                 if(bookmarkList.isEmpty()){
                                     emptyListTV.setVisibility(View.VISIBLE);

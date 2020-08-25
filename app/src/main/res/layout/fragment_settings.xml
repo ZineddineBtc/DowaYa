@@ -22,7 +22,7 @@
         android:layout_marginBottom="10dp">
         <ImageView
             android:layout_width="0dp"
-            android:layout_weight="0.2"
+            android:layout_weight="0.1"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:src="@drawable/ic_person_green"/>
@@ -51,7 +51,7 @@
         <ImageView
             android:id="@+id/editNameIV"
             android:layout_width="0dp"
-            android:layout_weight="0.2"
+            android:layout_weight="0.1"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:src="@drawable/ic_edit_green_24dp"/>
@@ -62,7 +62,7 @@
         android:layout_marginBottom="10dp">
         <ImageView
             android:layout_width="0dp"
-            android:layout_weight="0.2"
+            android:layout_weight="0.1"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:src="@drawable/ic_email_green_24dp"/>
@@ -91,7 +91,7 @@
         <ImageView
             android:id="@+id/editEmailIV"
             android:layout_width="0dp"
-            android:layout_weight="0.2"
+            android:layout_weight="0.1"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:src="@drawable/ic_edit_green_24dp"/>
@@ -102,7 +102,7 @@
         android:layout_marginBottom="10dp">
         <ImageView
             android:layout_width="0dp"
-            android:layout_weight="0.2"
+            android:layout_weight="0.1"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:src="@drawable/ic_person_green"/>
@@ -131,7 +131,7 @@
         <ImageView
             android:id="@+id/editPhoneIV"
             android:layout_width="0dp"
-            android:layout_weight="0.2"
+            android:layout_weight="0.1"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:src="@drawable/ic_edit_green_24dp"/>
@@ -142,7 +142,7 @@
         android:layout_marginBottom="10dp">
         <ImageView
             android:layout_width="0dp"
-            android:layout_weight="0.2"
+            android:layout_weight="0.1"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:src="@drawable/ic_file_green_24dp"/>

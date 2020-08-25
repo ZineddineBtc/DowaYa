@@ -2,6 +2,8 @@ package com.example.dowaya.adapters;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.provider.MediaStore;
@@ -13,15 +15,30 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.dowaya.R;
+import com.example.dowaya.StaticClass;
+import com.example.dowaya.activities.core.CoreActivity;
 import com.example.dowaya.daos.PostHistoryDAO;
 import com.example.dowaya.models.Medicine;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import static android.content.Context.MODE_PRIVATE;
 
 public class PostHistoryAdapter extends RecyclerView.Adapter<PostHistoryAdapter.ViewHolder> {
 
@@ -77,10 +94,16 @@ public class PostHistoryAdapter extends RecyclerView.Adapter<PostHistoryAdapter.
         boolean isShown;
 
         PostHistoryDAO postHistoryDAO;
+        FirebaseFirestore database;
+        Map<String, DocumentReference> stores;
+        SharedPreferences sharedPreferences;
 
         public ViewHolder(final View itemView) {
             super(itemView);
             postHistoryDAO = new PostHistoryDAO(itemView.getContext());
+            database = FirebaseFirestore.getInstance();
+            sharedPreferences =
+                    context.getSharedPreferences(StaticClass.SHARED_PREFERENCES, MODE_PRIVATE);
             nameTV = itemView.findViewById(R.id.nameTV);
             descriptionTV = itemView.findViewById(R.id.descriptionTV);
             addressTV = itemView.findViewById(R.id.addressTV);
@@ -100,7 +123,7 @@ public class PostHistoryAdapter extends RecyclerView.Adapter<PostHistoryAdapter.
                 }
             });
 
-            /*deleteIV.setOnClickListener(new View.OnClickListener() {
+            deleteIV.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     new AlertDialog.Builder(itemView.getContext())
@@ -109,7 +132,12 @@ public class PostHistoryAdapter extends RecyclerView.Adapter<PostHistoryAdapter.
                             .setPositiveButton(
                                     Html.fromHtml("<font color=\"#FF0000\"> Delete </font>"), new DialogInterface.OnClickListener() {
                                         public void onClick(DialogInterface dialog, int which) {
+                                            deleteStore(list.get(getAdapterPosition()).getId());
                                             postHistoryDAO.deletePostHistory(list.get(getAdapterPosition()).getId());
+                                            Toast.makeText(context,
+                                                    list.get(getAdapterPosition()).getName()
+                                                            +" removed",
+                                                    Toast.LENGTH_SHORT).show();
                                             list.remove(getAdapterPosition());
                                             notifyDataSetChanged();
                                         }
@@ -119,9 +147,34 @@ public class PostHistoryAdapter extends RecyclerView.Adapter<PostHistoryAdapter.
                                     null)
                             .show();
                 }
-            });*/
+            });
 
             itemView.setOnClickListener(this);
+        }
+        void deleteStore(String medicineId) {
+            DocumentReference storeReference = database.collection("stores")
+                    .document(sharedPreferences.getString(StaticClass.USERNAME, ""));
+            DocumentReference medicinesStores =
+                    database.collection("medicines-stores")
+                            .document(medicineId);
+            medicinesStores.update("stores",
+                    FieldValue.arrayRemove(storeReference))
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            Toast.makeText(context,
+                                    "medicine store successfully removed!",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(context,
+                                    "Error writing document",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    });
         }
 
         @Override

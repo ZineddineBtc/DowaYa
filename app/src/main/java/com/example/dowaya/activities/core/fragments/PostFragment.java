@@ -57,10 +57,10 @@ public class PostFragment extends Fragment {
     private TextView usernameTV, emailTV, phoneTV, clearTV, errorTV;
     private EditText medicineNameET, medicineDescriptionET, medicineDoseET,
             medicinePriceET, medicinePostAddressTV;
-    private String medicinePhotoString=null;
+    private String medicinePhotoString=null, temp, medicineName;
     private PostHistoryDAO postHistoryDAO;
     private FirebaseFirestore database;
-    private boolean medicineExists, storeExists;
+
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -179,44 +179,16 @@ public class PostFragment extends Fragment {
     }
     private void insertPostHistory(){
         Medicine medicine = new Medicine();
-        medicine.setName(medicineNameET.getText().toString());
+        medicine.setId(medicineName);
+        medicine.setName(medicineName);
         medicine.setDescription(medicineDescriptionET.getText().toString());
-        medicine.setPriceRange(medicinePriceET.getText().toString());
+        medicine.setPrice(medicinePriceET.getText().toString());
         medicine.setPostAddress(medicinePostAddressTV.getText().toString());
         medicine.setPhoto(medicinePhotoString);
         medicine.setRequestTime(
                 new SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault())
                         .format(Calendar.getInstance().getTime()));
         postHistoryDAO.insertPostHistory(medicine);
-    }
-    private boolean doesMedicineExist(){
-        medicineExists = false;
-        DocumentReference documentReference =
-                database.collection("medicines-names")
-                        .document(medicineNameET.getText().toString());
-        documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document.exists()) {
-                        medicineExists = true;
-                    } else {
-                        Toast.makeText(context,
-                                "No such document",
-                                Toast.LENGTH_SHORT).show();
-                    }
-                } else {
-                    Toast.makeText(context,
-                            "get failed with " + task.getException(),
-                            Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-        return medicineExists;
-    }
-    private boolean doesMedicineStoreExist(){
-        return medicineExists;
     }
     private void writeDescription(){
         Map<String, Object> medicineDescription = new HashMap<>();
@@ -226,7 +198,7 @@ public class PostFragment extends Fragment {
         medicineDescription.put("dose", medicineDoseET.getText().toString());
 
         database.collection("medicines-descriptions")
-                .document(medicineNameET.getText().toString())
+                .document(medicineName)
                 .set(medicineDescription)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
@@ -241,7 +213,7 @@ public class PostFragment extends Fragment {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         Toast.makeText(context,
-                                "Error writing document",
+                                "Error writing description",
                                 Toast.LENGTH_SHORT).show();
                     }
                 });
@@ -249,7 +221,6 @@ public class PostFragment extends Fragment {
     private void writeName(){
         Map<String, Object> medicineName = new HashMap<>();
         medicineName.put("name", medicineNameET.getText().toString());
-
         database.collection("medicines-names")
                 .document(medicineNameET.getText().toString())
                 .set(medicineName)
@@ -259,19 +230,19 @@ public class PostFragment extends Fragment {
                         Toast.makeText(context,
                                 "name successfully written!",
                                 Toast.LENGTH_SHORT).show();
-                        writeStore();
+                        writeStore(false);
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         Toast.makeText(context,
-                                "Error writing document",
+                                "Error writing name",
                                 Toast.LENGTH_SHORT).show();
                     }
                 });
     }
-    private void writeStore(){
+    private void writeStore(final boolean medicineExists){
         Map<String, Object> store = new HashMap<>();
         store.put("name", usernameTV.getText().toString());
         store.put("city", medicinePostAddressTV.getText().toString());
@@ -287,6 +258,7 @@ public class PostFragment extends Fragment {
                         Toast.makeText(context,
                                 "store successfully written!",
                                 Toast.LENGTH_SHORT).show();
+                        writeMedicineStore(medicineExists);
                     }
 
                 })
@@ -294,61 +266,98 @@ public class PostFragment extends Fragment {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         Toast.makeText(context,
-                                "Error writing document",
+                                "Error writing store",
                                 Toast.LENGTH_SHORT).show();
                     }
                 });
     }
-    private void writeMedicineStore(){
-        DocumentReference documentReference = database.collection("stores")
+    private void writeMedicineStore(boolean medicineExists){
+        DocumentReference storeReference = database.collection("stores")
                 .document(usernameTV.getText().toString());
-        if(doesMedicineStoreExist()){
-            DocumentReference medicinesStores =
-                    database.collection("medicines-stores")
-                    .document(medicineNameET.getText().toString());
+        DocumentReference medicinesStores =
+                database.collection("medicines-stores")
+                        .document(medicineName);
+        if (medicineExists){
             medicinesStores.update("stores",
-                    FieldValue.arrayUnion(documentReference));
-        }else{
-            ArrayList<DocumentReference> stores = new ArrayList<>();
-            stores.add(documentReference);
-            Map<String, Object> store = new HashMap<>();
-            store.put("stores", stores);
-
-            database.collection("medicines-stores")
-                    .document(medicineNameET.getText().toString())
-                    .set(store)
+                    FieldValue.arrayUnion(storeReference))
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {
                             Toast.makeText(context,
                                     "medicine store successfully written!",
                                     Toast.LENGTH_SHORT).show();
+                            startActivity(new Intent(context, CoreActivity.class));
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
                             Toast.makeText(context,
-                                    "Error writing document",
+                                    "Error writing medicine store",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    });
+        }else {
+            ArrayList<DocumentReference> referenceList = new ArrayList<>();
+            referenceList.add(storeReference);
+            Map<String, ArrayList> referenceMap = new HashMap<>();
+            referenceMap.put("stores", referenceList);
+            medicinesStores.set(referenceMap)
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            Toast.makeText(context,
+                                    "medicine store successfully written!",
+                                    Toast.LENGTH_SHORT).show();
+                            startActivity(new Intent(context, CoreActivity.class));
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(context,
+                                    "Error writing medicine store",
                                     Toast.LENGTH_SHORT).show();
                         }
                     });
         }
     }
     private void uploadPost(){
-        if(!doesMedicineExist()){
-            writeDescription();
-        }
-        writeMedicineStore();
+        DocumentReference documentReference =
+                database.collection("medicines-names")
+                        .document(medicineName);
+        documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        writeStore(true);
+                        Toast.makeText(context,
+                                "name exists",
+                                Toast.LENGTH_SHORT).show();
+                    } else {
+                        writeDescription();
+                        Toast.makeText(context,
+                                "No such document",
+                                Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(context,
+                            "get failed with " + task.getException(),
+                            Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
     private void post(){
+        temp = medicineNameET.getText().toString().trim().toLowerCase();
+        medicineName = temp.substring(0, 1).toUpperCase() + temp.substring(1);
         if(!medicineNameET.getText().toString().isEmpty()
                 && !medicineDescriptionET.getText().toString().isEmpty()
                 && !medicinePostAddressTV.getText().toString().isEmpty()){
             insertPostHistory();
             uploadPost();
-            Toast.makeText(context, "posted", Toast.LENGTH_SHORT).show();
-            startActivity(new Intent(context, CoreActivity.class));
         }else{
             errorTV.setVisibility(View.VISIBLE);
             final Handler handler = new Handler();

@@ -9,17 +9,18 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.dowaya.R;
+import com.example.dowaya.models.Store;
 
 import java.util.List;
 
-public class MedicineStoreHistoryAdapter extends RecyclerView.Adapter<MedicineStoreHistoryAdapter.ViewHolder> {
+public class StoreHistoryAdapter extends RecyclerView.Adapter<StoreHistoryAdapter.ViewHolder> {
 
-    private List<String[]> list;
+    private List<Store> list;
     private LayoutInflater mInflater;
     private ItemClickListener mClickListener;
     Context context;
 
-    public MedicineStoreHistoryAdapter(Context context, List<String[]> list) {
+    public StoreHistoryAdapter(Context context, List<Store> list) {
         this.mInflater = LayoutInflater.from(context);
         this.list = list;
         this.context = context;
@@ -27,14 +28,14 @@ public class MedicineStoreHistoryAdapter extends RecyclerView.Adapter<MedicineSt
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = mInflater.inflate(R.layout.medicines_stores_history_row, parent, false);
+        View view = mInflater.inflate(R.layout.name_time_history_row, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.nameTV.setText(list.get(position)[0]);
-        holder.timeTV.setText(list.get(position)[1]);
+        holder.nameTV.setText(list.get(position).getName());
+        holder.timeTV.setText(list.get(position).getHistoryTime());
     }
 
     @Override
@@ -62,7 +63,7 @@ public class MedicineStoreHistoryAdapter extends RecyclerView.Adapter<MedicineSt
         }
     }
 
-    String[] getItem(int id) {
+    Store getItem(int id) {
         return list.get(id);
     }
 

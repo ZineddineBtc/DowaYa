@@ -21,6 +21,7 @@ import android.widget.Toast;
 
 import com.example.dowaya.R;
 import com.example.dowaya.StaticClass;
+import com.example.dowaya.daos.StoreHistoryDAO;
 import com.example.dowaya.models.Store;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -28,7 +29,10 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Locale;
 import java.util.Objects;
 
 public class StoreListActivity extends AppCompatActivity {
@@ -36,7 +40,6 @@ public class StoreListActivity extends AppCompatActivity {
     SearchView storeSearchView;
     TextView nameTV, phoneTV, addressTV;
     String medicineId;
-    //Store store;
     ListView storeLV;
     ArrayAdapter adapter;
     ArrayList<String> nameCityList = new ArrayList<>(), copyList = new ArrayList<>();
@@ -44,12 +47,14 @@ public class StoreListActivity extends AppCompatActivity {
     LinearLayout shadeLL, descriptionLL;
     FirebaseFirestore database;
     ProgressDialog progressDialog;
+    StoreHistoryDAO storeHistoryDAO;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_store_list);
         setActionBarTitle("Stores");
+        storeHistoryDAO = new StoreHistoryDAO(this);
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Loading...");
         progressDialog.show();
@@ -102,7 +107,7 @@ public class StoreListActivity extends AppCompatActivity {
                                             store.setPhone((String)document.get("phone"));
                                             store.setAddress((String)document.get("address"));
                                             storeList.add(store);
-                                            String nameCity = store.getName()+" "+store.getCity();
+                                            String nameCity = store.getName()+", "+store.getCity();
                                             nameCityList.add(nameCity);
                                             copyList.add(nameCity);
                                             adapter.notifyDataSetChanged();
@@ -140,8 +145,18 @@ public class StoreListActivity extends AppCompatActivity {
         storeLV.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                setStoreData(position);
+                String name = nameCityList.get(position).split(",")[0].trim();
+                String clickedID = "";
+                for(Store store: storeList){
+                    if(store.getName().equals(name)){
+                        clickedID = store.getId();
+                        name = store.getName();
+                        setStoreData(store);
+                        break;
+                    }
+                }
                 showDescription();
+                insertHistory(clickedID, name);
             }
         });
     }
@@ -166,11 +181,20 @@ public class StoreListActivity extends AppCompatActivity {
         shadeLL.setVisibility(View.GONE);
         descriptionLL.setVisibility(View.GONE);
     }
-    public void setStoreData(int position){
-        Store store = storeList.get(position);
+    public void setStoreData(Store store){
         nameTV.setText(store.getName());
         phoneTV.setText(store.getPhone());
         addressTV.setText(store.getAddress());
+    }
+    public void insertHistory(String id, String name){
+        Store store = new Store();
+        store.setId(id);
+        store.setName(name);
+        store.setHistoryTime(
+                new SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault()).
+                        format(Calendar.getInstance().getTime())
+        );
+        storeHistoryDAO.insertStoreHistory(store);
     }
     public void dialPhone(View view){
         String phoneNumber = phoneTV.getText().toString()

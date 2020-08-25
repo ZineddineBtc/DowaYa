@@ -14,8 +14,8 @@ import java.util.ArrayList;
 
 public class PostHistoryDAO extends SQLiteOpenHelper {
 
-    private static final String DATABASE_NAME = "post_history_0.db";
-    private static final String POST_HISTORY_TABLE_NAME = "post_history_0";
+    private static final String DATABASE_NAME = "post_history_4.db";
+    private static final String POST_HISTORY_TABLE_NAME = "post_history_4";
     private static final String POST_HISTORY_ID = "id";
     private static final String POST_HISTORY_NAME = "name";
     private static final String POST_HISTORY_DESCRIPTION = "description";
@@ -54,6 +54,7 @@ public class PostHistoryDAO extends SQLiteOpenHelper {
     public boolean insertPostHistory(Medicine medicine) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
+        contentValues.put(POST_HISTORY_ID, medicine.getId());
         contentValues.put(POST_HISTORY_NAME, medicine.getName());
         contentValues.put(POST_HISTORY_DESCRIPTION, medicine.getDescription());
         contentValues.put(POST_HISTORY_PRICE, medicine.getPriceRange());
@@ -64,18 +65,11 @@ public class PostHistoryDAO extends SQLiteOpenHelper {
         return true;
     }
 
-    public void deletePostHistory(int id) {
+    public void deletePostHistory(String id) {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(POST_HISTORY_TABLE_NAME,
                 POST_HISTORY_ID +" = ? ",
-                new String[] { Integer.toString(id) });
-        ContentValues contentValues = new ContentValues();
-        for(int i=id; i<=numberOfRows(); i++){
-            contentValues.put(POST_HISTORY_ID, i);
-            db.update(POST_HISTORY_TABLE_NAME, contentValues, POST_HISTORY_ID +" = ? ",
-                    new String[] { Integer.toString(i+1) } );
-        }
-
+                new String[] {id});
     }
 
     public ArrayList<Medicine> getAllPostHistory() {
@@ -91,7 +85,7 @@ public class PostHistoryDAO extends SQLiteOpenHelper {
             medicine.setId(cursor.getString(cursor.getColumnIndex(POST_HISTORY_ID)));
             medicine.setName(cursor.getString(cursor.getColumnIndex(POST_HISTORY_NAME)));
             medicine.setDescription(cursor.getString(cursor.getColumnIndex(POST_HISTORY_DESCRIPTION)));
-            medicine.setPriceRange(cursor.getString(cursor.getColumnIndex(POST_HISTORY_PRICE)));
+            medicine.setPrice(cursor.getString(cursor.getColumnIndex(POST_HISTORY_PRICE)));
             medicine.setPostAddress(cursor.getString(cursor.getColumnIndex(POST_HISTORY_ADDRESS)));
             medicine.setPhoto(cursor.getString(cursor.getColumnIndex(POST_HISTORY_PHOTO)));
             medicine.setPostTime(cursor.getString(cursor.getColumnIndex(POST_HISTORY_TIME)));

@@ -22,6 +22,8 @@ import com.example.dowaya.daos.MedicineHistoryDAO;
 import com.example.dowaya.models.Medicine;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -65,8 +67,7 @@ public class MedicineListFragment extends Fragment {
                 return true;
             }
         });
-        //setListView();
-
+        a();
         return fragmentView;
     }
     private void findViewsByIds(){
@@ -79,11 +80,18 @@ public class MedicineListFragment extends Fragment {
         medicineLV.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                insertMedicineHistory(position);
+                String name = nameList.get(position);
+                String clickedId=null;
+                for(Medicine medicine: medicineList){
+                    if(medicine.getName().equals(name)){
+                        clickedId = medicine.getId();
+                        break;
+                    }
+                }
+                insertMedicineHistory(clickedId, name);
                 startActivity(
                         new Intent(context, MedicineDescriptionActivity.class)
-                                .putExtra(StaticClass.MEDICINE_ID,
-                                        medicineList.get(position).getId())
+                                .putExtra(StaticClass.MEDICINE_ID, clickedId)
                 );
             }
         });
@@ -113,11 +121,14 @@ public class MedicineListFragment extends Fragment {
                     }
                 });
     }
-    private void insertMedicineHistory(int position){
-        medicineHistoryDAO.insertMedicineHistory(
-                medicineList.get(position).getName(),
+    private void insertMedicineHistory(String id, String name){
+        Medicine medicine = new Medicine();
+        medicine.setId(id);
+        medicine.setName(name);
+        medicine.setSearchHistoryTime(
                 new SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault()).
-                        format(Calendar.getInstance().getTime()));
+                format(Calendar.getInstance().getTime()));
+        medicineHistoryDAO.insertMedicineHistory(medicine);
     }
     private void filter(String queryText){
         nameList.clear();
@@ -131,5 +142,33 @@ public class MedicineListFragment extends Fragment {
             }
         }
         adapter.notifyDataSetChanged();
+    }
+
+    public void a(){
+        DocumentReference documentReference =
+                database.collection("medicines-descriptions")
+                        .document("Augmentine");
+        documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        Toast.makeText(context,
+                                "there is such document",
+                                Toast.LENGTH_SHORT).show();
+                        } else {
+                        Toast.makeText(context,
+                                "No such document",
+                                Toast.LENGTH_SHORT).show();
+                        //Log.d(TAG, "No such document");
+                    }
+                } else {
+                    Toast.makeText(context,
+                            "get failed with " + task.getException(),
+                            Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 }

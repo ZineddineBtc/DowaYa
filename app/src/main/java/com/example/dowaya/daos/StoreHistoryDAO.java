@@ -7,15 +7,14 @@ import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.example.dowaya.models.Medicine;
 import com.example.dowaya.models.Store;
 
 import java.util.ArrayList;
 
 public class StoreHistoryDAO extends SQLiteOpenHelper {
 
-    private static final String DATABASE_NAME = "store_history_0.db";
-    private static final String STORE_HISTORY_TABLE_NAME = "store_history_0";
+    private static final String DATABASE_NAME = "store_history_4.db";
+    private static final String STORE_HISTORY_TABLE_NAME = "store_history_4";
     private static final String STORE_HISTORY_ID = "id";
     private static final String STORE_HISTORY_NAME = "name";
     private static final String STORE_HISTORY_TIME = "time";
@@ -43,44 +42,39 @@ public class StoreHistoryDAO extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public boolean insertStoreHistory(String name, String time) {
+    public boolean insertStoreHistory(Store store) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put(STORE_HISTORY_NAME, name);
-        contentValues.put(STORE_HISTORY_TIME, time);
+        contentValues.put(STORE_HISTORY_ID, store.getId());
+        contentValues.put(STORE_HISTORY_NAME, store.getName());
+        contentValues.put(STORE_HISTORY_TIME, store.getHistoryTime());
         db.insert(STORE_HISTORY_TABLE_NAME, null, contentValues);
         return true;
     }
 
-    public void deleteStoreHistory(int id) {
+    public void deleteStoreHistory(String id) {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(STORE_HISTORY_TABLE_NAME,
                 STORE_HISTORY_ID +" = ? ",
-                new String[] { Integer.toString(id) });
-        ContentValues contentValues = new ContentValues();
-        for(int i=id; i<=numberOfRows(); i++){
-            contentValues.put(STORE_HISTORY_ID, i);
-            db.update(STORE_HISTORY_TABLE_NAME, contentValues, STORE_HISTORY_ID +" = ? ",
-                    new String[] { Integer.toString(i+1) } );
-        }
-
+                new String[] {id});
     }
 
-    public ArrayList<String[]> getAllStoreHistory() {
-        ArrayList<String[]> medicineList = new ArrayList<>();
+    public ArrayList<Store> getAllStoreHistory() {
+        ArrayList<Store> storeList = new ArrayList<>();
 
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor =  db.rawQuery( "select * from "+ STORE_HISTORY_TABLE_NAME,
                 null );
         cursor.moveToLast();
         while(!cursor.isBeforeFirst()){
-            String[] str = new String[2];
-            str[0] = cursor.getString(cursor.getColumnIndex(STORE_HISTORY_NAME));
-            str[1] = cursor.getString(cursor.getColumnIndex(STORE_HISTORY_TIME));
-            medicineList.add(str);
+            Store store = new Store();
+            store.setId(cursor.getString(cursor.getColumnIndex(STORE_HISTORY_ID)));
+            store.setName(cursor.getString(cursor.getColumnIndex(STORE_HISTORY_NAME)));
+            store.setHistoryTime(cursor.getString(cursor.getColumnIndex(STORE_HISTORY_TIME)));
+            storeList.add(store);
             cursor.moveToPrevious();
         }
-        return medicineList;
+        return storeList;
     }
 
 
