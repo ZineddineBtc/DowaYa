@@ -95,7 +95,6 @@ public class PostHistoryAdapter extends RecyclerView.Adapter<PostHistoryAdapter.
 
         PostHistoryDAO postHistoryDAO;
         FirebaseFirestore database;
-        Map<String, DocumentReference> stores;
         SharedPreferences sharedPreferences;
 
         public ViewHolder(final View itemView) {
@@ -171,7 +170,7 @@ public class PostHistoryAdapter extends RecyclerView.Adapter<PostHistoryAdapter.
                         @Override
                         public void onFailure(@NonNull Exception e) {
                             Toast.makeText(context,
-                                    "Error writing document",
+                                    "Error removing medicine store",
                                     Toast.LENGTH_SHORT).show();
                         }
                     });

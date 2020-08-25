@@ -70,4 +70,7 @@
     <string name="no_description">No description</string>
     <string name="dose">Dose</string>
     <string name="random_dose">1 g</string>
+    <string name="city">City</string>
+    <string name="optional_description">Optional description</string>
+    <string name="error_empty_name_city">A name and a city are mandatory</string>
 </resources>

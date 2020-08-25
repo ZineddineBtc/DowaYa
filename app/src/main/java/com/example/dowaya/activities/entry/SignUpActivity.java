@@ -59,7 +59,6 @@ public class SignUpActivity extends AppCompatActivity {
             displayErrorTV(R.string.insufficient_password);
             return;
         }
-
         progressDialog.setMessage("Signing up...");
         progressDialog.show();
 
@@ -75,7 +74,6 @@ public class SignUpActivity extends AppCompatActivity {
                                     FinishSignUpActivity.class));
                         } else {
                             displayErrorTV(R.string.authentication_failed);
-
                         }
                         progressDialog.dismiss();
                     }

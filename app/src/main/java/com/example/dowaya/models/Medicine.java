@@ -1,7 +1,6 @@
 package com.example.dowaya.models;
 
 public class Medicine {
-    private int daoID;
     private String id, name, dose, photo, priceRange, description,
             searchHistoryTime, requestTime, postTime, postAddress;
 
@@ -102,13 +101,5 @@ public class Medicine {
 
     public void setDose(String dose) {
         this.dose = dose;
-    }
-
-    public int getDaoID() {
-        return daoID;
-    }
-
-    public void setDaoID(int daoID) {
-        this.daoID = daoID;
     }
 }

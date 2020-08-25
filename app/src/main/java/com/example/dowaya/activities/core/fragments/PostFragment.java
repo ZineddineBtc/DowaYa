@@ -192,7 +192,7 @@ public class PostFragment extends Fragment {
     }
     private void writeDescription(){
         Map<String, Object> medicineDescription = new HashMap<>();
-        medicineDescription.put("name", medicineNameET.getText().toString());
+        medicineDescription.put("name", medicineName);
         medicineDescription.put("description", medicineDescriptionET.getText().toString());
         medicineDescription.put("price", medicinePriceET.getText().toString());
         medicineDescription.put("dose", medicineDoseET.getText().toString());
@@ -219,11 +219,11 @@ public class PostFragment extends Fragment {
                 });
     }
     private void writeName(){
-        Map<String, Object> medicineName = new HashMap<>();
-        medicineName.put("name", medicineNameET.getText().toString());
+        Map<String, Object> medicineNameMap = new HashMap<>();
+        medicineNameMap.put("name", medicineName);
         database.collection("medicines-names")
-                .document(medicineNameET.getText().toString())
-                .set(medicineName)
+                .document(medicineName)
+                .set(medicineNameMap)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {

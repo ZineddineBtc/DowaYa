@@ -2,6 +2,7 @@ package com.example.dowaya.adapters;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.provider.MediaStore;
@@ -13,15 +14,24 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.dowaya.R;
+import com.example.dowaya.StaticClass;
 import com.example.dowaya.daos.RequestHistoryDAO;
 import com.example.dowaya.models.Medicine;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FieldValue;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.io.IOException;
 import java.util.List;
+
+import static android.content.Context.MODE_PRIVATE;
 
 public class RequestHistoryAdapter extends RecyclerView.Adapter<RequestHistoryAdapter.ViewHolder> {
 
@@ -46,6 +56,7 @@ public class RequestHistoryAdapter extends RecyclerView.Adapter<RequestHistoryAd
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.nameTV.setText(list.get(position).getName());
         holder.descriptionTV.setText(list.get(position).getDescription());
+        holder.doseTV.setText(list.get(position).getDose());
         String photoUri = list.get(position).getPhoto();
         if(photoUri != null){
             Bitmap imageBitmap = null;
@@ -70,16 +81,22 @@ public class RequestHistoryAdapter extends RecyclerView.Adapter<RequestHistoryAd
 
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        TextView nameTV, descriptionTV, timeTV;
+        TextView nameTV, descriptionTV, timeTV, doseTV;
         ImageView medicineIV, deleteIV, toggleDeleteIV;
         boolean isShown;
         RequestHistoryDAO requestHistoryDAO;
+        FirebaseFirestore database;
+        SharedPreferences sharedPreferences;
 
         public ViewHolder(final View itemView) {
             super(itemView);
             requestHistoryDAO = new RequestHistoryDAO(itemView.getContext());
+            sharedPreferences =
+                    context.getSharedPreferences(StaticClass.SHARED_PREFERENCES, MODE_PRIVATE);
+            database = FirebaseFirestore.getInstance();
             nameTV = itemView.findViewById(R.id.nameTV);
             descriptionTV = itemView.findViewById(R.id.descriptionTV);
+            doseTV = itemView.findViewById(R.id.doseTV);
             timeTV = itemView.findViewById(R.id.timeTV);
             medicineIV = itemView.findViewById(R.id.medicineIV);
             deleteIV = itemView.findViewById(R.id.deleteIV);
@@ -94,7 +111,7 @@ public class RequestHistoryAdapter extends RecyclerView.Adapter<RequestHistoryAd
                     isShown = !isShown;
                 }
             });
-            /*
+
             deleteIV.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -104,6 +121,7 @@ public class RequestHistoryAdapter extends RecyclerView.Adapter<RequestHistoryAd
                             .setPositiveButton(
                                     Html.fromHtml("<font color=\"#FF0000\"> Delete </font>"), new DialogInterface.OnClickListener() {
                                         public void onClick(DialogInterface dialog, int which) {
+                                            deleteRequester(list.get(getAdapterPosition()).getId());
                                             requestHistoryDAO.deleteRequestHistory(
                                                     list.get(getAdapterPosition()).getId());
                                             list.remove(getAdapterPosition());
@@ -116,9 +134,34 @@ public class RequestHistoryAdapter extends RecyclerView.Adapter<RequestHistoryAd
                             .show();
                 }
             });
-            */
+
 
             itemView.setOnClickListener(this);
+        }
+        void deleteRequester(String medicineId) {
+            DocumentReference requesterReference = database.collection("users")
+                    .document(sharedPreferences.getString(StaticClass.USERNAME, ""));
+            DocumentReference medicinesRequests =
+                    database.collection("medicines-requests")
+                            .document(medicineId);
+            medicinesRequests.update("requesters",
+                    FieldValue.arrayRemove(requesterReference))
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            Toast.makeText(context,
+                                    "medicine requester successfully removed!",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(context,
+                                    "Error removing requester",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    });
         }
 
         @Override

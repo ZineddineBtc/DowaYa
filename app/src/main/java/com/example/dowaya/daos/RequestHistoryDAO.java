@@ -14,12 +14,13 @@ import java.util.ArrayList;
 
 public class RequestHistoryDAO extends SQLiteOpenHelper {
 
-    private static final String DATABASE_NAME = "request_history_0.db";
-    private static final String REQUEST_HISTORY_TABLE_NAME = "request_history_0";
+    private static final String DATABASE_NAME = "request_history_4.db";
+    private static final String REQUEST_HISTORY_TABLE_NAME = "request_history_4";
     private static final String REQUEST_HISTORY_ID = "id";
     private static final String REQUEST_HISTORY_NAME = "name";
     private static final String REQUEST_HISTORY_DESCRIPTION = "description";
     private static final String REQUEST_HISTORY_PHOTO = "photo";
+    private static final String REQUEST_HISTORY_DOSE = "dose";
     private static final String REQUEST_HISTORY_TIME = "time";
 
     public RequestHistoryDAO(Context context) {
@@ -35,6 +36,7 @@ public class RequestHistoryDAO extends SQLiteOpenHelper {
                         REQUEST_HISTORY_NAME +" text, "+
                         REQUEST_HISTORY_DESCRIPTION +" text, "+
                         REQUEST_HISTORY_PHOTO +" text, "+
+                        REQUEST_HISTORY_DOSE +" text, "+
                         REQUEST_HISTORY_TIME +" text)"
         );
 
@@ -50,26 +52,21 @@ public class RequestHistoryDAO extends SQLiteOpenHelper {
     public boolean insertRequestHistory(Medicine medicine) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
+        contentValues.put(REQUEST_HISTORY_ID, medicine.getId());
         contentValues.put(REQUEST_HISTORY_NAME, medicine.getName());
         contentValues.put(REQUEST_HISTORY_DESCRIPTION, medicine.getDescription());
         contentValues.put(REQUEST_HISTORY_PHOTO, medicine.getPhoto());
+        contentValues.put(REQUEST_HISTORY_DOSE, medicine.getDose());
         contentValues.put(REQUEST_HISTORY_TIME, medicine.getRequestTime());
         db.insert(REQUEST_HISTORY_TABLE_NAME, null, contentValues);
         return true;
     }
 
-    public void deleteRequestHistory(int id) {
+    public void deleteRequestHistory(String id) {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(REQUEST_HISTORY_TABLE_NAME,
                 REQUEST_HISTORY_ID +" = ? ",
-                new String[] { Integer.toString(id) });
-        ContentValues contentValues = new ContentValues();
-        for(int i=id; i<=numberOfRows(); i++){
-            contentValues.put(REQUEST_HISTORY_ID, i);
-            db.update(REQUEST_HISTORY_TABLE_NAME, contentValues, REQUEST_HISTORY_ID +" = ? ",
-                    new String[] { Integer.toString(i+1) } );
-        }
-
+                new String[] {id});
     }
 
     public ArrayList<Medicine> getAllRequestHistory() {
@@ -86,6 +83,7 @@ public class RequestHistoryDAO extends SQLiteOpenHelper {
             medicine.setName(cursor.getString(cursor.getColumnIndex(REQUEST_HISTORY_NAME)));
             medicine.setDescription(cursor.getString(cursor.getColumnIndex(REQUEST_HISTORY_DESCRIPTION)));
             medicine.setPhoto(cursor.getString(cursor.getColumnIndex(REQUEST_HISTORY_PHOTO)));
+            medicine.setDose(cursor.getString(cursor.getColumnIndex(REQUEST_HISTORY_DOSE)));
             medicine.setRequestTime(cursor.getString(cursor.getColumnIndex(REQUEST_HISTORY_TIME)));
             medicineList.add(medicine);
             cursor.moveToPrevious();
