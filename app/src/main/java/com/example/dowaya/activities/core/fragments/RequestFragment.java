@@ -54,15 +54,17 @@ public class RequestFragment extends Fragment {
     private ImageView photoIV, medicineIV;
     private TextView usernameTV, emailTV, phoneTV, clearTV, errorTV;
     private EditText medicineNameET, medicineDescriptionET, medicineDoseET;
-    private String medicinePhotoString=null, medicineName;
+    private String medicinePhotoString=null, medicineName, email;
     private RequestHistoryDAO requestHistoryDAO;
     private FirebaseFirestore database;
+    private SharedPreferences sharedPreferences;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         fragmentView = inflater.inflate(R.layout.fragment_request, container, false);
         context = fragmentView.getContext();
         database = FirebaseFirestore.getInstance();
+        sharedPreferences = context.getSharedPreferences(StaticClass.SHARED_PREFERENCES, MODE_PRIVATE);
         setHasOptionsMenu(true);
         findViewsByIds();
         setUserData();
@@ -185,7 +187,7 @@ public class RequestFragment extends Fragment {
     }
     private void addRequestUser(){
         DocumentReference userReference = database.collection("users")
-                .document(usernameTV.getText().toString());
+                .document(email);
         DocumentReference medicinesRequests =
                 database.collection("medicines-requests")
                         .document(medicineName);
@@ -211,7 +213,7 @@ public class RequestFragment extends Fragment {
     }
     private void writeRequest(){
         DocumentReference userReference = database.collection("users")
-                .document(usernameTV.getText().toString());
+                .document(email);
         ArrayList<DocumentReference> requesters = new ArrayList<>();
         requesters.add(userReference);
         Map<String, Object> medicineRequest = new HashMap<>();
@@ -268,6 +270,7 @@ public class RequestFragment extends Fragment {
         });
     }
     private void request(){
+        email = sharedPreferences.getString(StaticClass.EMAIL, "");
         String temp = medicineNameET.getText().toString().trim().toLowerCase();
         medicineName = temp.substring(0, 1).toUpperCase() + temp.substring(1);
         if(!medicineNameET.getText().toString().isEmpty()){

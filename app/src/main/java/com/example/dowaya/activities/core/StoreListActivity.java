@@ -66,7 +66,6 @@ public class StoreListActivity extends AppCompatActivity {
         storeSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {return false;}
-
             @Override
             public boolean onQueryTextChange(String newText) {
                 filter(newText);
@@ -102,6 +101,7 @@ public class StoreListActivity extends AppCompatActivity {
                                         DocumentSnapshot document = task.getResult();
                                         if (document.exists()) {
                                             Store store = new Store();
+                                            store.setId((String)document.get("email"));
                                             store.setName((String)document.get("name"));
                                             store.setCity((String)document.get("city"));
                                             store.setPhone((String)document.get("phone"));

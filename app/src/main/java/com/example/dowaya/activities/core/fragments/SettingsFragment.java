@@ -40,9 +40,9 @@ public class SettingsFragment extends Fragment {
     private SharedPreferences sharedPreferences;
     private SharedPreferences.Editor editor;
     private TextView nameTV, emailTV, phoneTV, signOutTV, termsTV;
-    private EditText nameET, emailET, phoneET;
-    private ImageView photoIV, editNameIV, editPhoneIV, editEmailIV;
-    private boolean isNameEdit, isEmailEdit, isPhoneEdit, imageChanged;
+    private EditText nameET, phoneET;
+    private ImageView photoIV, editNameIV, editPhoneIV;
+    private boolean isNameEdit, isPhoneEdit, imageChanged;
     private String uriString;
     @SuppressLint("CommitPrefEdits")
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -61,11 +61,9 @@ public class SettingsFragment extends Fragment {
         nameTV = fragmentView.findViewById(R.id.nameTV);
         nameET = fragmentView.findViewById(R.id.nameET);
         emailTV = fragmentView.findViewById(R.id.emailTV);
-        emailET = fragmentView.findViewById(R.id.emailET);
         phoneTV = fragmentView.findViewById(R.id.phoneTV);
         phoneET = fragmentView.findViewById(R.id.phoneET);
         editNameIV = fragmentView.findViewById(R.id.editNameIV);
-        editEmailIV = fragmentView.findViewById(R.id.editEmailIV);
         editPhoneIV = fragmentView.findViewById(R.id.editPhoneIV);
         signOutTV = fragmentView.findViewById(R.id.signOutTV);
         termsTV = fragmentView.findViewById(R.id.termsTV);
@@ -86,7 +84,6 @@ public class SettingsFragment extends Fragment {
         nameTV.setText(sharedPreferences.getString(StaticClass.USERNAME, "no username"));
         nameET.setText(sharedPreferences.getString(StaticClass.USERNAME, ""));
         emailTV.setText(sharedPreferences.getString(StaticClass.EMAIL, "no email"));
-        emailET.setText(sharedPreferences.getString(StaticClass.EMAIL, ""));
         phoneTV.setText(sharedPreferences.getString(StaticClass.PHONE, "no phone number"));
         phoneET.setText(sharedPreferences.getString(StaticClass.PHONE, ""));
     }
@@ -101,12 +98,6 @@ public class SettingsFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 editName();
-            }
-        });
-        editEmailIV.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                editEmail();
             }
         });
         editPhoneIV.setOnClickListener(new View.OnClickListener() {
@@ -139,14 +130,6 @@ public class SettingsFragment extends Fragment {
                 R.drawable.ic_edit_green_24dp : R.drawable.ic_check_green_24dp);
         if(isNameEdit) updateData();
         isNameEdit = !isNameEdit;
-    }
-    private void editEmail(){
-        emailTV.setVisibility(isEmailEdit ? View.VISIBLE : View.GONE);
-        emailET.setVisibility(isEmailEdit ? View.GONE : View.VISIBLE);
-        editEmailIV.setImageResource(isEmailEdit ?
-                R.drawable.ic_edit_green_24dp : R.drawable.ic_check_green_24dp);
-        if(isEmailEdit) updateData();
-        isEmailEdit = !isEmailEdit;
     }
     private void editPhone(){
         phoneTV.setVisibility(isPhoneEdit ? View.VISIBLE : View.GONE);
@@ -200,10 +183,6 @@ public class SettingsFragment extends Fragment {
                 sharedPreferences.getString(StaticClass.USERNAME, ""))){
             editor.putString(StaticClass.USERNAME, nameET.getText().toString());
         }
-        if(!emailET.getText().toString().equals(
-                sharedPreferences.getString(StaticClass.EMAIL, ""))){
-            editor.putString(StaticClass.EMAIL, emailET.getText().toString());
-        }
         if(!phoneET.getText().toString().equals(
                 sharedPreferences.getString(StaticClass.PHONE, ""))){
             editor.putString(StaticClass.PHONE, phoneET.getText().toString());
@@ -213,12 +192,8 @@ public class SettingsFragment extends Fragment {
         }
     }
     private boolean isValidInput(){
-        if(!StaticClass.containsDigit(nameET.getText().toString())
-        && StaticClass.isValidEmail(emailET.getText().toString())
-        && phoneET.getText().toString().length()>9){
-            return true;
-        }
-        return false;
+        return !StaticClass.containsDigit(nameET.getText().toString())
+                && phoneET.getText().toString().length() > 9;
     }
     private void updateData(){
         detectChange();

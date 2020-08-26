@@ -34,7 +34,7 @@ public class FinishSignUpActivity extends AppCompatActivity {
     EditText nameET, phoneET;
     TextView errorTV;
     SharedPreferences sharedPreferences;
-    String name, phone;
+    String name, phone, email;
     FirebaseFirestore database;
     ProgressDialog progressDialog;
 
@@ -58,6 +58,8 @@ public class FinishSignUpActivity extends AppCompatActivity {
         progressDialog.show();
         name = nameET.getText().toString();
         phone = phoneET.getText().toString().trim();
+        email = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser())
+                        .getEmail();
 
         if(StaticClass.containsDigit(name)){
             displayErrorTV(R.string.name_not_number);
@@ -71,19 +73,15 @@ public class FinishSignUpActivity extends AppCompatActivity {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(StaticClass.USERNAME, name);
         editor.putString(StaticClass.PHONE, phone);
-        editor.putString(StaticClass.EMAIL,
-                Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser())
-                        .getEmail());
+        editor.putString(StaticClass.EMAIL, email);
         editor.apply();
 
         Map<String, Object> userReference = new HashMap<>();
         userReference.put("username", name);
         userReference.put("phone", phone);
-        userReference.put("email",
-                Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser())
-                        .getEmail());
+        userReference.put("email", email);
         database.collection("users")
-                .document(name)
+                .document(email)
                 .set(userReference)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
@@ -124,4 +122,5 @@ public class FinishSignUpActivity extends AppCompatActivity {
     public void onBackPressed() {
         moveTaskToBack(true);
     }
+
 }

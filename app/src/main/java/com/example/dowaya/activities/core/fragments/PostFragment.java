@@ -57,7 +57,7 @@ public class PostFragment extends Fragment {
     private TextView usernameTV, emailTV, phoneTV, clearTV, errorTV;
     private EditText medicineNameET, medicineDescriptionET, medicineDoseET,
             medicinePriceET, medicinePostAddressTV;
-    private String medicinePhotoString=null, temp, medicineName;
+    private String medicinePhotoString=null, medicineName, email;
     private PostHistoryDAO postHistoryDAO;
     private FirebaseFirestore database;
 
@@ -250,7 +250,7 @@ public class PostFragment extends Fragment {
         store.put("phone", sharedPreferences.getString(StaticClass.PHONE, ""));
 
         database.collection("stores")
-                .document(usernameTV.getText().toString())
+                .document(email)
                 .set(store)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
@@ -273,7 +273,7 @@ public class PostFragment extends Fragment {
     }
     private void writeMedicineStore(boolean medicineExists){
         DocumentReference storeReference = database.collection("stores")
-                .document(usernameTV.getText().toString());
+                .document(email);
         DocumentReference medicinesStores =
                 database.collection("medicines-stores")
                         .document(medicineName);
@@ -351,7 +351,8 @@ public class PostFragment extends Fragment {
         });
     }
     private void post(){
-        temp = medicineNameET.getText().toString().trim().toLowerCase();
+        email = sharedPreferences.getString(StaticClass.EMAIL, "");
+        String temp = medicineNameET.getText().toString().trim().toLowerCase();
         medicineName = temp.substring(0, 1).toUpperCase() + temp.substring(1);
         if(!medicineNameET.getText().toString().isEmpty()
                 && !medicineDescriptionET.getText().toString().isEmpty()
