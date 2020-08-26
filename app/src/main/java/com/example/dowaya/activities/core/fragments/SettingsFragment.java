@@ -25,11 +25,18 @@ import androidx.fragment.app.Fragment;
 import com.example.dowaya.R;
 import com.example.dowaya.StaticClass;
 import com.example.dowaya.activities.TermsActivity;
+import com.example.dowaya.activities.core.CoreActivity;
 import com.example.dowaya.activities.entry.LoginActivity;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -39,11 +46,14 @@ public class SettingsFragment extends Fragment {
     private Context context;
     private SharedPreferences sharedPreferences;
     private SharedPreferences.Editor editor;
+    private FirebaseFirestore database;
     private TextView nameTV, emailTV, phoneTV, signOutTV, termsTV;
     private EditText nameET, phoneET;
     private ImageView photoIV, editNameIV, editPhoneIV;
     private boolean isNameEdit, isPhoneEdit, imageChanged;
     private String uriString;
+
+
     @SuppressLint("CommitPrefEdits")
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -51,6 +61,7 @@ public class SettingsFragment extends Fragment {
         context = fragmentView.getContext();
         sharedPreferences = context.getSharedPreferences(StaticClass.SHARED_PREFERENCES, MODE_PRIVATE);
         editor = sharedPreferences.edit();
+        database = FirebaseFirestore.getInstance();
         findViewsByIds();
         initializeData();
         setClickListeners();
@@ -179,17 +190,23 @@ public class SettingsFragment extends Fragment {
         }
     }
     private void detectChange(){
+        Map<String, Object> userReference = new HashMap<>();
         if(!nameET.getText().toString().equals(
                 sharedPreferences.getString(StaticClass.USERNAME, ""))){
             editor.putString(StaticClass.USERNAME, nameET.getText().toString());
+            userReference.put("username", nameET.getText().toString());
         }
         if(!phoneET.getText().toString().equals(
                 sharedPreferences.getString(StaticClass.PHONE, ""))){
             editor.putString(StaticClass.PHONE, phoneET.getText().toString());
+            userReference.put("phone", phoneET.getText().toString());
         }
         if(imageChanged){
             editor.putString(StaticClass.PHOTO, String.valueOf(uriString));
         }
+        database.collection("users")
+                .document(emailTV.getText().toString())
+                .update(userReference);
     }
     private boolean isValidInput(){
         return !StaticClass.containsDigit(nameET.getText().toString())
