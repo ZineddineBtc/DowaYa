@@ -17,7 +17,6 @@ import android.widget.Toast;
 
 import com.example.dowaya.R;
 import com.example.dowaya.StaticClass;
-import com.example.dowaya.activities.FullScreenActivity;
 import com.example.dowaya.daos.BookmarkDAO;
 import com.example.dowaya.models.Medicine;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -105,12 +104,6 @@ public class MedicineDescriptionActivity extends AppCompatActivity {
         descriptionTV.setText(medicine.getDescription());
         doseTV.setText(medicine.getDose());
         //medicineIV.setImageDrawable(getDrawable(R.drawable.img0));
-    }
-    public void viewFullScreen(View view){
-        startActivity(new Intent(getApplicationContext(), FullScreenActivity.class)
-        .putExtra(StaticClass.FULL_SCREEN, photoUri)
-        .putExtra(StaticClass.MEDICINE_ID, medicineId)
-        .putExtra(StaticClass.FROM, StaticClass.MEDICINE_DESCRIPTION));
     }
     public void searchStore(View view){
         startActivity(new Intent(getApplicationContext(), StoreListActivity.class)

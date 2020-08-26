@@ -17,7 +17,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activities.FullScreenActivity"></activity>
         <activity android:name=".activities.core.StoreListActivity" />
         <activity android:name=".activities.core.MedicineDescriptionActivity"/>
         <activity
