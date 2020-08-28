@@ -86,10 +86,14 @@ public class HistoryFragment extends Fragment {
     }
     private void medicineTab(){
         if(currentTab != 0) {
-            medicineTV.setTextColor(context.getColor(R.color.green));
+            medicineTV.setTextColor(context.getColor(R.color.white));
+            medicineTV.setBackgroundColor(context.getColor(R.color.green));
             storeTV.setTextColor(context.getColor(R.color.grey));
+            storeTV.setBackgroundColor(context.getColor(R.color.white));
             requestTV.setTextColor(context.getColor(R.color.grey));
+            requestTV.setBackgroundColor(context.getColor(R.color.white));
             postTV.setTextColor(context.getColor(R.color.grey));
+            postTV.setBackgroundColor(context.getColor(R.color.white));
             if(medicineList.isEmpty()){
                 emptyListTV.setVisibility(View.VISIBLE);
                 medicineRV.setVisibility(View.GONE);
@@ -106,9 +110,13 @@ public class HistoryFragment extends Fragment {
     private void storeTab(){
         if(currentTab != 1) {
             medicineTV.setTextColor(context.getColor(R.color.grey));
-            storeTV.setTextColor(context.getColor(R.color.green));
+            medicineTV.setBackgroundColor(context.getColor(R.color.white));
+            storeTV.setTextColor(context.getColor(R.color.white));
+            storeTV.setBackgroundColor(context.getColor(R.color.green));
             requestTV.setTextColor(context.getColor(R.color.grey));
+            requestTV.setBackgroundColor(context.getColor(R.color.white));
             postTV.setTextColor(context.getColor(R.color.grey));
+            postTV.setBackgroundColor(context.getColor(R.color.white));
             if(storeList.isEmpty()){
                 emptyListTV.setVisibility(View.VISIBLE);
                 storeRV.setVisibility(View.GONE);
@@ -125,9 +133,13 @@ public class HistoryFragment extends Fragment {
     private void requestTab(){
         if(currentTab != 2) {
             medicineTV.setTextColor(context.getColor(R.color.grey));
+            medicineTV.setBackgroundColor(context.getColor(R.color.white));
             storeTV.setTextColor(context.getColor(R.color.grey));
-            requestTV.setTextColor(context.getColor(R.color.green));
+            storeTV.setBackgroundColor(context.getColor(R.color.white));
+            requestTV.setTextColor(context.getColor(R.color.white));
+            requestTV.setBackgroundColor(context.getColor(R.color.green));
             postTV.setTextColor(context.getColor(R.color.grey));
+            postTV.setBackgroundColor(context.getColor(R.color.white));
             if(requestList.isEmpty()){
                 emptyListTV.setVisibility(View.VISIBLE);
                 requestRV.setVisibility(View.GONE);
@@ -144,9 +156,13 @@ public class HistoryFragment extends Fragment {
     private void postTab(){
         if(currentTab != 3) {
             medicineTV.setTextColor(context.getColor(R.color.grey));
+            medicineTV.setBackgroundColor(context.getColor(R.color.white));
             storeTV.setTextColor(context.getColor(R.color.grey));
+            storeTV.setBackgroundColor(context.getColor(R.color.white));
             requestTV.setTextColor(context.getColor(R.color.grey));
-            postTV.setTextColor(context.getColor(R.color.green));
+            requestTV.setBackgroundColor(context.getColor(R.color.white));
+            postTV.setTextColor(context.getColor(R.color.white));
+            postTV.setBackgroundColor(context.getColor(R.color.green));
             if(postList.isEmpty()){
                 emptyListTV.setVisibility(View.VISIBLE);
                 postRV.setVisibility(View.GONE);

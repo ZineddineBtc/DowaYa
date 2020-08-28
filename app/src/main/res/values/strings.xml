@@ -73,4 +73,6 @@
     <string name="city">City</string>
     <string name="optional_description">Optional description</string>
     <string name="error_empty_name_city">A name and a city are mandatory</string>
+    <string name="unspecified_address">Address must be specified</string>
+    <string name="name_phone_address">Name, phone, and address</string>
 </resources>

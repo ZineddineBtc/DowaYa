@@ -67,7 +67,6 @@ public class MedicineListFragment extends Fragment {
                 return true;
             }
         });
-        a();
         return fragmentView;
     }
     private void findViewsByIds(){
@@ -142,33 +141,5 @@ public class MedicineListFragment extends Fragment {
             }
         }
         adapter.notifyDataSetChanged();
-    }
-
-    public void a(){
-        DocumentReference documentReference =
-                database.collection("medicines-descriptions")
-                        .document("Augmentine");
-        documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document.exists()) {
-                        Toast.makeText(context,
-                                "there is such document",
-                                Toast.LENGTH_SHORT).show();
-                        } else {
-                        Toast.makeText(context,
-                                "No such document",
-                                Toast.LENGTH_SHORT).show();
-                        //Log.d(TAG, "No such document");
-                    }
-                } else {
-                    Toast.makeText(context,
-                            "get failed with " + task.getException(),
-                            Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
     }
 }

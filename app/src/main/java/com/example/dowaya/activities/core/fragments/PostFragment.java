@@ -55,8 +55,8 @@ public class PostFragment extends Fragment {
     private SharedPreferences sharedPreferences;
     private ImageView photoIV, medicineIV;
     private TextView usernameTV, emailTV, phoneTV, clearTV, errorTV;
-    private EditText medicineNameET, medicineDescriptionET, medicineDoseET,
-            medicinePriceET, medicinePostAddressTV;
+    private EditText medicineNameET, medicineDescriptionET,
+            medicineDoseET, medicinePriceET;
     private String medicinePhotoString=null, medicineName, email;
     private PostHistoryDAO postHistoryDAO;
     private FirebaseFirestore database;
@@ -82,7 +82,6 @@ public class PostFragment extends Fragment {
         medicineNameET = fragmentView.findViewById(R.id.medicineNameET);
         medicineDescriptionET = fragmentView.findViewById(R.id.medicineDescriptionET);
         medicinePriceET = fragmentView.findViewById(R.id.medicinePriceET);
-        medicinePostAddressTV = fragmentView.findViewById(R.id.medicineAddressET);
         medicineDoseET = fragmentView.findViewById(R.id.medicineDoseET);
         medicineIV = fragmentView.findViewById(R.id.medicineIV);
         medicineIV.setOnClickListener(new View.OnClickListener() {
@@ -183,7 +182,7 @@ public class PostFragment extends Fragment {
         medicine.setName(medicineName);
         medicine.setDescription(medicineDescriptionET.getText().toString());
         medicine.setPrice(medicinePriceET.getText().toString());
-        medicine.setPostAddress(medicinePostAddressTV.getText().toString());
+        medicine.setPostAddress(sharedPreferences.getString(StaticClass.ADDRESS, ""));
         medicine.setPhoto(medicinePhotoString);
         medicine.setRequestTime(
                 new SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault())
@@ -245,8 +244,8 @@ public class PostFragment extends Fragment {
     private void writeStore(final boolean medicineExists){
         Map<String, Object> store = new HashMap<>();
         store.put("name", usernameTV.getText().toString());
-        store.put("city", medicinePostAddressTV.getText().toString());
-        store.put("address", medicinePostAddressTV.getText().toString());
+        store.put("city", sharedPreferences.getString(StaticClass.CITY, ""));
+        store.put("address", sharedPreferences.getString(StaticClass.ADDRESS, ""));
         store.put("phone", sharedPreferences.getString(StaticClass.PHONE, ""));
 
         database.collection("stores")
@@ -355,8 +354,7 @@ public class PostFragment extends Fragment {
         String temp = medicineNameET.getText().toString().trim().toLowerCase();
         medicineName = temp.substring(0, 1).toUpperCase() + temp.substring(1);
         if(!medicineNameET.getText().toString().isEmpty()
-                && !medicineDescriptionET.getText().toString().isEmpty()
-                && !medicinePostAddressTV.getText().toString().isEmpty()){
+                && !medicineDescriptionET.getText().toString().isEmpty()){
             insertPostHistory();
             uploadPost();
         }else{

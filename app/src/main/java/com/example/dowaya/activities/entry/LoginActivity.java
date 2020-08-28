@@ -75,11 +75,13 @@ public class LoginActivity extends AppCompatActivity {
                 });
     }
     public void setSharedPreferences(String email, String name,
-                                     String phone){
+                                     String phone, String address, String city){
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(StaticClass.USERNAME, name);
         editor.putString(StaticClass.PHONE, phone);
         editor.putString(StaticClass.EMAIL, email);
+        editor.putString(StaticClass.ADDRESS, address);
+        editor.putString(StaticClass.CITY, city);
         editor.apply();
         progressDialog.dismiss();
         startActivity(new Intent(
@@ -97,8 +99,10 @@ public class LoginActivity extends AppCompatActivity {
                     if (document.exists()) {
                         setSharedPreferences(
                                 document.get("email").toString(),
-                                document.get("name").toString(),
-                                document.get("phone").toString());
+                                document.get("username").toString(),
+                                document.get("phone").toString(),
+                                document.get("address").toString(),
+                                document.get("city").toString());
                         Toast.makeText(getApplicationContext(),
                                 "got data by doc",
                                 Toast.LENGTH_SHORT).show();

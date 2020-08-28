@@ -47,10 +47,10 @@ public class SettingsFragment extends Fragment {
     private SharedPreferences sharedPreferences;
     private SharedPreferences.Editor editor;
     private FirebaseFirestore database;
-    private TextView nameTV, emailTV, phoneTV, signOutTV, termsTV;
-    private EditText nameET, phoneET;
-    private ImageView photoIV, editNameIV, editPhoneIV;
-    private boolean isNameEdit, isPhoneEdit, imageChanged;
+    private TextView nameTV, emailTV, phoneTV, addressTV, signOutTV, termsTV;
+    private EditText nameET, phoneET, addressET;
+    private ImageView photoIV, editNameIV, editPhoneIV, editAddressIV;
+    private boolean isNameEdit, isPhoneEdit, isAddressEdit, imageChanged;
     private String uriString;
 
 
@@ -74,12 +74,16 @@ public class SettingsFragment extends Fragment {
         emailTV = fragmentView.findViewById(R.id.emailTV);
         phoneTV = fragmentView.findViewById(R.id.phoneTV);
         phoneET = fragmentView.findViewById(R.id.phoneET);
+        addressTV = fragmentView.findViewById(R.id.addressTV);
+        addressET = fragmentView.findViewById(R.id.addressET);
         editNameIV = fragmentView.findViewById(R.id.editNameIV);
         editPhoneIV = fragmentView.findViewById(R.id.editPhoneIV);
+        editAddressIV = fragmentView.findViewById(R.id.editAddressIV);
         signOutTV = fragmentView.findViewById(R.id.signOutTV);
         termsTV = fragmentView.findViewById(R.id.termsTV);
     }
     private void initializeData(){
+        /*
         if(!sharedPreferences.getString(StaticClass.PHOTO, "").isEmpty()){
             Bitmap imageBitmap = null;
             try {
@@ -91,12 +95,14 @@ public class SettingsFragment extends Fragment {
                         Toast.LENGTH_LONG).show();
             }
             photoIV.setImageBitmap(imageBitmap);
-        }
+        }*/
         nameTV.setText(sharedPreferences.getString(StaticClass.USERNAME, "no username"));
         nameET.setText(sharedPreferences.getString(StaticClass.USERNAME, ""));
         emailTV.setText(sharedPreferences.getString(StaticClass.EMAIL, "no email"));
         phoneTV.setText(sharedPreferences.getString(StaticClass.PHONE, "no phone number"));
         phoneET.setText(sharedPreferences.getString(StaticClass.PHONE, ""));
+        addressTV.setText(sharedPreferences.getString(StaticClass.ADDRESS, "no address specified"));
+        addressET.setText(sharedPreferences.getString(StaticClass.ADDRESS, ""));
     }
     private void setClickListeners(){
         photoIV.setOnClickListener(new View.OnClickListener() {
@@ -115,6 +121,12 @@ public class SettingsFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 editPhone();
+            }
+        });
+        editAddressIV.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                editAddress();
             }
         });
         signOutTV.setOnClickListener(new View.OnClickListener() {
@@ -149,6 +161,14 @@ public class SettingsFragment extends Fragment {
                 R.drawable.ic_edit_green_24dp : R.drawable.ic_check_green_24dp);
         if(isPhoneEdit) updateData();
         isPhoneEdit = !isPhoneEdit;
+    }
+    private void editAddress(){
+        addressTV.setVisibility(isAddressEdit ? View.VISIBLE : View.GONE);
+        addressET.setVisibility(isAddressEdit ? View.GONE : View.VISIBLE);
+        editAddressIV.setImageResource(isAddressEdit ?
+                R.drawable.ic_edit_green_24dp : R.drawable.ic_check_green_24dp);
+        if(isAddressEdit) updateData();
+        isAddressEdit = !isAddressEdit;
     }
     private void importImage(){
         Intent intent;
@@ -201,6 +221,14 @@ public class SettingsFragment extends Fragment {
             editor.putString(StaticClass.PHONE, phoneET.getText().toString());
             userReference.put("phone", phoneET.getText().toString());
         }
+        if(!addressET.getText().toString().equals(
+                sharedPreferences.getString(StaticClass.ADDRESS, ""))){
+            editor.putString(StaticClass.ADDRESS, addressET.getText().toString());
+            editor.putString(StaticClass.CITY, addressET.getText().toString());
+            userReference.put("address", addressET.getText().toString());
+            userReference.put("city", addressET.getText().toString());
+
+        }
         if(imageChanged){
             editor.putString(StaticClass.PHOTO, String.valueOf(uriString));
         }
@@ -210,7 +238,8 @@ public class SettingsFragment extends Fragment {
     }
     private boolean isValidInput(){
         return !StaticClass.containsDigit(nameET.getText().toString())
-                && phoneET.getText().toString().length() > 9;
+                && phoneET.getText().toString().length() > 9
+                && !addressET.getText().toString().isEmpty();
     }
     private void updateData(){
         detectChange();

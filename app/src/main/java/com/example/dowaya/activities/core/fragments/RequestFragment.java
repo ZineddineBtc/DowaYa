@@ -220,9 +220,6 @@ public class RequestFragment extends Fragment {
         medicineRequest.put("name", medicineName);
         medicineRequest.put("description", medicineDescriptionET.getText().toString());
         medicineRequest.put("dose", medicineDoseET.getText().toString());
-        medicineRequest.put("request-time",
-                new SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault())
-                .format(Calendar.getInstance().getTime()));
         medicineRequest.put("requesters", requesters);
         database.collection("medicines-requests")
                 .document(medicineName)

@@ -9,8 +9,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:paddingBottom = "10dp">
+        android:paddingBottom = "5dp">
 
         <TextView
             android:id="@+id/medicineTV"
@@ -19,8 +18,10 @@
             android:layout_weight="0.25"
             android:gravity="center"
             android:text="@string/medicines"
-            android:textColor="@color/green"
-            android:textSize="14sp" />
+            android:textColor="@color/white"
+            android:background="@color/green"
+            android:textSize="14sp"
+            android:padding="5dp"/>
 
         <TextView
             android:id="@+id/storeTV"
@@ -30,7 +31,8 @@
             android:layout_height="wrap_content"
             android:textSize="14sp"
             android:textColor="@color/grey"
-            android:gravity="center"/>
+            android:gravity="center"
+            android:padding="5dp"/>
 
         <TextView
             android:id="@+id/requestTV"
@@ -40,7 +42,8 @@
             android:layout_height="wrap_content"
             android:textSize="14sp"
             android:textColor="@color/grey"
-            android:gravity="center"/>
+            android:gravity="center"
+            android:padding="5dp"/>
         <TextView
             android:id="@+id/postTV"
             android:text="@string/posts"
@@ -49,7 +52,8 @@
             android:layout_height="wrap_content"
             android:textSize="14sp"
             android:textColor="@color/grey"
-            android:gravity="center"/>
+            android:gravity="center"
+            android:padding="5dp"/>
     </LinearLayout>
     <TextView
         android:visibility="gone"

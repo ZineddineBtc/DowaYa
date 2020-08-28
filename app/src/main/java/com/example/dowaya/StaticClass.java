@@ -17,6 +17,8 @@ public class StaticClass {
     public static String USERNAME = "username";
     public static String EMAIL = "email";
     public static String PHONE = "phone";
+    public static String ADDRESS = "address";
+    public static String CITY = "city";
     public static String PHOTO = "photo";
     public static String MEDICINE_ID = "medicine_id";
     public static String STORE_ID = "store_id";
