@@ -43,7 +43,7 @@ public class LogoActivity extends AppCompatActivity {
     }
     public void checkEntry(){
         if(currentUser == null){
-            startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+            startActivity(new Intent(getApplicationContext(), SlideshowActivity.class));
         }else{
             DocumentReference documentReference =
                     database.collection("users")

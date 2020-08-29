@@ -68,14 +68,17 @@ public class FinishSignUpActivity extends AppCompatActivity {
         phoneET = findViewById(R.id.phoneET);
         addressET =findViewById(R.id.addressET);
         errorTV = findViewById(R.id.errorTV);
+        checkBuildVersion();
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+
+    }
+    public void checkBuildVersion(){
         int MyVersion = Build.VERSION.SDK_INT;
         if (MyVersion > Build.VERSION_CODES.LOLLIPOP_MR1) {
             if (!checkIfAlreadyHavePermission()) {
                 requestForSpecificPermission();
             }
         }
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
-
     }
     private boolean checkIfAlreadyHavePermission() {
         int result = ContextCompat.checkSelfPermission(this,
@@ -85,8 +88,10 @@ public class FinishSignUpActivity extends AppCompatActivity {
     private void requestForSpecificPermission() {
         ActivityCompat.requestPermissions(this,
                 new String[]{
-                        Manifest.permission.ACCESS_COARSE_LOCATION,
                         Manifest.permission.ACCESS_FINE_LOCATION,
+                        Manifest.permission.ACCESS_COARSE_LOCATION,
+                        Manifest.permission.READ_EXTERNAL_STORAGE,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE,
                         Manifest.permission.CALL_PHONE,
                         Manifest.permission.INTERNET},
                 101);
@@ -132,6 +137,7 @@ public class FinishSignUpActivity extends AppCompatActivity {
         editor.putString(StaticClass.PHONE, phone);
         editor.putString(StaticClass.EMAIL, email);
         editor.putString(StaticClass.ADDRESS, address);
+        editor.putString(StaticClass.CITY, city);
         editor.apply();
 
         Map<String, Object> userReference = new HashMap<>();

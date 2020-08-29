@@ -101,7 +101,7 @@ public class PostFragment extends Fragment {
     }
     private void setUserData(){
         sharedPreferences = context.getSharedPreferences(StaticClass.SHARED_PREFERENCES, MODE_PRIVATE);
-        String photoUri = sharedPreferences.getString(StaticClass.PHOTO, "");
+        /*String photoUri = sharedPreferences.getString(StaticClass.PHOTO, "");
         if(!photoUri.isEmpty()){
             Bitmap imageBitmap = null;
             try {
@@ -113,6 +113,7 @@ public class PostFragment extends Fragment {
             }
             photoIV.setImageBitmap(imageBitmap);
         }
+         */
         usernameTV.setText(sharedPreferences.getString(StaticClass.USERNAME, "no username"));
         emailTV.setText(sharedPreferences.getString(StaticClass.EMAIL, "no email"));
         phoneTV.setText(sharedPreferences.getString(StaticClass.PHONE, "no phone number"));

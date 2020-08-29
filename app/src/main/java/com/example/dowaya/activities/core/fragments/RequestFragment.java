@@ -98,7 +98,7 @@ public class RequestFragment extends Fragment {
     }
     private void setUserData(){
         SharedPreferences sharedPreferences = context.getSharedPreferences(StaticClass.SHARED_PREFERENCES, MODE_PRIVATE);
-        String photoUri = sharedPreferences.getString(StaticClass.PHOTO, "");
+        /*String photoUri = sharedPreferences.getString(StaticClass.PHOTO, "");
         if(!photoUri.isEmpty()){
             Bitmap imageBitmap = null;
             try {
@@ -109,7 +109,7 @@ public class RequestFragment extends Fragment {
                         Toast.LENGTH_LONG).show();
             }
             photoIV.setImageBitmap(imageBitmap);
-        }
+        }*/
         usernameTV.setText(sharedPreferences.getString(StaticClass.USERNAME, "no username"));
         emailTV.setText(sharedPreferences.getString(StaticClass.EMAIL, "no email"));
         phoneTV.setText(sharedPreferences.getString(StaticClass.PHONE, "no phone number"));

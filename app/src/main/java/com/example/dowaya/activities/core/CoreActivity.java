@@ -1,14 +1,11 @@
 package com.example.dowaya.activities.core;
 
-import android.Manifest;
 import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 
 import com.example.dowaya.R;
@@ -16,10 +13,6 @@ import com.example.dowaya.StaticClass;
 
 import android.provider.MediaStore;
 import android.view.View;
-
-import androidx.annotation.NonNull;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -57,43 +50,6 @@ public class CoreActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         setUpNavigation();
         setUserData();
-        checkBuildVersion();
-    }
-
-    public void checkBuildVersion(){
-        int MyVersion = Build.VERSION.SDK_INT;
-        if (MyVersion > Build.VERSION_CODES.LOLLIPOP_MR1) {
-            if (!checkIfAlreadyHavePermission()) {
-                requestForSpecificPermission();
-            }
-        }
-    }
-    private boolean checkIfAlreadyHavePermission() {
-        int result = ContextCompat.checkSelfPermission(this,
-                Manifest.permission.GET_ACCOUNTS);
-        return result == PackageManager.PERMISSION_GRANTED;
-    }
-    private void requestForSpecificPermission() {
-        ActivityCompat.requestPermissions(this,
-                new String[]{
-                        Manifest.permission.READ_EXTERNAL_STORAGE,
-                        Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                        Manifest.permission.CALL_PHONE,
-                        Manifest.permission.INTERNET},
-                101);
-    }
-    @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           @NonNull String[] permissions,
-                                           @NonNull int[] grantResults) {
-        if (requestCode == 101) {
-            if (grantResults[0] != PackageManager.PERMISSION_GRANTED) {
-                // not granted
-                moveTaskToBack(true);
-            }
-        } else {
-            super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        }
     }
     public void findViewsByIds(){
         toolbar = findViewById(R.id.toolbar);
@@ -126,7 +82,7 @@ public class CoreActivity extends AppCompatActivity {
         navigationView = findViewById(R.id.nav_view);
         appBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.nav_medicine_list, R.id.nav_bookmark, R.id.nav_history,
-                R.id.nav_request, R.id.nav_share, R.id.nav_settings)
+                R.id.nav_request, R.id.nav_orientation, R.id.nav_settings)
                 .setDrawerLayout(drawer)
                 .build();
         NavController navController = Navigation.findNavController(this,

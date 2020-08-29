@@ -9,11 +9,11 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import com.example.dowaya.R;
 
-public class ShareFragment extends Fragment {
+public class OrientationFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_share, container, false);
+        View root = inflater.inflate(R.layout.fragment_orientation, container, false);
         TextView textView = root.findViewById(R.id.text_share);
         textView.setText("Share");
         return root;

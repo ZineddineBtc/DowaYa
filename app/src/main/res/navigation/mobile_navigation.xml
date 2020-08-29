@@ -36,10 +36,10 @@
         tools:layout="@layout/fragment_history" />
 
     <fragment
-        android:id="@+id/nav_share"
-        android:name="com.example.dowaya.activities.core.fragments.ShareFragment"
-        android:label="@string/menu_share"
-        tools:layout="@layout/fragment_share" />
+        android:id="@+id/nav_orientation"
+        android:name="com.example.dowaya.activities.core.fragments.OrientationFragment"
+        android:label="@string/menu_orientation"
+        tools:layout="@layout/fragment_orientation" />
 
     <fragment
         android:id="@+id/nav_settings"

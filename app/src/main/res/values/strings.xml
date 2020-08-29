@@ -13,7 +13,7 @@
     <string name="finish_sign_up">Finish Sign-up</string>
     <string name="name_and_phone_number">Name and Phone Number</string>
     <string name="name">Name</string>
-    <string name="phone">Phone Number</string>
+    <string name="phone">Phone</string>
     <string name="invalid_email">Invalid email address</string>
     <string name="insufficient_password">Password must have more than 7 letters</string>
     <string name="authentication_failed">Authentication failed</string>
@@ -75,4 +75,9 @@
     <string name="error_empty_name_city">A name and a city are mandatory</string>
     <string name="unspecified_address">Address must be specified</string>
     <string name="name_phone_address">Name, phone, and address</string>
+    <string name="menu_orientation">Orientation</string>
+    <string name="from">From</string>
+    <string name="team_name">Monks</string>
+    <string name="next">next</string>
+    <string name="create_account_signin">Sign in or create an account now!</string>
 </resources>

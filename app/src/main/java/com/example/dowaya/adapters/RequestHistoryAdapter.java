@@ -140,7 +140,7 @@ public class RequestHistoryAdapter extends RecyclerView.Adapter<RequestHistoryAd
         }
         void deleteRequester(String medicineId) {
             DocumentReference requesterReference = database.collection("users")
-                    .document(sharedPreferences.getString(StaticClass.USERNAME, ""));
+                    .document(sharedPreferences.getString(StaticClass.EMAIL, ""));
             DocumentReference medicinesRequests =
                     database.collection("medicines-requests")
                             .document(medicineId);

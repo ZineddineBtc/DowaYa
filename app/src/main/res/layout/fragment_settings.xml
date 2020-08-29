@@ -4,18 +4,22 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="10dp"
     android:id="@+id/parentLayout">
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/photoIV"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:layout_marginBottom="20dp"
+        android:layout_margin="20dp"
         android:layout_gravity="center"
         android:src="@drawable/ic_account_circle_grey_100dp"
         app:civ_border_color="#ffffff"
         app:civ_border_width="2dp"
         android:contentDescription="@string/nav_header_desc" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@drawable/white_background_border"
+        android:layout_marginBottom="10dp"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -177,13 +181,17 @@
             android:layout_gravity="center_vertical"
             android:gravity="center_vertical"/>
     </LinearLayout>
-
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@drawable/white_background_border"
+        android:layout_marginBottom="10dp"/>
     <TextView
         android:id="@+id/signOutTV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:text="@string/sign_out"
         android:textColor="#EE0000"
-        android:textSize="14sp"
-        android:layout_gravity="center"/>
+        android:textSize="14sp" />
 </LinearLayout>

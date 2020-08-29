@@ -38,7 +38,7 @@ import java.util.Objects;
 public class StoreListActivity extends AppCompatActivity {
 
     SearchView storeSearchView;
-    TextView nameTV, phoneTV, addressTV;
+    TextView nameTV, phoneTV, emailTV, addressTV;
     String medicineId;
     ListView storeLV;
     ArrayAdapter adapter;
@@ -78,6 +78,7 @@ public class StoreListActivity extends AppCompatActivity {
         storeLV = findViewById(R.id.storeLV);
         nameTV = findViewById(R.id.nameTV);
         phoneTV = findViewById(R.id.phoneTV);
+        emailTV = findViewById(R.id.emailTV);
         addressTV = findViewById(R.id.addressTV);
         shadeLL = findViewById(R.id.shadeLL);
         descriptionLL = findViewById(R.id.descriptionLL);
@@ -101,7 +102,7 @@ public class StoreListActivity extends AppCompatActivity {
                                         DocumentSnapshot document = task.getResult();
                                         if (document.exists()) {
                                             Store store = new Store();
-                                            store.setId((String)document.get("email"));
+                                            store.setId(document.getId());
                                             store.setName((String)document.get("name"));
                                             store.setCity((String)document.get("city"));
                                             store.setPhone((String)document.get("phone"));
@@ -183,6 +184,7 @@ public class StoreListActivity extends AppCompatActivity {
     }
     public void setStoreData(Store store){
         nameTV.setText(store.getName());
+        emailTV.setText(store.getId());
         phoneTV.setText(store.getPhone());
         addressTV.setText(store.getAddress());
     }
