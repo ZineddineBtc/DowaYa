@@ -21,9 +21,9 @@
             android:icon="@drawable/ic_bookmark_black"
             android:title="@string/menu_bookmark" />
         <item
-            android:id="@+id/nav_history"
+            android:id="@+id/nav_my_activities"
             android:icon="@drawable/ic_history_black_24dp"
-            android:title="@string/menu_history" />
+            android:title="@string/menu_my_activities" />
     </group>
 
     <item android:title="More">

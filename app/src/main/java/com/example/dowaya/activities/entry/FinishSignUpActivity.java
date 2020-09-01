@@ -46,13 +46,12 @@ import java.util.Objects;
 
 public class FinishSignUpActivity extends AppCompatActivity {
 
-    EditText nameET, phoneET, addressET;
+    EditText nameET, phoneET, addressET, cityET;
     TextView errorTV;
     SharedPreferences sharedPreferences;
     String name, phone, email, address, city;
     FirebaseFirestore database;
     ProgressDialog progressDialog;
-    private FusedLocationProviderClient fusedLocationClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,9 +66,9 @@ public class FinishSignUpActivity extends AppCompatActivity {
         nameET.requestFocus();
         phoneET = findViewById(R.id.phoneET);
         addressET =findViewById(R.id.addressET);
+        cityET =findViewById(R.id.cityET);
         errorTV = findViewById(R.id.errorTV);
         checkBuildVersion();
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
     }
     public void checkBuildVersion(){
@@ -88,8 +87,6 @@ public class FinishSignUpActivity extends AppCompatActivity {
     private void requestForSpecificPermission() {
         ActivityCompat.requestPermissions(this,
                 new String[]{
-                        Manifest.permission.ACCESS_FINE_LOCATION,
-                        Manifest.permission.ACCESS_COARSE_LOCATION,
                         Manifest.permission.READ_EXTERNAL_STORAGE,
                         Manifest.permission.WRITE_EXTERNAL_STORAGE,
                         Manifest.permission.CALL_PHONE,
@@ -109,29 +106,7 @@ public class FinishSignUpActivity extends AppCompatActivity {
             super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
     }
-
-    public void finishSignUp(View view){
-        name = nameET.getText().toString();
-        phone = phoneET.getText().toString().trim();
-        email = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser())
-                        .getEmail();
-        address = addressET.getText().toString();
-        if(StaticClass.containsDigit(name)){
-            displayErrorTV(R.string.name_not_number);
-            return;
-        }
-        if(phone.length()<10){
-            displayErrorTV(R.string.insufficient_phone_number);
-            return;
-        }
-        if(address.isEmpty()){
-            displayErrorTV(R.string.unspecified_address);
-            return;
-        }
-        progressDialog.setMessage("Finish sign-up...");
-        progressDialog.show();
-
-        if(city==null) city = address;
+    public void editSharedPreferences(){
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(StaticClass.USERNAME, name);
         editor.putString(StaticClass.PHONE, phone);
@@ -139,7 +114,8 @@ public class FinishSignUpActivity extends AppCompatActivity {
         editor.putString(StaticClass.ADDRESS, address);
         editor.putString(StaticClass.CITY, city);
         editor.apply();
-
+    }
+    public void writeDatabase(){
         Map<String, Object> userReference = new HashMap<>();
         userReference.put("username", name);
         userReference.put("phone", phone);
@@ -168,7 +144,38 @@ public class FinishSignUpActivity extends AppCompatActivity {
                     }
                 });
     }
-
+    public void finishSignUp(View view){
+        name = nameET.getText().toString().trim();
+        phone = phoneET.getText().toString().trim();
+        email = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser())
+                .getEmail();
+        address = addressET.getText().toString().trim();
+        city = cityET.getText().toString().trim();
+        if(name.isEmpty()){
+            displayErrorTV(R.string.unspecified_name);
+            return;
+        }
+        if(StaticClass.containsDigit(name)){
+            displayErrorTV(R.string.name_not_number);
+            return;
+        }
+        if(phone.length()<10){
+            displayErrorTV(R.string.insufficient_phone_number);
+            return;
+        }
+        if(address.isEmpty()){
+            displayErrorTV(R.string.unspecified_address);
+            return;
+        }
+        if(city.isEmpty()){
+            displayErrorTV(R.string.unspecified_city);
+            return;
+        }
+        progressDialog.setMessage("Finish sign-up...");
+        progressDialog.show();
+        editSharedPreferences();
+        writeDatabase();
+    }
     public void toTermsAndConditions(View view){
         startActivity(new Intent(getApplicationContext(), TermsActivity.class));
     }
@@ -186,37 +193,5 @@ public class FinishSignUpActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         moveTaskToBack(true);
-    }
-    public void getLocation(View view) {
-        fusedLocationClient.getLastLocation()
-                .addOnSuccessListener(this, new OnSuccessListener<Location>() {
-                    @Override
-                    public void onSuccess(Location location) {
-                        // Got last known location. In some rare situations this can be null.
-                        if (location != null) {
-                            getFullAddress(location);
-                        }
-                    }
-                });
-        Toast.makeText(getApplicationContext(), "getLocation", Toast.LENGTH_SHORT).show();
-    }
-    @SuppressLint("SetTextI18n")
-    public void getFullAddress(Location location){
-        Geocoder geocoder;
-        List<Address> addresses = null;
-        geocoder = new Geocoder(this, Locale.getDefault());
-        try{
-            addresses = geocoder.getFromLocation(
-                    location.getLatitude(), location.getLongitude(), 1);
-            // Here 1 represent max location result to returned, it's recommended 1 to 5 in the docs
-            String address = addresses.get(0).getAddressLine(0); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
-            city = addresses.get(0).getLocality();
-            String state = addresses.get(0).getAdminArea();
-            addressET.setText(address+" "+city+" "+state);
-        }catch(IOException | NullPointerException e) {
-            Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_SHORT).show();
-        }
-
-
     }
 }

@@ -2,7 +2,6 @@ package com.example.dowaya.adapters;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -21,22 +20,16 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.dowaya.R;
 import com.example.dowaya.StaticClass;
-import com.example.dowaya.activities.core.CoreActivity;
 import com.example.dowaya.daos.PostHistoryDAO;
 import com.example.dowaya.models.Medicine;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -105,7 +98,7 @@ public class PostHistoryAdapter extends RecyclerView.Adapter<PostHistoryAdapter.
                     context.getSharedPreferences(StaticClass.SHARED_PREFERENCES, MODE_PRIVATE);
             nameTV = itemView.findViewById(R.id.nameTV);
             descriptionTV = itemView.findViewById(R.id.descriptionTV);
-            addressTV = itemView.findViewById(R.id.addressTV);
+            addressTV = itemView.findViewById(R.id.addressCityTV);
             priceTV = itemView.findViewById(R.id.priceTV);
             timeTV = itemView.findViewById(R.id.timeTV);
             medicineIV = itemView.findViewById(R.id.medicineIV);

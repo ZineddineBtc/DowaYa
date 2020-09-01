@@ -26,7 +26,7 @@ import com.example.dowaya.models.Store;
 
 import java.util.ArrayList;
 
-public class HistoryFragment extends Fragment {
+public class MyActivitiesFragment extends Fragment {
 
     private View fragmentView;
     private Context context;
@@ -38,7 +38,7 @@ public class HistoryFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        fragmentView = inflater.inflate(R.layout.fragment_history, container, false);
+        fragmentView = inflater.inflate(R.layout.fragment_my_activities, container, false);
         context = fragmentView.getContext();
         initializeLists();
         findViewsByIds();
@@ -87,7 +87,7 @@ public class HistoryFragment extends Fragment {
     private void medicineTab(){
         if(currentTab != 0) {
             medicineTV.setTextColor(context.getColor(R.color.white));
-            medicineTV.setBackgroundColor(context.getColor(R.color.green));
+            medicineTV.setBackground(context.getDrawable(R.drawable.green_background_rounded_border));
             storeTV.setTextColor(context.getColor(R.color.grey));
             storeTV.setBackgroundColor(context.getColor(R.color.white));
             requestTV.setTextColor(context.getColor(R.color.grey));
@@ -112,7 +112,7 @@ public class HistoryFragment extends Fragment {
             medicineTV.setTextColor(context.getColor(R.color.grey));
             medicineTV.setBackgroundColor(context.getColor(R.color.white));
             storeTV.setTextColor(context.getColor(R.color.white));
-            storeTV.setBackgroundColor(context.getColor(R.color.green));
+            storeTV.setBackground(context.getDrawable(R.drawable.green_background_rounded_border));
             requestTV.setTextColor(context.getColor(R.color.grey));
             requestTV.setBackgroundColor(context.getColor(R.color.white));
             postTV.setTextColor(context.getColor(R.color.grey));
@@ -137,7 +137,7 @@ public class HistoryFragment extends Fragment {
             storeTV.setTextColor(context.getColor(R.color.grey));
             storeTV.setBackgroundColor(context.getColor(R.color.white));
             requestTV.setTextColor(context.getColor(R.color.white));
-            requestTV.setBackgroundColor(context.getColor(R.color.green));
+            requestTV.setBackground(context.getDrawable(R.drawable.green_background_rounded_border));
             postTV.setTextColor(context.getColor(R.color.grey));
             postTV.setBackgroundColor(context.getColor(R.color.white));
             if(requestList.isEmpty()){
@@ -162,7 +162,7 @@ public class HistoryFragment extends Fragment {
             requestTV.setTextColor(context.getColor(R.color.grey));
             requestTV.setBackgroundColor(context.getColor(R.color.white));
             postTV.setTextColor(context.getColor(R.color.white));
-            postTV.setBackgroundColor(context.getColor(R.color.green));
+            postTV.setBackground(context.getDrawable(R.drawable.green_background_rounded_border));
             if(postList.isEmpty()){
                 emptyListTV.setVisibility(View.VISIBLE);
                 postRV.setVisibility(View.GONE);

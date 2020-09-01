@@ -56,8 +56,8 @@ public class PostFragment extends Fragment {
     private ImageView photoIV, medicineIV;
     private TextView usernameTV, emailTV, phoneTV, clearTV, errorTV;
     private EditText medicineNameET, medicineDescriptionET,
-            medicineDoseET, medicinePriceET;
-    private String medicinePhotoString=null, medicineName, email;
+            medicineDoseET, minPriceET, maxPriceET;
+    private String medicinePhotoString=null, medicineName, email, priceRange;
     private PostHistoryDAO postHistoryDAO;
     private FirebaseFirestore database;
 
@@ -81,7 +81,8 @@ public class PostFragment extends Fragment {
         phoneTV = fragmentView.findViewById(R.id.phoneTV);
         medicineNameET = fragmentView.findViewById(R.id.medicineNameET);
         medicineDescriptionET = fragmentView.findViewById(R.id.medicineDescriptionET);
-        medicinePriceET = fragmentView.findViewById(R.id.medicinePriceET);
+        minPriceET = fragmentView.findViewById(R.id.medicineMinPriceET);
+        maxPriceET = fragmentView.findViewById(R.id.medicineMaxPriceET);
         medicineDoseET = fragmentView.findViewById(R.id.medicineDoseET);
         medicineIV = fragmentView.findViewById(R.id.medicineIV);
         medicineIV.setOnClickListener(new View.OnClickListener() {
@@ -182,7 +183,7 @@ public class PostFragment extends Fragment {
         medicine.setId(medicineName);
         medicine.setName(medicineName);
         medicine.setDescription(medicineDescriptionET.getText().toString());
-        medicine.setPrice(medicinePriceET.getText().toString());
+        medicine.setPrice(priceRange);
         medicine.setPostAddress(sharedPreferences.getString(StaticClass.ADDRESS, ""));
         medicine.setPhoto(medicinePhotoString);
         medicine.setRequestTime(
@@ -194,7 +195,7 @@ public class PostFragment extends Fragment {
         Map<String, Object> medicineDescription = new HashMap<>();
         medicineDescription.put("name", medicineName);
         medicineDescription.put("description", medicineDescriptionET.getText().toString());
-        medicineDescription.put("price", medicinePriceET.getText().toString());
+        medicineDescription.put("price", priceRange);
         medicineDescription.put("dose", medicineDoseET.getText().toString());
 
         database.collection("medicines-descriptions")
@@ -353,7 +354,12 @@ public class PostFragment extends Fragment {
     private void post(){
         email = sharedPreferences.getString(StaticClass.EMAIL, "");
         String temp = medicineNameET.getText().toString().trim().toLowerCase();
-        medicineName = temp.substring(0, 1).toUpperCase() + temp.substring(1);
+        if(temp.length()>2){
+            medicineName = temp.substring(0, 1).toUpperCase() + temp.substring(1);
+        }else{
+            medicineName = "";
+        }
+        priceRange = minPriceET.getText().toString()+"-"+maxPriceET.getText().toString()+" DA";
         if(!medicineNameET.getText().toString().isEmpty()
                 && !medicineDescriptionET.getText().toString().isEmpty()){
             insertPostHistory();

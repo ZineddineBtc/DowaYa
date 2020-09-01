@@ -80,4 +80,11 @@
     <string name="team_name">Monks</string>
     <string name="next">next</string>
     <string name="create_account_signin">Sign in or create an account now!</string>
+    <string name="menu_my_activities">My Activities</string>
+    <string name="random_price_range">220-240 DA</string>
+    <string name="optional_image">Image (optional):</string>
+    <string name="min_price">Min Price</string>
+    <string name="max_price">Max Price</string>
+    <string name="unspecified_city">City must be specified</string>
+    <string name="unspecified_name">Name must be specified</string>
 </resources>

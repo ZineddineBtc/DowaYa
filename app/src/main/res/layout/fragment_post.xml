@@ -77,99 +77,51 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
-
+                <EditText
+                    android:id="@+id/medicineNameET"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:hint="@string/medicine_name"
+                    android:inputType="textMultiLine" />
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_weight="0.3"
-                        android:text="@string/medicine_name"
-                        android:textColor="#000000" />
-
                     <EditText
-                        android:id="@+id/medicineNameET"
+                        android:id="@+id/medicineMinPriceET"
                         android:layout_width="0dp"
+                        android:layout_weight="0.5"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_weight="0.6"
-                        android:hint="@string/medicine_name_example"
-                        android:inputType="textMultiLine" />
+                        android:gravity="center"
+                        android:inputType="number"
+                        android:hint="@string/min_price"/>
+                    <EditText
+                        android:id="@+id/medicineMaxPriceET"
+                        android:layout_width="0dp"
+                        android:layout_weight="0.5"
+                        android:layout_height="wrap_content"
+                        android:inputType="number"
+                        android:gravity="center"
+                        android:hint="@string/max_price"/>
                 </LinearLayout>
-
-                <LinearLayout
+                <EditText
+                    android:id="@+id/medicineDescriptionET"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_weight="0.3"
-                        android:text="@string/price_range"
-                        android:textColor="#000000" />
-
-                    <EditText
-                        android:id="@+id/medicinePriceET"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_weight="0.6"
-                        android:inputType="text"
-                        android:hint="@string/price_example"/>
-                </LinearLayout>
-                <LinearLayout
+                    android:hint="@string/description"
+                    android:inputType="textMultiLine" />
+                <EditText
+                    android:id="@+id/medicineDoseET"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_weight="0.3"
-                        android:text="@string/description"
-                        android:textColor="#000000" />
-
-                    <EditText
-                        android:id="@+id/medicineDescriptionET"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_weight="0.6"
-                        android:inputType="textMultiLine" />
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_weight="0.3"
-                        android:text="@string/dose"
-                        android:textColor="#000000" />
-
-                    <EditText
-                        android:id="@+id/medicineDoseET"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_weight="0.6"
-                        android:inputType="text"
-                        android:hint="@string/random_dose"/>
-                </LinearLayout>
+                    android:layout_gravity="center"
+                    android:inputType="text"
+                    android:hint="@string/dose"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/optional"
+                    android:text="@string/optional_image"
                     android:textColor="#000000" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout

@@ -269,7 +269,12 @@ public class RequestFragment extends Fragment {
     private void request(){
         email = sharedPreferences.getString(StaticClass.EMAIL, "");
         String temp = medicineNameET.getText().toString().trim().toLowerCase();
-        medicineName = temp.substring(0, 1).toUpperCase() + temp.substring(1);
+        if(temp.length()>2){
+            medicineName = temp.substring(0, 1).toUpperCase() + temp.substring(1);
+        }else{
+            medicineName = "";
+        }
+
         if(!medicineNameET.getText().toString().isEmpty()){
             Toast.makeText(context, "requested", Toast.LENGTH_SHORT).show();
             insertRequestHistory();

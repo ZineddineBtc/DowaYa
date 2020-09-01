@@ -30,10 +30,10 @@
         tools:layout="@layout/fragment_bookmark" />
 
     <fragment
-        android:id="@+id/nav_history"
-        android:name="com.example.dowaya.activities.core.fragments.HistoryFragment"
-        android:label="@string/menu_history"
-        tools:layout="@layout/fragment_history" />
+        android:id="@+id/nav_my_activities"
+        android:name="com.example.dowaya.activities.core.fragments.MyActivitiesFragment"
+        android:label="@string/menu_my_activities"
+        tools:layout="@layout/fragment_my_activities" />
 
     <fragment
         android:id="@+id/nav_orientation"

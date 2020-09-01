@@ -133,7 +133,7 @@
             android:layout_gravity="center_vertical"
             android:src="@drawable/ic_map_marker_green_24dp"/>
         <TextView
-            android:id="@+id/addressTV"
+            android:id="@+id/addressCityTV"
             android:layout_width="0dp"
             android:layout_weight="0.6"
             android:layout_height="40dp"
@@ -142,15 +142,25 @@
             android:textColor="#000000"
             android:layout_gravity="center_vertical"
             android:gravity="center_vertical"/>
-        <EditText
-            android:id="@+id/addressET"
+        <LinearLayout
+            android:id="@+id/addressCityLL"
             android:visibility="gone"
+            android:orientation="horizontal"
             android:layout_width="0dp"
             android:layout_weight="0.6"
             android:layout_height="40dp"
-            android:textSize="14sp"
-            android:textColor="#000000"
-            android:layout_gravity="center_vertical"/>
+            android:layout_gravity="center_vertical">
+            <EditText
+                android:id="@+id/addressET"
+                android:layout_width="0dp"
+                android:layout_weight="0.7"
+                android:layout_height="match_parent"/>
+            <EditText
+                android:id="@+id/cityET"
+                android:layout_width="0dp"
+                android:layout_weight="0.3"
+                android:layout_height="match_parent"/>
+        </LinearLayout>
 
         <ImageView
             android:id="@+id/editAddressIV"

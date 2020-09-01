@@ -25,13 +25,9 @@ import androidx.fragment.app.Fragment;
 import com.example.dowaya.R;
 import com.example.dowaya.StaticClass;
 import com.example.dowaya.activities.TermsActivity;
-import com.example.dowaya.activities.core.CoreActivity;
 import com.example.dowaya.activities.entry.LoginActivity;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.io.IOException;
@@ -47,9 +43,10 @@ public class SettingsFragment extends Fragment {
     private SharedPreferences sharedPreferences;
     private SharedPreferences.Editor editor;
     private FirebaseFirestore database;
-    private TextView nameTV, emailTV, phoneTV, addressTV, signOutTV, termsTV;
-    private EditText nameET, phoneET, addressET;
-    private ImageView photoIV, editNameIV, editPhoneIV, editAddressIV;
+    private LinearLayout addressCityLL;
+    private TextView nameTV, emailTV, phoneTV, addressCityTV, signOutTV, termsTV;
+    private EditText nameET, phoneET, addressET, cityET;
+    private ImageView photoIV, editNameIV, editPhoneIV, editAddressCityIV;
     private boolean isNameEdit, isPhoneEdit, isAddressEdit, imageChanged;
     private String uriString;
 
@@ -74,11 +71,13 @@ public class SettingsFragment extends Fragment {
         emailTV = fragmentView.findViewById(R.id.emailTV);
         phoneTV = fragmentView.findViewById(R.id.phoneTV);
         phoneET = fragmentView.findViewById(R.id.phoneET);
-        addressTV = fragmentView.findViewById(R.id.addressTV);
+        addressCityTV = fragmentView.findViewById(R.id.addressCityTV);
+        addressCityLL = fragmentView.findViewById(R.id.addressCityLL);
         addressET = fragmentView.findViewById(R.id.addressET);
+        cityET = fragmentView.findViewById(R.id.cityET);
         editNameIV = fragmentView.findViewById(R.id.editNameIV);
         editPhoneIV = fragmentView.findViewById(R.id.editPhoneIV);
-        editAddressIV = fragmentView.findViewById(R.id.editAddressIV);
+        editAddressCityIV = fragmentView.findViewById(R.id.editAddressIV);
         signOutTV = fragmentView.findViewById(R.id.signOutTV);
         termsTV = fragmentView.findViewById(R.id.termsTV);
     }
@@ -101,8 +100,11 @@ public class SettingsFragment extends Fragment {
         emailTV.setText(sharedPreferences.getString(StaticClass.EMAIL, "no email"));
         phoneTV.setText(sharedPreferences.getString(StaticClass.PHONE, "no phone number"));
         phoneET.setText(sharedPreferences.getString(StaticClass.PHONE, ""));
-        addressTV.setText(sharedPreferences.getString(StaticClass.ADDRESS, "no address specified"));
+        String addressCity = sharedPreferences.getString(StaticClass.ADDRESS, "") + ", " +
+                sharedPreferences.getString(StaticClass.CITY, "");
+        addressCityTV.setText(addressCity);
         addressET.setText(sharedPreferences.getString(StaticClass.ADDRESS, ""));
+        cityET.setText(sharedPreferences.getString(StaticClass.CITY, ""));
     }
     private void setClickListeners(){
         photoIV.setOnClickListener(new View.OnClickListener() {
@@ -123,10 +125,10 @@ public class SettingsFragment extends Fragment {
                 editPhone();
             }
         });
-        editAddressIV.setOnClickListener(new View.OnClickListener() {
+        editAddressCityIV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                editAddress();
+                editAddressCity();
             }
         });
         signOutTV.setOnClickListener(new View.OnClickListener() {
@@ -162,10 +164,10 @@ public class SettingsFragment extends Fragment {
         if(isPhoneEdit) updateData();
         isPhoneEdit = !isPhoneEdit;
     }
-    private void editAddress(){
-        addressTV.setVisibility(isAddressEdit ? View.VISIBLE : View.GONE);
-        addressET.setVisibility(isAddressEdit ? View.GONE : View.VISIBLE);
-        editAddressIV.setImageResource(isAddressEdit ?
+    private void editAddressCity(){
+        addressCityTV.setVisibility(isAddressEdit ? View.VISIBLE : View.GONE);
+        addressCityLL.setVisibility(isAddressEdit ? View.GONE : View.VISIBLE);
+        editAddressCityIV.setImageResource(isAddressEdit ?
                 R.drawable.ic_edit_green_24dp : R.drawable.ic_check_green_24dp);
         if(isAddressEdit) updateData();
         isAddressEdit = !isAddressEdit;
@@ -222,12 +224,13 @@ public class SettingsFragment extends Fragment {
             userReference.put("phone", phoneET.getText().toString());
         }
         if(!addressET.getText().toString().equals(
-                sharedPreferences.getString(StaticClass.ADDRESS, ""))){
+                sharedPreferences.getString(StaticClass.ADDRESS, ""))
+        || !cityET.getText().toString().equals(
+                sharedPreferences.getString(StaticClass.CITY, ""))){
             editor.putString(StaticClass.ADDRESS, addressET.getText().toString());
-            editor.putString(StaticClass.CITY, addressET.getText().toString());
+            editor.putString(StaticClass.CITY, cityET.getText().toString());
             userReference.put("address", addressET.getText().toString());
-            userReference.put("city", addressET.getText().toString());
-
+            userReference.put("city", cityET.getText().toString());
         }
         if(imageChanged){
             editor.putString(StaticClass.PHOTO, String.valueOf(uriString));

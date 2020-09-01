@@ -79,7 +79,7 @@ public class StoreListActivity extends AppCompatActivity {
         nameTV = findViewById(R.id.nameTV);
         phoneTV = findViewById(R.id.phoneTV);
         emailTV = findViewById(R.id.emailTV);
-        addressTV = findViewById(R.id.addressTV);
+        addressTV = findViewById(R.id.addressCityTV);
         shadeLL = findViewById(R.id.shadeLL);
         descriptionLL = findViewById(R.id.descriptionLL);
     }
