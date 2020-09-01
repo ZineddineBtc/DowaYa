@@ -12,8 +12,8 @@ import java.util.ArrayList;
 
 public class BookmarkDAO extends SQLiteOpenHelper {
 
-    private static final String DATABASE_NAME = "bookmark-history.db";
-    private static final String MEDICINE_TABLE_NAME = "bookmark-history";
+    private static final String DATABASE_NAME = "bookmarkHistory.db";
+    private static final String MEDICINE_TABLE_NAME = "bookmarkHistory";
     private static final String MEDICINE_ID = "id";
     private static final String MEDICINE_NAME = "name";
     private static final String MEDICINE_DESCRIPTION = "description";

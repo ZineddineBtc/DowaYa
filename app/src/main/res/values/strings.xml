@@ -87,4 +87,9 @@
     <string name="max_price">Max Price</string>
     <string name="unspecified_city">City must be specified</string>
     <string name="unspecified_name">Name must be specified</string>
+    <string name="how_to_look_for_a_medicine">How to look for a medicine?</string>
+    <string name="how_to_post_a_medicine">How to post a medicine?</string>
+    <string name="how_to_delete_one_of_my_posts">How to delete one of my posts?</string>
+    <string name="how_to_request_a_medicine">How to request a medicine?</string>
+    <string name="how_to_delete_post_request">How to delete post/request?</string>
 </resources>

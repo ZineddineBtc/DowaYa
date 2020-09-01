@@ -154,11 +154,13 @@
                 android:id="@+id/addressET"
                 android:layout_width="0dp"
                 android:layout_weight="0.7"
+                android:textSize="10sp"
                 android:layout_height="match_parent"/>
             <EditText
                 android:id="@+id/cityET"
                 android:layout_width="0dp"
                 android:layout_weight="0.3"
+                android:textSize="10sp"
                 android:layout_height="match_parent"/>
         </LinearLayout>
 

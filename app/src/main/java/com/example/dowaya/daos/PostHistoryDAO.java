@@ -13,8 +13,8 @@ import java.util.ArrayList;
 
 public class PostHistoryDAO extends SQLiteOpenHelper {
 
-    private static final String DATABASE_NAME = "post-history.db";
-    private static final String POST_HISTORY_TABLE_NAME = "post-history";
+    private static final String DATABASE_NAME = "postHistory.db";
+    private static final String POST_HISTORY_TABLE_NAME = "postHistory";
     private static final String POST_HISTORY_ID = "id";
     private static final String POST_HISTORY_NAME = "name";
     private static final String POST_HISTORY_DESCRIPTION = "description";

@@ -145,20 +145,12 @@ public class PostHistoryAdapter extends RecyclerView.Adapter<PostHistoryAdapter.
         }
         void deleteStore(String medicineId) {
             DocumentReference storeReference = database.collection("stores")
-                    .document(sharedPreferences.getString(StaticClass.USERNAME, ""));
+                    .document(sharedPreferences.getString(StaticClass.EMAIL, ""));
             DocumentReference medicinesStores =
                     database.collection("medicines-stores")
                             .document(medicineId);
             medicinesStores.update("stores",
                     FieldValue.arrayRemove(storeReference))
-                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void aVoid) {
-                            Toast.makeText(context,
-                                    "medicine store successfully removed!",
-                                    Toast.LENGTH_SHORT).show();
-                        }
-                    })
                     .addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {

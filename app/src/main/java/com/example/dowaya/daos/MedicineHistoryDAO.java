@@ -13,8 +13,8 @@ import java.util.ArrayList;
 
 public class MedicineHistoryDAO extends SQLiteOpenHelper {
 
-    private static final String DATABASE_NAME = "medicine-history.db";
-    private static final String MEDICINE_HISTORY_TABLE_NAME = "medicine-history";
+    private static final String DATABASE_NAME = "medicineHistory.db";
+    private static final String MEDICINE_HISTORY_TABLE_NAME = "medicineHistory";
     private static final String MEDICINE_HISTORY_ID = "id";
     private static final String MEDICINE_HISTORY_NAME = "name";
     private static final String MEDICINE_HISTORY_TIME = "time";

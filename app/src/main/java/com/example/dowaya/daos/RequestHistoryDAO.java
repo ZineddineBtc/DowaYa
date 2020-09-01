@@ -13,8 +13,8 @@ import java.util.ArrayList;
 
 public class RequestHistoryDAO extends SQLiteOpenHelper {
 
-    private static final String DATABASE_NAME = "request-history.db";
-    private static final String REQUEST_HISTORY_TABLE_NAME = "request-history";
+    private static final String DATABASE_NAME = "requestHistory.db";
+    private static final String REQUEST_HISTORY_TABLE_NAME = "requestHistory";
     private static final String REQUEST_HISTORY_ID = "id";
     private static final String REQUEST_HISTORY_NAME = "name";
     private static final String REQUEST_HISTORY_DESCRIPTION = "description";

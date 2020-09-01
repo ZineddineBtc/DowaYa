@@ -13,8 +13,8 @@ import java.util.ArrayList;
 
 public class StoreHistoryDAO extends SQLiteOpenHelper {
 
-    private static final String DATABASE_NAME = "store-history.db";
-    private static final String STORE_HISTORY_TABLE_NAME = "store-history";
+    private static final String DATABASE_NAME = "storeHistory.db";
+    private static final String STORE_HISTORY_TABLE_NAME = "storeHistory";
     private static final String STORE_HISTORY_ID = "id";
     private static final String STORE_HISTORY_NAME = "name";
     private static final String STORE_HISTORY_TIME = "time";
