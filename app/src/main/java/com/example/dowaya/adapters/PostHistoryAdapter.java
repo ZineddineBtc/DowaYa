@@ -3,9 +3,6 @@ package com.example.dowaya.adapters;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.net.Uri;
-import android.provider.MediaStore;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,12 +20,9 @@ import com.example.dowaya.StaticClass;
 import com.example.dowaya.daos.PostHistoryDAO;
 import com.example.dowaya.models.Medicine;
 import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
-
-import java.io.IOException;
 import java.util.List;
 
 import static android.content.Context.MODE_PRIVATE;
@@ -58,20 +52,6 @@ public class PostHistoryAdapter extends RecyclerView.Adapter<PostHistoryAdapter.
         holder.descriptionTV.setText(list.get(position).getDescription());
         holder.addressTV.setText(list.get(position).getPostAddress());
         holder.priceTV.setText(list.get(position).getPriceRange());
-        String photoUri = list.get(position).getPhoto();
-        if(photoUri != null){
-            Bitmap imageBitmap = null;
-            try {
-                imageBitmap = MediaStore.Images.Media.getBitmap(
-                        context.getContentResolver(), Uri.parse(photoUri));
-            } catch (IOException e) {
-                Toast.makeText(context, "IO Exception",
-                        Toast.LENGTH_LONG).show();
-            }
-            holder.medicineIV.setImageBitmap(imageBitmap);
-        }else{
-            holder.medicineIV.setVisibility(View.GONE);
-        }
         holder.timeTV.setText(list.get(position).getPostTime());
     }
 
@@ -83,7 +63,7 @@ public class PostHistoryAdapter extends RecyclerView.Adapter<PostHistoryAdapter.
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView nameTV, descriptionTV, timeTV, addressTV, priceTV;
-        ImageView medicineIV, deleteIV, toggleDeleteIV;
+        ImageView deleteIV, toggleDeleteIV;
         boolean isShown;
 
         PostHistoryDAO postHistoryDAO;
@@ -101,7 +81,6 @@ public class PostHistoryAdapter extends RecyclerView.Adapter<PostHistoryAdapter.
             addressTV = itemView.findViewById(R.id.addressCityTV);
             priceTV = itemView.findViewById(R.id.priceTV);
             timeTV = itemView.findViewById(R.id.timeTV);
-            medicineIV = itemView.findViewById(R.id.medicineIV);
             deleteIV = itemView.findViewById(R.id.deleteIV);
             toggleDeleteIV = itemView.findViewById(R.id.toggleDeleteIV);
             toggleDeleteIV.setOnClickListener(new View.OnClickListener() {

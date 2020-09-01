@@ -31,12 +31,10 @@ import java.util.Objects;
 public class MedicineDescriptionActivity extends AppCompatActivity {
 
     TextView nameTV, priceRange, descriptionTV, doseTV;
-    ImageView medicineIV;
     Medicine medicine;
     BookmarkDAO bookmarkDAO;
     String medicineId;
     boolean isBookmarked;
-    String photoUri=null;
     private FirebaseFirestore database;
     ProgressDialog progressDialog;
     Menu aMenu;
@@ -58,7 +56,6 @@ public class MedicineDescriptionActivity extends AppCompatActivity {
         priceRange = findViewById(R.id.priceRangeTV);
         descriptionTV = findViewById(R.id.descriptionTV);
         doseTV = findViewById(R.id.doseTV);
-        medicineIV = findViewById(R.id.medicineIV);
     }
     public void getMedicineData(){
         progressDialog.setMessage("Loading...");
@@ -79,7 +76,6 @@ public class MedicineDescriptionActivity extends AppCompatActivity {
                         medicine.setPrice(document.get("price").toString());
                         medicine.setDose(document.get("dose").toString());
                         setMedicineData();
-
                         isBookmarked = bookmarkDAO.contains(medicine.getName());
                         aMenu.getItem(0).setIcon(isBookmarked ?
                                 R.drawable.ic_bookmark_black : R.drawable.ic_bookmark_grey);

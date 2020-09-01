@@ -76,7 +76,7 @@
     <string name="unspecified_address">Address must be specified</string>
     <string name="name_phone_address">Name, phone, and address</string>
     <string name="menu_orientation">Orientation</string>
-    <string name="from">From</string>
+    <string name="from">from</string>
     <string name="team_name">Monks</string>
     <string name="next">next</string>
     <string name="create_account_signin">Sign in or create an account now!</string>

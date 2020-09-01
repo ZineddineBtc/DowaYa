@@ -82,7 +82,6 @@ public class SettingsFragment extends Fragment {
         termsTV = fragmentView.findViewById(R.id.termsTV);
     }
     private void initializeData(){
-        /*
         if(!sharedPreferences.getString(StaticClass.PHOTO, "").isEmpty()){
             Bitmap imageBitmap = null;
             try {
@@ -94,7 +93,7 @@ public class SettingsFragment extends Fragment {
                         Toast.LENGTH_LONG).show();
             }
             photoIV.setImageBitmap(imageBitmap);
-        }*/
+        }
         nameTV.setText(sharedPreferences.getString(StaticClass.USERNAME, "no username"));
         nameET.setText(sharedPreferences.getString(StaticClass.USERNAME, ""));
         emailTV.setText(sharedPreferences.getString(StaticClass.EMAIL, "no email"));

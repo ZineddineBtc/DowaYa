@@ -61,7 +61,7 @@ public class CoreActivity extends AppCompatActivity {
         userEmailTV = navigationView.getHeaderView(0).findViewById(R.id.userEmailTV);
         userPhoneTV = navigationView.getHeaderView(0).findViewById(R.id.userPhoneTV);
         sharedPreferences = getSharedPreferences(StaticClass.SHARED_PREFERENCES, MODE_PRIVATE);
-        /*
+
         photoUri = sharedPreferences.getString(StaticClass.PHOTO, "");
         if(!photoUri.isEmpty()){
             Bitmap imageBitmap = null;
@@ -73,7 +73,7 @@ public class CoreActivity extends AppCompatActivity {
                         Toast.LENGTH_LONG).show();
             }
             userPhotoIV.setImageBitmap(imageBitmap);
-        }*/
+        }
         userNameTV.setText(sharedPreferences.getString(StaticClass.USERNAME, "no username"));
         userEmailTV.setText(sharedPreferences.getString(StaticClass.EMAIL, "no email"));
         userPhoneTV.setText(sharedPreferences.getString(StaticClass.PHONE, "no phone number"));

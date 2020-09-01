@@ -6,7 +6,7 @@ import java.util.regex.Pattern;
 public class StaticClass {
 
     public static int PICK_SINGLE_IMAGE = 1;
-    public static String SHARED_PREFERENCES = "shared_preferences";
+    public static String SHARED_PREFERENCES = "sharedPreferences";
     public static String USERNAME = "username";
     public static String EMAIL = "email";
     public static String PHONE = "phone";

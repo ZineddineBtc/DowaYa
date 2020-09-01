@@ -3,9 +3,6 @@ package com.example.dowaya.adapters;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.net.Uri;
-import android.provider.MediaStore;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,11 +10,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.example.dowaya.R;
 import com.example.dowaya.StaticClass;
 import com.example.dowaya.daos.RequestHistoryDAO;
@@ -27,8 +22,6 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
-
-import java.io.IOException;
 import java.util.List;
 
 import static android.content.Context.MODE_PRIVATE;
@@ -57,20 +50,6 @@ public class RequestHistoryAdapter extends RecyclerView.Adapter<RequestHistoryAd
         holder.nameTV.setText(list.get(position).getName());
         holder.descriptionTV.setText(list.get(position).getDescription());
         holder.doseTV.setText(list.get(position).getDose());
-        String photoUri = list.get(position).getPhoto();
-        if(photoUri != null){
-            Bitmap imageBitmap = null;
-            try {
-                imageBitmap = MediaStore.Images.Media.getBitmap(
-                        context.getContentResolver(), Uri.parse(photoUri));
-            } catch (IOException e) {
-                Toast.makeText(context, "IO Exception",
-                        Toast.LENGTH_LONG).show();
-            }
-            holder.medicineIV.setImageBitmap(imageBitmap);
-        }else{
-            holder.medicineIV.setVisibility(View.GONE);
-        }
         holder.timeTV.setText(list.get(position).getRequestTime());
     }
 
@@ -82,7 +61,7 @@ public class RequestHistoryAdapter extends RecyclerView.Adapter<RequestHistoryAd
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView nameTV, descriptionTV, timeTV, doseTV;
-        ImageView medicineIV, deleteIV, toggleDeleteIV;
+        ImageView deleteIV, toggleDeleteIV;
         boolean isShown;
         RequestHistoryDAO requestHistoryDAO;
         FirebaseFirestore database;
@@ -98,7 +77,6 @@ public class RequestHistoryAdapter extends RecyclerView.Adapter<RequestHistoryAd
             descriptionTV = itemView.findViewById(R.id.descriptionTV);
             doseTV = itemView.findViewById(R.id.doseTV);
             timeTV = itemView.findViewById(R.id.timeTV);
-            medicineIV = itemView.findViewById(R.id.medicineIV);
             deleteIV = itemView.findViewById(R.id.deleteIV);
             toggleDeleteIV = itemView.findViewById(R.id.toggleDeleteIV);
             toggleDeleteIV.setOnClickListener(new View.OnClickListener() {

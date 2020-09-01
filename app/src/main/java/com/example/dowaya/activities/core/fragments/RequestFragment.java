@@ -51,8 +51,8 @@ public class RequestFragment extends Fragment {
 
     private View fragmentView;
     private Context context;
-    private ImageView photoIV, medicineIV;
-    private TextView usernameTV, emailTV, phoneTV, clearTV, errorTV;
+    private ImageView photoIV;
+    private TextView usernameTV, emailTV, phoneTV, errorTV;
     private EditText medicineNameET, medicineDescriptionET, medicineDoseET;
     private String medicinePhotoString=null, medicineName, email;
     private RequestHistoryDAO requestHistoryDAO;
@@ -80,25 +80,11 @@ public class RequestFragment extends Fragment {
         medicineNameET = fragmentView.findViewById(R.id.medicineNameET);
         medicineDescriptionET = fragmentView.findViewById(R.id.medicineDescriptionET);
         medicineDoseET = fragmentView.findViewById(R.id.medicineDoseET);
-        medicineIV = fragmentView.findViewById(R.id.medicineIV);
-        medicineIV.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                importImage();
-            }
-        });
-        clearTV = fragmentView.findViewById(R.id.clearTV);
-        clearTV.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                clearImage();
-            }
-        });
         errorTV = fragmentView.findViewById(R.id.errorTV);
     }
     private void setUserData(){
         SharedPreferences sharedPreferences = context.getSharedPreferences(StaticClass.SHARED_PREFERENCES, MODE_PRIVATE);
-        /*String photoUri = sharedPreferences.getString(StaticClass.PHOTO, "");
+        String photoUri = sharedPreferences.getString(StaticClass.PHOTO, "");
         if(!photoUri.isEmpty()){
             Bitmap imageBitmap = null;
             try {
@@ -109,7 +95,7 @@ public class RequestFragment extends Fragment {
                         Toast.LENGTH_LONG).show();
             }
             photoIV.setImageBitmap(imageBitmap);
-        }*/
+        }
         usernameTV.setText(sharedPreferences.getString(StaticClass.USERNAME, "no username"));
         emailTV.setText(sharedPreferences.getString(StaticClass.EMAIL, "no email"));
         phoneTV.setText(sharedPreferences.getString(StaticClass.PHONE, "no phone number"));
@@ -125,53 +111,6 @@ public class RequestFragment extends Fragment {
             request();
         }
         return false;
-    }
-    private void importImage(){
-        Intent intent;
-        intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
-        intent.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
-        intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
-        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-        intent.setType("image/*");
-        startActivityForResult(
-                Intent.createChooser(intent, "Select Images"),
-                StaticClass.PICK_SINGLE_IMAGE);
-    }
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == StaticClass.PICK_SINGLE_IMAGE && resultCode == Activity.RESULT_OK) {
-            if (data == null) {
-                Toast.makeText(context, "ERROR", Toast.LENGTH_SHORT).show();
-                return;
-            }
-            Uri uri = data.getData();
-            if(uri != null){
-                final int takeFlags = data.getFlags() & Intent.FLAG_GRANT_READ_URI_PERMISSION;
-                ContentResolver resolver = context.getContentResolver();
-                resolver.takePersistableUriPermission(uri, takeFlags);
-
-                Bitmap imageBitmap = null;
-                try {
-                    imageBitmap = MediaStore.Images.Media.getBitmap(
-                            context.getContentResolver(), uri);
-                } catch (IOException e) {
-                    Toast.makeText(context, "IO Exception",
-                            Toast.LENGTH_LONG).show();
-                }
-                medicineIV.setImageBitmap(imageBitmap);
-                medicineIV.setScaleType(ImageView.ScaleType.FIT_CENTER);
-                medicineIV.setAdjustViewBounds(true);
-                clearTV.setVisibility(View.VISIBLE);
-                medicinePhotoString = String.valueOf(uri);
-            }
-        }
-    }
-    private void clearImage(){
-        medicineIV.setImageDrawable(context.getDrawable(R.drawable.ic_image_grey));
-        medicineIV.setAdjustViewBounds(false);
-        medicinePhotoString = null;
-        clearTV.setVisibility(View.GONE);
     }
     private void insertRequestHistory(){
         Medicine medicine = new Medicine();
@@ -196,9 +135,6 @@ public class RequestFragment extends Fragment {
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        Toast.makeText(context,
-                                "medicine requester successfully written!",
-                                Toast.LENGTH_SHORT).show();
                         startActivity(new Intent(context, CoreActivity.class));
                     }
                 })
@@ -224,14 +160,6 @@ public class RequestFragment extends Fragment {
         database.collection("medicines-requests")
                 .document(medicineName)
                 .set(medicineRequest)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Toast.makeText(context,
-                                "request successfully written!",
-                                Toast.LENGTH_SHORT).show();
-                    }
-                })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
@@ -252,7 +180,6 @@ public class RequestFragment extends Fragment {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
                         addRequestUser();
-
                     } else {
                         writeRequest();
                     }
@@ -272,7 +199,6 @@ public class RequestFragment extends Fragment {
         }else{
             medicineName = "";
         }
-
         if(!medicineNameET.getText().toString().isEmpty()){
             Toast.makeText(context, "requested", Toast.LENGTH_SHORT).show();
             insertRequestHistory();
@@ -289,6 +215,7 @@ public class RequestFragment extends Fragment {
             }, 1500);
         }
     }
+
 }
 
 
