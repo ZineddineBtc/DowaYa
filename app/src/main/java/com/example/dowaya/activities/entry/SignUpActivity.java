@@ -67,9 +67,6 @@ public class SignUpActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            Toast.makeText(getApplicationContext(),
-                                    "User created",
-                                    Toast.LENGTH_SHORT).show();
                             startActivity(new Intent(getApplicationContext(),
                                     FinishSignUpActivity.class));
                         } else {

@@ -2,7 +2,6 @@ package com.example.dowaya.activities.entry;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -12,7 +11,6 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.example.dowaya.R;
 import com.example.dowaya.StaticClass;
 import com.example.dowaya.activities.TermsActivity;
@@ -24,7 +22,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-
 import java.util.Objects;
 
 public class LoginActivity extends AppCompatActivity {
@@ -64,9 +61,6 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            Toast.makeText(getApplicationContext(),
-                                    "Sign in with success",
-                                    Toast.LENGTH_SHORT).show();
                             getDataByDocument();
                         } else {
                             displayErrorTV(R.string.authentication_failed);
@@ -103,13 +97,6 @@ public class LoginActivity extends AppCompatActivity {
                                 document.get("phone").toString(),
                                 document.get("address").toString(),
                                 document.get("city").toString());
-                        Toast.makeText(getApplicationContext(),
-                                "got data by doc",
-                                Toast.LENGTH_SHORT).show();
-                    } else {
-                        Toast.makeText(getApplicationContext(),
-                                "No such user",
-                                Toast.LENGTH_SHORT).show();
                     }
                 } else {
                     Toast.makeText(getApplicationContext(),

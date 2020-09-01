@@ -57,9 +57,6 @@ public class LogoActivity extends AppCompatActivity {
                             startActivity(new Intent(getApplicationContext(), CoreActivity.class));
                         } else {
                             startActivity(new Intent(getApplicationContext(), FinishSignUpActivity.class));
-                            Toast.makeText(getApplicationContext(),
-                                    "user does not exist",
-                                    Toast.LENGTH_SHORT).show();
                         }
                     } else {
                         Toast.makeText(getApplicationContext(),
