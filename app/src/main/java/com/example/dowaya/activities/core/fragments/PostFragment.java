@@ -334,14 +334,8 @@ public class PostFragment extends Fragment {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
                         writeStore(true);
-                        Toast.makeText(context,
-                                "name exists",
-                                Toast.LENGTH_SHORT).show();
                     } else {
                         writeDescription();
-                        Toast.makeText(context,
-                                "No such document",
-                                Toast.LENGTH_SHORT).show();
                     }
                 } else {
                     Toast.makeText(context,

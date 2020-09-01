@@ -83,11 +83,6 @@ public class MedicineDescriptionActivity extends AppCompatActivity {
                         isBookmarked = bookmarkDAO.contains(medicine.getName());
                         aMenu.getItem(0).setIcon(isBookmarked ?
                                 R.drawable.ic_bookmark_black : R.drawable.ic_bookmark_grey);
-                    } else {
-                        Toast.makeText(getApplicationContext(),
-                                "No such document",
-                                Toast.LENGTH_SHORT).show();
-                        //Log.d(TAG, "No such document");
                     }
                 } else {
                     Toast.makeText(getApplicationContext(),

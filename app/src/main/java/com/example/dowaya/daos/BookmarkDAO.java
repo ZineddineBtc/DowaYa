@@ -3,7 +3,6 @@ package com.example.dowaya.daos;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
@@ -13,8 +12,8 @@ import java.util.ArrayList;
 
 public class BookmarkDAO extends SQLiteOpenHelper {
 
-    private static final String DATABASE_NAME = "2.db";
-    private static final String MEDICINE_TABLE_NAME = "medicine";
+    private static final String DATABASE_NAME = "bookmark-history.db";
+    private static final String MEDICINE_TABLE_NAME = "bookmark-history";
     private static final String MEDICINE_ID = "id";
     private static final String MEDICINE_NAME = "name";
     private static final String MEDICINE_DESCRIPTION = "description";
@@ -66,21 +65,6 @@ public class BookmarkDAO extends SQLiteOpenHelper {
                 new String[] {id});
     }
 
-    public Medicine getMedicine(String id){
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor =  db.rawQuery( "select * from "+ MEDICINE_TABLE_NAME +
-                " where " + MEDICINE_ID + "=" + id, null );
-        cursor.moveToFirst();
-        Medicine medicine = new Medicine();
-        medicine.setId(cursor.getString(cursor.getColumnIndex(MEDICINE_ID)));
-        medicine.setName(cursor.getString(cursor.getColumnIndex(MEDICINE_NAME)));
-        medicine.setDescription(cursor.getString(cursor.getColumnIndex(MEDICINE_DESCRIPTION)));
-        medicine.setPrice(cursor.getString(cursor.getColumnIndex(MEDICINE_PRICE)));
-        medicine.setDose(cursor.getString(cursor.getColumnIndex(MEDICINE_DOSE)));
-        cursor.close();
-        return medicine;
-    }
-
     public ArrayList<Medicine> getAllMedicines() {
         ArrayList<Medicine> medicinesList = new ArrayList<>();
 
@@ -112,11 +96,6 @@ public class BookmarkDAO extends SQLiteOpenHelper {
             cursor.moveToNext();
         }
         return medicinesList;
-    }
-    public int numberOfRows(){
-        SQLiteDatabase db = this.getReadableDatabase();
-        int numRows = (int) DatabaseUtils.queryNumEntries(db, MEDICINE_TABLE_NAME);
-        return numRows;
     }
 
     public boolean contains(String medicineName){

@@ -4,14 +4,6 @@ public class User {
 
     private String username, email, phone;
 
-    public User(){}
-
-    public User(String username, String email, String phone) {
-        this.username = username;
-        this.email = email;
-        this.phone = phone;
-    }
-
     public String getPhone() {
         return phone;
     }

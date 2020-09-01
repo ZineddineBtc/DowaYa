@@ -1,31 +1,9 @@
 package com.example.dowaya.models;
 
 public class Store {
-    private int daoID;
     private String id, name, city, phone, address, historyTime;
 
     public Store(){}
-
-    public Store(String name, String city) {
-        this.name = name;
-        this.city = city;
-    }
-
-    public Store(String name, String city, String phone, String address) {
-        this.name = name;
-        this.city = city;
-        this.phone = phone;
-        this.address = address;
-    }
-
-    public Store(String id, String name, String city, String phone, String address) {
-        this.id = id;
-        this.name = name;
-        this.city = city;
-        this.phone = phone;
-        this.address = address;
-    }
-
     public String getName() {
         return name;
     }
@@ -74,12 +52,5 @@ public class Store {
         this.historyTime = historyTime;
     }
 
-    public int getDaoID() {
-        return daoID;
-    }
-
-    public void setDaoID(int daoID) {
-        this.daoID = daoID;
-    }
 }
 

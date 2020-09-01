@@ -18,12 +18,9 @@ public class StoreHistoryAdapter extends RecyclerView.Adapter<StoreHistoryAdapte
     private List<Store> list;
     private LayoutInflater mInflater;
     private ItemClickListener mClickListener;
-    Context context;
-
     public StoreHistoryAdapter(Context context, List<Store> list) {
         this.mInflater = LayoutInflater.from(context);
         this.list = list;
-        this.context = context;
     }
 
     @Override

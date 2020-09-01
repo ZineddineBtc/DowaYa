@@ -13,8 +13,8 @@ import java.util.ArrayList;
 
 public class StoreHistoryDAO extends SQLiteOpenHelper {
 
-    private static final String DATABASE_NAME = "store_history_4.db";
-    private static final String STORE_HISTORY_TABLE_NAME = "store_history_4";
+    private static final String DATABASE_NAME = "store-history.db";
+    private static final String STORE_HISTORY_TABLE_NAME = "store-history";
     private static final String STORE_HISTORY_ID = "id";
     private static final String STORE_HISTORY_NAME = "name";
     private static final String STORE_HISTORY_TIME = "time";
@@ -51,14 +51,6 @@ public class StoreHistoryDAO extends SQLiteOpenHelper {
         db.insert(STORE_HISTORY_TABLE_NAME, null, contentValues);
         return true;
     }
-
-    public void deleteStoreHistory(String id) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        db.delete(STORE_HISTORY_TABLE_NAME,
-                STORE_HISTORY_ID +" = ? ",
-                new String[] {id});
-    }
-
     public ArrayList<Store> getAllStoreHistory() {
         ArrayList<Store> storeList = new ArrayList<>();
 
@@ -76,12 +68,4 @@ public class StoreHistoryDAO extends SQLiteOpenHelper {
         }
         return storeList;
     }
-
-
-    public int numberOfRows(){
-        SQLiteDatabase db = this.getReadableDatabase();
-        int numRows = (int) DatabaseUtils.queryNumEntries(db, STORE_HISTORY_TABLE_NAME);
-        return numRows;
-    }
-
 }

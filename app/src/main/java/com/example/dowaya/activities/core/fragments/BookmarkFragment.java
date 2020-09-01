@@ -16,7 +16,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.dowaya.R;
 import com.example.dowaya.StaticClass;
@@ -55,7 +54,7 @@ public class BookmarkFragment extends Fragment {
 
         return fragmentView;
     }
-    public void setListView(){
+    private void setListView(){
         emptyListTV.setVisibility(View.GONE);
         bookmarkLV.setVisibility(View.VISIBLE);
         adapter = new ArrayAdapter(context, android.R.layout.simple_list_item_1, bookmarkList);

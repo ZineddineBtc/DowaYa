@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
@@ -14,8 +13,8 @@ import java.util.ArrayList;
 
 public class RequestHistoryDAO extends SQLiteOpenHelper {
 
-    private static final String DATABASE_NAME = "request_history_4.db";
-    private static final String REQUEST_HISTORY_TABLE_NAME = "request_history_4";
+    private static final String DATABASE_NAME = "request-history.db";
+    private static final String REQUEST_HISTORY_TABLE_NAME = "request-history";
     private static final String REQUEST_HISTORY_ID = "id";
     private static final String REQUEST_HISTORY_NAME = "name";
     private static final String REQUEST_HISTORY_DESCRIPTION = "description";
@@ -90,10 +89,4 @@ public class RequestHistoryDAO extends SQLiteOpenHelper {
         }
         return medicineList;
     }
-
-    public int numberOfRows(){
-        SQLiteDatabase db = this.getReadableDatabase();
-        return (int) DatabaseUtils.queryNumEntries(db, REQUEST_HISTORY_TABLE_NAME);
-    }
-    
 }

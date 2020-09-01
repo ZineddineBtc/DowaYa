@@ -8,14 +8,13 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import com.example.dowaya.models.Medicine;
-import com.example.dowaya.models.Store;
 
 import java.util.ArrayList;
 
 public class MedicineHistoryDAO extends SQLiteOpenHelper {
 
-    private static final String DATABASE_NAME = "medicine_history_1.db";
-    private static final String MEDICINE_HISTORY_TABLE_NAME = "medicine_history_1";
+    private static final String DATABASE_NAME = "medicine-history.db";
+    private static final String MEDICINE_HISTORY_TABLE_NAME = "medicine-history";
     private static final String MEDICINE_HISTORY_ID = "id";
     private static final String MEDICINE_HISTORY_NAME = "name";
     private static final String MEDICINE_HISTORY_TIME = "time";
@@ -51,13 +50,6 @@ public class MedicineHistoryDAO extends SQLiteOpenHelper {
         contentValues.put(MEDICINE_HISTORY_TIME, medicine.getSearchHistoryTime());
         db.insert(MEDICINE_HISTORY_TABLE_NAME, null, contentValues);
         return true;
-    }
-
-    public void deleteMedicineHistory(String id) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        db.delete(MEDICINE_HISTORY_TABLE_NAME,
-                MEDICINE_HISTORY_ID +" = ? ",
-                new String[] {id});
     }
 
     public ArrayList<Medicine> getAllMedicineHistory() {

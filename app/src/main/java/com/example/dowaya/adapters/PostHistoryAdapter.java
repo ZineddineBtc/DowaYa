@@ -38,7 +38,7 @@ public class PostHistoryAdapter extends RecyclerView.Adapter<PostHistoryAdapter.
     private List<Medicine> list;
     private LayoutInflater mInflater;
     private ItemClickListener mClickListener;
-    Context context;
+    private Context context;
 
     public PostHistoryAdapter(Context context, List<Medicine> list) {
         this.mInflater = LayoutInflater.from(context);

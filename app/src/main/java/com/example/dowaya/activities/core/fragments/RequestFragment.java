@@ -252,9 +252,7 @@ public class RequestFragment extends Fragment {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
                         addRequestUser();
-                        Toast.makeText(context,
-                                "request exists",
-                                Toast.LENGTH_SHORT).show();
+
                     } else {
                         writeRequest();
                     }

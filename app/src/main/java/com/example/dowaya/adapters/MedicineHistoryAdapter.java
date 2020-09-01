@@ -18,12 +18,10 @@ public class MedicineHistoryAdapter extends RecyclerView.Adapter<MedicineHistory
     private List<Medicine> list;
     private LayoutInflater mInflater;
     private ItemClickListener mClickListener;
-    Context context;
 
     public MedicineHistoryAdapter(Context context, List<Medicine> list) {
         this.mInflater = LayoutInflater.from(context);
         this.list = list;
-        this.context = context;
     }
 
     @Override

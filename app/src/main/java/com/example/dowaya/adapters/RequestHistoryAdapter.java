@@ -38,7 +38,7 @@ public class RequestHistoryAdapter extends RecyclerView.Adapter<RequestHistoryAd
     private List<Medicine> list;
     private LayoutInflater mInflater;
     private ItemClickListener mClickListener;
-    Context context;
+    private Context context;
 
     public RequestHistoryAdapter(Context context, List<Medicine> list) {
         this.mInflater = LayoutInflater.from(context);

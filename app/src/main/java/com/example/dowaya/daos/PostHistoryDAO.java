@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
@@ -14,8 +13,8 @@ import java.util.ArrayList;
 
 public class PostHistoryDAO extends SQLiteOpenHelper {
 
-    private static final String DATABASE_NAME = "post_history_4.db";
-    private static final String POST_HISTORY_TABLE_NAME = "post_history_4";
+    private static final String DATABASE_NAME = "post-history.db";
+    private static final String POST_HISTORY_TABLE_NAME = "post-history";
     private static final String POST_HISTORY_ID = "id";
     private static final String POST_HISTORY_NAME = "name";
     private static final String POST_HISTORY_DESCRIPTION = "description";
@@ -93,11 +92,6 @@ public class PostHistoryDAO extends SQLiteOpenHelper {
             cursor.moveToPrevious();
         }
         return medicineList;
-    }
-
-    public int numberOfRows(){
-        SQLiteDatabase db = this.getReadableDatabase();
-        return (int) DatabaseUtils.queryNumEntries(db, POST_HISTORY_TABLE_NAME);
     }
     
 }
