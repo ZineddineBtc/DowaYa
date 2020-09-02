@@ -27,7 +27,6 @@ import java.util.ArrayList;
 
 public class BookmarkFragment extends Fragment {
 
-    private View fragmentView;
     private Context context;
     private BookmarkDAO bookmarkDAO;
     private ListView bookmarkLV;
@@ -38,7 +37,7 @@ public class BookmarkFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        fragmentView = inflater.inflate(R.layout.fragment_bookmark, container, false);
+        View fragmentView = inflater.inflate(R.layout.fragment_bookmark, container, false);
         context = fragmentView.getContext();
         emptyListTV = fragmentView.findViewById(R.id.emptyListTV);
         bookmarkLV = fragmentView.findViewById(R.id.bookmarkLV);

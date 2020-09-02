@@ -112,8 +112,6 @@ public class RequestHistoryAdapter extends RecyclerView.Adapter<RequestHistoryAd
                             .show();
                 }
             });
-
-
             itemView.setOnClickListener(this);
         }
         void deleteRequester(String medicineId) {
@@ -124,14 +122,6 @@ public class RequestHistoryAdapter extends RecyclerView.Adapter<RequestHistoryAd
                             .document(medicineId);
             medicinesRequests.update("requesters",
                     FieldValue.arrayRemove(requesterReference))
-                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void aVoid) {
-                            Toast.makeText(context,
-                                    "medicine requester successfully removed!",
-                                    Toast.LENGTH_SHORT).show();
-                        }
-                    })
                     .addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {

@@ -113,9 +113,6 @@ public class FinishSignUpActivity extends AppCompatActivity {
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        Toast.makeText(getApplicationContext(),
-                                "user successfully written!",
-                                Toast.LENGTH_SHORT).show();
                         progressDialog.dismiss();
                         startActivity(new Intent(getApplicationContext(), CoreActivity.class));
                     }

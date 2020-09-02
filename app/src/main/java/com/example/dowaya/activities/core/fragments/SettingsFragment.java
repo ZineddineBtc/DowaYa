@@ -9,6 +9,7 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -44,7 +45,7 @@ public class SettingsFragment extends Fragment {
     private SharedPreferences.Editor editor;
     private FirebaseFirestore database;
     private LinearLayout addressCityLL;
-    private TextView nameTV, emailTV, phoneTV, addressCityTV, signOutTV, termsTV;
+    private TextView nameTV, emailTV, phoneTV, addressCityTV, signOutTV, termsTV, errorTV;
     private EditText nameET, phoneET, addressET, cityET;
     private ImageView photoIV, editNameIV, editPhoneIV, editAddressCityIV;
     private boolean isNameEdit, isPhoneEdit, isAddressEdit, imageChanged;
@@ -80,6 +81,7 @@ public class SettingsFragment extends Fragment {
         editAddressCityIV = fragmentView.findViewById(R.id.editAddressIV);
         signOutTV = fragmentView.findViewById(R.id.signOutTV);
         termsTV = fragmentView.findViewById(R.id.termsTV);
+        errorTV = fragmentView.findViewById(R.id.errorTV);
     }
     private void initializeData(){
         if(!sharedPreferences.getString(StaticClass.PHOTO, "").isEmpty()){
@@ -214,22 +216,57 @@ public class SettingsFragment extends Fragment {
         Map<String, Object> userReference = new HashMap<>();
         if(!nameET.getText().toString().equals(
                 sharedPreferences.getString(StaticClass.USERNAME, ""))){
-            editor.putString(StaticClass.USERNAME, nameET.getText().toString());
-            userReference.put("username", nameET.getText().toString());
+            if(nameET.getText().toString().trim().length()>2
+            && !StaticClass.containsDigit(nameET.getText().toString().trim())){
+                editor.putString(StaticClass.USERNAME, nameET.getText().toString());
+                userReference.put("username", nameET.getText().toString());
+            }else{
+                errorTV.setVisibility(View.VISIBLE);
+                final Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        errorTV.setVisibility(View.GONE);
+                    }
+                }, 1500);
+            }
         }
         if(!phoneET.getText().toString().equals(
                 sharedPreferences.getString(StaticClass.PHONE, ""))){
-            editor.putString(StaticClass.PHONE, phoneET.getText().toString());
-            userReference.put("phone", phoneET.getText().toString());
+            if(phoneET.getText().toString().trim().length()>9){
+                editor.putString(StaticClass.PHONE, phoneET.getText().toString());
+                userReference.put("phone", phoneET.getText().toString());
+            }else{
+                errorTV.setVisibility(View.VISIBLE);
+                final Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        errorTV.setVisibility(View.GONE);
+                    }
+                }, 1500);
+            }
         }
         if(!addressET.getText().toString().equals(
                 sharedPreferences.getString(StaticClass.ADDRESS, ""))
         || !cityET.getText().toString().equals(
                 sharedPreferences.getString(StaticClass.CITY, ""))){
-            editor.putString(StaticClass.ADDRESS, addressET.getText().toString());
-            editor.putString(StaticClass.CITY, cityET.getText().toString());
-            userReference.put("address", addressET.getText().toString());
-            userReference.put("city", cityET.getText().toString());
+            if(addressET.getText().toString().trim().length()>3
+            && cityET.getText().toString().trim().length()>3){
+                editor.putString(StaticClass.ADDRESS, addressET.getText().toString());
+                editor.putString(StaticClass.CITY, cityET.getText().toString());
+                userReference.put("address", addressET.getText().toString());
+                userReference.put("city", cityET.getText().toString());
+            }else{
+                errorTV.setVisibility(View.VISIBLE);
+                final Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        errorTV.setVisibility(View.GONE);
+                    }
+                }, 1500);
+            }
         }
         if(imageChanged){
             editor.putString(StaticClass.PHOTO, String.valueOf(uriString));
@@ -240,21 +277,19 @@ public class SettingsFragment extends Fragment {
     }
     private boolean isValidInput(){
         return !StaticClass.containsDigit(nameET.getText().toString())
+                && nameET.getText().toString().length() > 2
                 && phoneET.getText().toString().length() > 9
-                && !addressET.getText().toString().isEmpty();
+                && !addressET.getText().toString().isEmpty()
+                && cityET.getText().toString().length() > 3;
     }
     private void updateData(){
         detectChange();
-        String snackBarString;
         if(isValidInput()){
             editor.apply();
             initializeData();
-            snackBarString = "updated";
-        }else{
-            snackBarString = "invalid input";
+            Snackbar.make(fragmentView.findViewById(R.id.parentLayout),
+                    "updated", 1000)
+                    .setAction("Action", null).show();
         }
-        Snackbar.make(fragmentView.findViewById(R.id.parentLayout),
-                snackBarString, 1000)
-                .setAction("Action", null).show();
     }
 }
