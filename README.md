@@ -1,5 +1,5 @@
 # DowaYa
-An Android app that connects consumers to pharmacies.
+An Android app that connects consumers to pharmacies. (costumer side of DowaYa-Pharmacy repo)
 
 ## Features
 Users can go through a list containing all of the medicines, and the pharmacies that provide those medicines.<br/>
